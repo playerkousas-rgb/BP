@@ -1,0 +1,614 @@
+[
+  {
+    "id": "jamboree-1",
+    "n": 1,
+    "year": 1920,
+    "yearEnd": 1920,
+    "lon": -0.21,
+    "lat": 51.5,
+    "place": {
+      "zh": "倫敦奧林匹亞",
+      "en": "Olympia, London"
+    },
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "participants": 8000,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-2",
+    "n": 2,
+    "year": 1924,
+    "yearEnd": 1924,
+    "lon": 12.54,
+    "lat": 55.77,
+    "place": {
+      "zh": "埃默倫登",
+      "en": "Ermelunden"
+    },
+    "country": {
+      "zh": "丹麥",
+      "en": "Denmark"
+    },
+    "participants": 4549,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-3",
+    "n": 3,
+    "year": 1929,
+    "yearEnd": 1929,
+    "lon": -3.094,
+    "lat": 53.376,
+    "place": {
+      "zh": "亞羅公園",
+      "en": "Arrowe Park"
+    },
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "participants": 50000,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-4",
+    "n": 4,
+    "year": 1933,
+    "yearEnd": 1933,
+    "lon": 19.36,
+    "lat": 47.6,
+    "place": {
+      "zh": "格德勒",
+      "en": "Gödöllő"
+    },
+    "country": {
+      "zh": "匈牙利",
+      "en": "Hungary"
+    },
+    "participants": 25793,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-5",
+    "n": 5,
+    "year": 1937,
+    "yearEnd": 1937,
+    "lon": 4.59,
+    "lat": 52.32,
+    "place": {
+      "zh": "福格倫藏",
+      "en": "Vogelenzang"
+    },
+    "country": {
+      "zh": "荷蘭",
+      "en": "Netherlands"
+    },
+    "participants": 28750,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-6",
+    "n": 6,
+    "year": 1947,
+    "yearEnd": 1947,
+    "lon": 1.65,
+    "lat": 49.06,
+    "place": {
+      "zh": "穆瓦松",
+      "en": "Moisson"
+    },
+    "country": {
+      "zh": "法國",
+      "en": "France"
+    },
+    "participants": 24152,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-7",
+    "n": 7,
+    "year": 1951,
+    "yearEnd": 1951,
+    "lon": 13.62,
+    "lat": 47.71,
+    "place": {
+      "zh": "巴德伊舍",
+      "en": "Bad Ischl"
+    },
+    "country": {
+      "zh": "奧地利",
+      "en": "Austria"
+    },
+    "participants": 12884,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-8",
+    "n": 8,
+    "year": 1955,
+    "yearEnd": 1955,
+    "lon": -79.07,
+    "lat": 43.17,
+    "place": {
+      "zh": "濱湖尼亞加拉",
+      "en": "Niagara-on-the-Lake"
+    },
+    "country": {
+      "zh": "加拿大",
+      "en": "Canada"
+    },
+    "participants": 11139,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-9",
+    "n": 9,
+    "year": 1957,
+    "yearEnd": 1957,
+    "lon": -1.86,
+    "lat": 52.57,
+    "place": {
+      "zh": "薩頓公園",
+      "en": "Sutton Park"
+    },
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "participants": 30000,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-10",
+    "n": 10,
+    "year": 1959,
+    "yearEnd": 1959,
+    "lon": 121.21,
+    "lat": 14.12,
+    "place": {
+      "zh": "洛斯巴尼奧斯",
+      "en": "Los Baños"
+    },
+    "country": {
+      "zh": "菲律賓",
+      "en": "Philippines"
+    },
+    "participants": 12203,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-11",
+    "n": 11,
+    "year": 1963,
+    "yearEnd": 1963,
+    "lon": 23.96,
+    "lat": 38.15,
+    "place": {
+      "zh": "馬拉松",
+      "en": "Marathon"
+    },
+    "country": {
+      "zh": "希臘",
+      "en": "Greece"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-12",
+    "n": 12,
+    "year": 1967,
+    "yearEnd": 1967,
+    "lon": -116.57,
+    "lat": 47.96,
+    "place": {
+      "zh": "法拉格特州立公園",
+      "en": "Farragut State Park"
+    },
+    "country": {
+      "zh": "美國",
+      "en": "United States"
+    },
+    "participants": 12011,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-13",
+    "n": 13,
+    "year": 1971,
+    "yearEnd": 1971,
+    "lon": 138.58,
+    "lat": 35.37,
+    "place": {
+      "zh": "朝霧高原",
+      "en": "Asagiri Heights"
+    },
+    "country": {
+      "zh": "日本",
+      "en": "Japan"
+    },
+    "participants": 23758,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-14",
+    "n": 14,
+    "year": 1975,
+    "yearEnd": 1975,
+    "lon": 10.47,
+    "lat": 61.12,
+    "place": {
+      "zh": "利勒哈默爾",
+      "en": "Lillehammer"
+    },
+    "country": {
+      "zh": "挪威",
+      "en": "Norway"
+    },
+    "participants": 17259,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-1979-cancelled",
+    "n": null,
+    "year": 1979,
+    "yearEnd": 1979,
+    "lon": 58.796,
+    "lat": 36.213,
+    "place": {
+      "zh": "尼沙普爾",
+      "en": "Nishapur"
+    },
+    "country": {
+      "zh": "伊朗",
+      "en": "Iran"
+    },
+    "participants": null,
+    "cancelled": true,
+    "sources": [
+      "jamboree-cancelled"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-15",
+    "n": 15,
+    "year": 1983,
+    "yearEnd": 1983,
+    "lon": -115.09,
+    "lat": 50.92,
+    "place": {
+      "zh": "卡納納斯基斯",
+      "en": "Kananaskis"
+    },
+    "country": {
+      "zh": "加拿大",
+      "en": "Canada"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-16",
+    "n": 16,
+    "year": 1987,
+    "yearEnd": 1988,
+    "lon": 150.79,
+    "lat": -33.98,
+    "place": {
+      "zh": "新南威爾士",
+      "en": "New South Wales"
+    },
+    "country": {
+      "zh": "澳洲",
+      "en": "Australia"
+    },
+    "participants": 13434,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-17",
+    "n": 17,
+    "year": 1991,
+    "yearEnd": 1991,
+    "lon": 128.5,
+    "lat": 38.16,
+    "place": {
+      "zh": "雪嶽山",
+      "en": "Mount Sorak"
+    },
+    "country": {
+      "zh": "韓國",
+      "en": "South Korea"
+    },
+    "participants": 20000,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-18",
+    "n": 18,
+    "year": 1995,
+    "yearEnd": 1995,
+    "lon": 5.76,
+    "lat": 52.44,
+    "place": {
+      "zh": "德龍滕",
+      "en": "Dronten"
+    },
+    "country": {
+      "zh": "荷蘭",
+      "en": "Netherlands"
+    },
+    "participants": 28960,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-19",
+    "n": 19,
+    "year": 1998,
+    "yearEnd": 1999,
+    "lon": -70.72,
+    "lat": -34.08,
+    "place": {
+      "zh": "皮卡爾金",
+      "en": "Picarquín"
+    },
+    "country": {
+      "zh": "智利",
+      "en": "Chile"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-20",
+    "n": 20,
+    "year": 2002,
+    "yearEnd": 2003,
+    "lon": 100.9,
+    "lat": 12.67,
+    "place": {
+      "zh": "梭桃邑",
+      "en": "Sattahip"
+    },
+    "country": {
+      "zh": "泰國",
+      "en": "Thailand"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-21",
+    "n": 21,
+    "year": 2007,
+    "yearEnd": 2007,
+    "lon": 0.44,
+    "lat": 51.71,
+    "place": {
+      "zh": "海蘭茲公園",
+      "en": "Hylands Park"
+    },
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "participants": 40000,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-22",
+    "n": 22,
+    "year": 2011,
+    "yearEnd": 2011,
+    "lon": 14.19,
+    "lat": 56.01,
+    "place": {
+      "zh": "林卡比",
+      "en": "Rinkaby"
+    },
+    "country": {
+      "zh": "瑞典",
+      "en": "Sweden"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-23",
+    "n": 23,
+    "year": 2015,
+    "yearEnd": 2015,
+    "lon": 131.47,
+    "lat": 34.01,
+    "place": {
+      "zh": "山口縣",
+      "en": "Yamaguchi"
+    },
+    "country": {
+      "zh": "日本",
+      "en": "Japan"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-24",
+    "n": 24,
+    "year": 2019,
+    "yearEnd": 2019,
+    "lon": -81.12,
+    "lat": 37.92,
+    "place": {
+      "zh": "西維珍尼亞州",
+      "en": "West Virginia"
+    },
+    "country": {
+      "zh": "美國",
+      "en": "United States"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-25",
+    "n": 25,
+    "year": 2023,
+    "yearEnd": 2023,
+    "lon": 126.72,
+    "lat": 35.8,
+    "place": {
+      "zh": "新萬金",
+      "en": "Saemangeum"
+    },
+    "country": {
+      "zh": "韓國",
+      "en": "South Korea"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-list"
+    ],
+    "draft": true
+  },
+  {
+    "id": "jamboree-26",
+    "n": 26,
+    "year": 2027,
+    "yearEnd": 2027,
+    "lon": 18.86,
+    "lat": 54.35,
+    "place": {
+      "zh": "格但斯克",
+      "en": "Gdańsk"
+    },
+    "country": {
+      "zh": "波蘭",
+      "en": "Poland"
+    },
+    "participants": null,
+    "cancelled": false,
+    "sources": [
+      "jamboree-2027"
+    ],
+    "draft": true
+  }
+]

@@ -1,0 +1,615 @@
+[
+  {
+    "id": "london-birth",
+    "year": 1857,
+    "yearEnd": 1857,
+    "phase": "early",
+    "lon": -0.176,
+    "lat": 51.515,
+    "place": {
+      "zh": "倫敦",
+      "en": "London"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "故事的起點",
+      "en": "Where the story begins"
+    },
+    "body": {
+      "zh": "1857 年 2 月 22 日，羅伯特・貝登堡在倫敦出生。他在十名子女中排行第八。",
+      "en": "Robert Baden-Powell was born in London on 22 February 1857, the eighth of ten children."
+    },
+    "sources": [
+      "wosm-history"
+    ],
+    "draft": true
+  },
+  {
+    "id": "charterhouse",
+    "year": 1870,
+    "yearEnd": 1876,
+    "phase": "early",
+    "lon": -0.625,
+    "lat": 51.185,
+    "place": {
+      "zh": "查特豪斯公學",
+      "en": "Charterhouse School"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "走進自然的少年",
+      "en": "A boy drawn to the outdoors"
+    },
+    "body": {
+      "zh": "貝登堡獲得獎學金入讀查特豪斯。學校在他求學期間遷往戈德爾明；他在附近林地培養了對戶外的興趣。",
+      "en": "Baden-Powell won a scholarship to Charterhouse. The school moved to Godalming during his time there, where he explored the nearby woods."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-biography"
+    ],
+    "draft": true
+  },
+  {
+    "id": "lucknow",
+    "year": 1876,
+    "yearEnd": 1876,
+    "phase": "military",
+    "lon": 80.946,
+    "lat": 26.847,
+    "place": {
+      "zh": "勒克瑙",
+      "en": "Lucknow"
+    },
+    "placeThen": {
+      "zh": "英屬印度",
+      "en": "British India"
+    },
+    "country": {
+      "zh": "印度",
+      "en": "India"
+    },
+    "title": {
+      "zh": "遠赴印度",
+      "en": "A young officer in India"
+    },
+    "body": {
+      "zh": "離開學校後，他加入軍隊並前往印度。在軍旅生活中，他發展了觀察、偵察與製圖的技能。",
+      "en": "After school, he joined the army and travelled to India. During his military service he developed skills in observation, scouting and mapmaking."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-biography"
+    ],
+    "draft": true
+  },
+  {
+    "id": "natal",
+    "year": 1884,
+    "yearEnd": 1884,
+    "phase": "military",
+    "lon": 31.02,
+    "lat": -29.86,
+    "place": {
+      "zh": "納塔爾",
+      "en": "Natal"
+    },
+    "placeThen": {
+      "zh": "納塔爾殖民地",
+      "en": "Colony of Natal"
+    },
+    "country": {
+      "zh": "南非",
+      "en": "South Africa"
+    },
+    "title": {
+      "zh": "前往南部非洲",
+      "en": "A posting in southern Africa"
+    },
+    "body": {
+      "zh": "1880 年代，貝登堡的軍旅生涯帶他到南部非洲。地圖以納塔爾的德班作示意落點。",
+      "en": "During the 1880s, his military service took him to southern Africa. Durban in Natal is used here as an illustrative location."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-biography"
+    ],
+    "draft": true
+  },
+  {
+    "id": "malta",
+    "year": 1890,
+    "yearEnd": 1893,
+    "phase": "military",
+    "lon": 14.514,
+    "lat": 35.899,
+    "place": {
+      "zh": "瓦萊塔",
+      "en": "Valletta"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "馬耳他",
+      "en": "Malta"
+    },
+    "title": {
+      "zh": "地中海歲月",
+      "en": "Years in the Mediterranean"
+    },
+    "body": {
+      "zh": "貝登堡曾在馬耳他任職，並在這段日子到訪地中海一帶。",
+      "en": "Baden-Powell was posted to Malta and travelled in the Mediterranean region during these years."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-biography"
+    ],
+    "draft": true
+  },
+  {
+    "id": "kumasi",
+    "year": 1896,
+    "yearEnd": 1896,
+    "phase": "military",
+    "lon": -1.624,
+    "lat": 6.688,
+    "place": {
+      "zh": "庫馬西",
+      "en": "Kumasi"
+    },
+    "placeThen": {
+      "zh": "黃金海岸",
+      "en": "Gold Coast"
+    },
+    "country": {
+      "zh": "加納",
+      "en": "Ghana"
+    },
+    "title": {
+      "zh": "來到西非",
+      "en": "In West Africa"
+    },
+    "body": {
+      "zh": "1890 年代，他的軍旅工作也帶他到西非。庫馬西一站的時間與位置根據傳記資料補充。",
+      "en": "His military service also took him to West Africa in the 1890s. The time and location of this stop are supplemented from biographical sources."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-biography"
+    ],
+    "draft": true
+  },
+  {
+    "id": "mafeking",
+    "year": 1899,
+    "yearEnd": 1900,
+    "phase": "military",
+    "lon": 25.64,
+    "lat": -25.86,
+    "place": {
+      "zh": "梅富根",
+      "en": "Mafeking"
+    },
+    "placeThen": {
+      "zh": "今馬希肯",
+      "en": "Present-day Mahikeng"
+    },
+    "country": {
+      "zh": "南非",
+      "en": "South Africa"
+    },
+    "title": {
+      "zh": "梅富根",
+      "en": "Mafeking"
+    },
+    "body": {
+      "zh": "在梅富根圍城期間，城中少年的機智與勇氣給他留下深刻印象。",
+      "en": "During the siege of Mafeking, he was struck by the resourcefulness and courage of the boys who helped in the town."
+    },
+    "sources": [
+      "wosm-history"
+    ],
+    "draft": true
+  },
+  {
+    "id": "london-return",
+    "year": 1903,
+    "yearEnd": 1903,
+    "phase": "military",
+    "lon": -0.1276,
+    "lat": 51.5072,
+    "place": {
+      "zh": "倫敦",
+      "en": "London"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "一個意外的發現",
+      "en": "An unexpected discovery"
+    },
+    "body": {
+      "zh": "回到英國後，貝登堡發現自己為軍人寫的偵察書籍也受到青年領袖和少年歡迎。",
+      "en": "On returning to Britain, Baden-Powell discovered that a scouting manual he had written for soldiers was also being read by youth leaders and boys."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-biography"
+    ],
+    "draft": true
+  },
+  {
+    "id": "brownsea",
+    "year": 1907,
+    "yearEnd": 1907,
+    "phase": "scouting",
+    "lon": -1.96,
+    "lat": 50.69,
+    "place": {
+      "zh": "白浪島",
+      "en": "Brownsea Island"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "一個營地，一個開始",
+      "en": "One camp, a beginning"
+    },
+    "body": {
+      "zh": "1907 年，貝登堡帶領 20 名不同背景的少年在白浪島舉行實驗營，成為童軍運動的起點。WOSM 現行資料記載 20 人；部分舊資料則記載 22 人。",
+      "en": "Baden-Powell brought 20 boys to an experimental camp on Brownsea Island in 1907. WOSM now says 20; some older accounts say 22."
+    },
+    "sources": [
+      "wosm-history",
+      "wosm-2007"
+    ],
+    "draft": true
+  },
+  {
+    "id": "scouting-for-boys",
+    "year": 1908,
+    "yearEnd": 1908,
+    "phase": "scouting",
+    "lon": -0.129,
+    "lat": 51.51,
+    "place": {
+      "zh": "倫敦",
+      "en": "London"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "把冒險寫成一本書",
+      "en": "An adventure in print"
+    },
+    "body": {
+      "zh": "《童軍警探》於 1908 年分冊出版。少年們讀後自發組成小隊，童軍活動開始傳播。",
+      "en": "Scouting for Boys appeared in parts in 1908. Young readers began forming patrols of their own, and Scouting started to spread."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-history"
+    ],
+    "draft": true
+  },
+  {
+    "id": "crystal-palace",
+    "year": 1909,
+    "yearEnd": 1909,
+    "phase": "scouting",
+    "lon": -0.073,
+    "lat": 51.422,
+    "place": {
+      "zh": "水晶宮",
+      "en": "Crystal Palace"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "一場意想不到的大會操",
+      "en": "A rally beyond expectations"
+    },
+    "body": {
+      "zh": "倫敦水晶宮的童軍大會操吸引逾一萬一千名童軍，顯示這個新運動正迅速成長。",
+      "en": "More than 11,000 Scouts gathered at the Crystal Palace rally in London, showing how quickly the new movement was growing."
+    },
+    "sources": [
+      "wosm-history"
+    ],
+    "draft": true
+  },
+  {
+    "id": "guides",
+    "year": 1910,
+    "yearEnd": 1910,
+    "phase": "scouting",
+    "lon": -0.128,
+    "lat": 51.508,
+    "place": {
+      "zh": "倫敦",
+      "en": "London"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "把一生獻給童軍",
+      "en": "A new chapter for Scouting"
+    },
+    "body": {
+      "zh": "貝登堡從軍隊退休，專注發展童軍運動；他亦與妹妹艾妮絲推動女童軍的發展。",
+      "en": "Baden-Powell retired from the army to devote himself to Scouting. He also helped start Girl Guiding under the leadership of his sister Agnes."
+    },
+    "sources": [
+      "wosm-history"
+    ],
+    "draft": true
+  },
+  {
+    "id": "hong-kong",
+    "year": 1912,
+    "yearEnd": 1912,
+    "phase": "scouting",
+    "lon": 114.158,
+    "lat": 22.279,
+    "place": {
+      "zh": "香港督憲府",
+      "en": "Government House, Hong Kong"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "香港",
+      "en": "Hong Kong"
+    },
+    "title": {
+      "zh": "來到香港",
+      "en": "A visit to Hong Kong"
+    },
+    "body": {
+      "zh": "1912 年 4 月，貝登堡到訪香港，並在督憲府檢閱接受童軍訓練的少年。到訪及檢閱日期在資料中各有記載，這裏只列月份。",
+      "en": "In April 1912, Baden-Powell visited Hong Kong and inspected boys trained as Scouts at Government House. Sources give different dates for arrival and the inspection, so only the month is shown here."
+    },
+    "sources": [
+      "hk-kua",
+      "hk-bp"
+    ],
+    "draft": true
+  },
+  {
+    "id": "parkstone",
+    "year": 1912,
+    "yearEnd": 1912,
+    "phase": "scouting",
+    "lon": -1.945,
+    "lat": 50.724,
+    "place": {
+      "zh": "帕克斯通",
+      "en": "Parkstone"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "遇見同行的夥伴",
+      "en": "A partner on the journey"
+    },
+    "body": {
+      "zh": "1912 年，貝登堡與奧莉芙・索姆斯結婚。此後二人共同支持童軍與女童軍運動。",
+      "en": "In 1912, Baden-Powell married Olave Soames. Together they supported the development of Scouting and Guiding."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-biography"
+    ],
+    "draft": true
+  },
+  {
+    "id": "gilwell",
+    "year": 1919,
+    "yearEnd": 1919,
+    "phase": "scouting",
+    "lon": 0.004,
+    "lat": 51.649,
+    "place": {
+      "zh": "基維爾營地",
+      "en": "Gilwell Park"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "讓領袖也繼續學習",
+      "en": "A place for leaders to learn"
+    },
+    "body": {
+      "zh": "基維爾營地於 1919 年開放，並開始舉辦領袖訓練課程，讓童軍方法傳到更多地方。",
+      "en": "Gilwell Park opened in 1919 and began training Scout leaders, helping the Scout method travel further."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-history"
+    ],
+    "draft": true
+  },
+  {
+    "id": "olympia",
+    "year": 1920,
+    "yearEnd": 1920,
+    "phase": "scouting",
+    "lon": -0.21,
+    "lat": 51.497,
+    "place": {
+      "zh": "倫敦奧林匹亞",
+      "en": "Olympia, London"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "世界在倫敦相聚",
+      "en": "The world gathers in London"
+    },
+    "body": {
+      "zh": "第一屆世界童軍大露營在倫敦舉行。貝登堡獲推舉為世界童軍總領袖。",
+      "en": "The first World Scout Jamboree was held in London, where Baden-Powell was acclaimed Chief Scout of the World."
+    },
+    "sources": [
+      "wosm-history",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "arrowe-park",
+    "year": 1929,
+    "yearEnd": 1929,
+    "phase": "scouting",
+    "lon": -3.094,
+    "lat": 53.376,
+    "place": {
+      "zh": "亞羅公園",
+      "en": "Arrowe Park"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "英國",
+      "en": "United Kingdom"
+    },
+    "title": {
+      "zh": "來自世界的朋友",
+      "en": "Friends from around the world"
+    },
+    "body": {
+      "zh": "第三屆世界童軍大露營在亞羅公園舉行。這一年，貝登堡獲封為基維爾的貝登堡男爵。",
+      "en": "The third World Scout Jamboree took place at Arrowe Park. That year, Baden-Powell received a peerage and became Lord Baden-Powell of Gilwell."
+    },
+    "sources": [
+      "wosm-history",
+      "wosm-milestones"
+    ],
+    "draft": true
+  },
+  {
+    "id": "vogelenzang",
+    "year": 1937,
+    "yearEnd": 1937,
+    "phase": "later",
+    "lon": 4.59,
+    "lat": 52.32,
+    "place": {
+      "zh": "福格倫藏",
+      "en": "Vogelenzang"
+    },
+    "placeThen": null,
+    "country": {
+      "zh": "荷蘭",
+      "en": "Netherlands"
+    },
+    "title": {
+      "zh": "與童軍道別",
+      "en": "A farewell to the Scouts"
+    },
+    "body": {
+      "zh": "第五屆世界童軍大露營在荷蘭舉行，貝登堡在這裏向參加者道別。",
+      "en": "The fifth World Scout Jamboree was held in the Netherlands, where Baden-Powell gave a farewell to the Scouts."
+    },
+    "sources": [
+      "uk-biography",
+      "jamboree-list"
+    ],
+    "draft": true
+  },
+  {
+    "id": "nyeri-home",
+    "year": 1938,
+    "yearEnd": 1938,
+    "phase": "later",
+    "lon": 36.956,
+    "lat": -0.42,
+    "place": {
+      "zh": "涅里",
+      "en": "Nyeri"
+    },
+    "placeThen": {
+      "zh": "肯亞殖民地",
+      "en": "Colony of Kenya"
+    },
+    "country": {
+      "zh": "肯亞",
+      "en": "Kenya"
+    },
+    "title": {
+      "zh": "肯亞山下的家",
+      "en": "A home beneath Mount Kenya"
+    },
+    "body": {
+      "zh": "晚年健康轉差的貝登堡移居肯亞，在涅里度過人生最後的日子。",
+      "en": "In later life, Baden-Powell moved to Kenya as his health declined. He spent his final years in Nyeri."
+    },
+    "sources": [
+      "wosm-history",
+      "uk-biography"
+    ],
+    "draft": true
+  },
+  {
+    "id": "nyeri-legacy",
+    "year": 1941,
+    "yearEnd": 1941,
+    "phase": "later",
+    "lon": 36.956,
+    "lat": -0.42,
+    "place": {
+      "zh": "涅里",
+      "en": "Nyeri"
+    },
+    "placeThen": {
+      "zh": "肯亞殖民地",
+      "en": "Colony of Kenya"
+    },
+    "country": {
+      "zh": "肯亞",
+      "en": "Kenya"
+    },
+    "title": {
+      "zh": "留下更美好的世界",
+      "en": "Leave the world a little better"
+    },
+    "body": {
+      "zh": "貝登堡於 1941 年 1 月 8 日在涅里去世，終年 83 歲。他留給童軍的話，至今仍鼓勵人們讓世界變得更美好。",
+      "en": "Baden-Powell died in Nyeri on 8 January 1941, aged 83. His final message continues to encourage Scouts to leave the world a little better."
+    },
+    "sources": [
+      "wosm-history"
+    ],
+    "draft": true
+  }
+]

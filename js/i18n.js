@@ -1,0 +1,201 @@
+// B-P Atlas v1.0 · © SCOUT SYSTEM
+const messages = {
+  skip: ['跳到地圖', 'Skip to the map'],
+  brandZh: ['貝登堡行跡', 'Baden-Powell'],
+  mapModes: ['探索地圖與名錄', 'Explore the atlas and directory'],
+  journeyMode: ['B-P 行跡', 'B-P’s journey'],
+  spreadMode: ['童軍擴散', 'Scouting spreads'],
+  directoryButton: ['成員名錄', 'Directory'],
+  directoryKicker: ['現時成員 · 研究草稿', 'PRESENT-DAY MEMBERS · RESEARCH DRAFT'],
+  directoryTitle: ['成員組織名錄', 'Member directory'],
+  directoryIntro: ['176 項現況研究資料；優先顯示 WOSM 所列會籍年份（可能是前身或重新加入），未整理個別組織人數。選取只開啟現況參考，不改變年份或表示當時會籍；詳見卡片。', '176 present-day research entries, showing WOSM’s membership year first (which may refer to a predecessor or rejoining). Individual organisation counts have not been compiled. Selecting an entry opens a current reference without changing the timeline or implying past membership; see the card for details.'],
+  directoryYearField: ['WOSM 名錄 · {year}', 'WOSM directory · {year}'],
+  directoryYearHistory: ['WOSM 會籍歷史 · {year}', 'WOSM history · {year}'],
+  directoryYearNews: ['WOSM 新聞 · {year}', 'WOSM news · {year}'],
+  directoryYearBlank: ['WOSM 名錄未列年份', 'WOSM directory: year not stated'],
+  directoryYearUnknown: ['WOSM 年份待核實', 'WOSM year unverified'],
+  directoryYearDisputed: ['年份有爭議', 'year disputed'],
+  directoryReference: ['現況名錄參考 · 與時間軸年份無關', 'DIRECTORY · INDEPENDENT OF THE TIMELINE'],
+  directoryReferenceNote: ['現況資料，不能證明所選年份已有組織或 WOSM 會籍。', 'This reference does not establish that the organisation or its membership existed in the selected year.'],
+  about: ['關於資料', 'About the data'],
+  share: ['分享目前畫面', 'Share this view'],
+  shareShort: ['分享', 'Share'],
+  introKicker: ['一段穿越時空的旅程', 'A JOURNEY THROUGH TIME'],
+  headline: ['從一個人的足跡，到一個世界的故事。', 'One life. A world of stories.'],
+  subtitle: ['沿著地圖與時間，探索貝登堡與世界童軍運動。', 'Follow the map and discover the story of Baden-Powell and Scouting.'],
+  exploreHistory: ['探索童軍的故事', 'A STORY OF SCOUTING'],
+  workspace: ['互動地圖與故事', 'Interactive map and stories'],
+  mapAria: ['世界地圖；可拖曳及縮放，地圖上的標記可以選取', 'World map; drag or zoom and select the markers'],
+  mapZoom: ['地圖縮放', 'Map zoom'],
+  zoomIn: ['放大', 'Zoom in'],
+  zoomOut: ['縮小', 'Zoom out'],
+  zoomReset: ['重設地圖', 'Reset map'],
+  jamborees: ['世界大露營', 'World Jamborees'],
+  mapJourneyTitle: ['貝登堡行跡', 'Baden-Powell’s journey'],
+  mapJourneySubtitle: ['沿著足跡，探索旅程', 'Follow the footsteps'],
+  mapSpreadTitle: ['童軍走向世界', 'Scouting around the world'],
+  mapSpreadSubtitle: ['有記錄的早期童軍團體 · 草稿', 'Documented early groups · draft'],
+  mapLegendJourney: ['B-P 的旅程', 'B-P’s journey'],
+  mapLegendSpread: ['早期團體年份越早，顏色越深', 'Darker means an earlier documented group'],
+  boundaryShort: ['現代邊界僅供示意', 'Modern boundaries are illustrative'],
+  scaleAtCentre: ['地圖中央約 {distance} 公里', 'Approx. {distance} km at map centre'],
+  openPanel: ['開啟面板', 'Open a panel'],
+  openStory: ['閱讀目前故事', 'Read the current story'],
+  story: ['故事', 'Story'],
+  chartShort: ['人口圖表', 'Membership'],
+  sideAria: ['故事及人口圖表', 'Story and membership chart'],
+  storyAria: ['地圖故事', 'Map story'],
+  chartAria: ['世界童軍人口圖表', 'World Scouting membership chart'],
+  close: ['關閉面板', 'Close panel'],
+  loading: ['正在展開地圖…', 'Unfolding the map…'],
+  chartKicker: ['數字背後的故事', 'A STORY IN NUMBERS'],
+  chartTitle: ['世界童軍人口', 'Scout membership'],
+  organizations: ['組織／地區', 'Orgs / countries'],
+  chartClick: ['點擊圖表選擇年份；方向鍵移動一年，Home／End 跳至起點／終點', 'Click the chart to choose a year; use arrow keys to move one year, Home or End to jump to the bounds'],
+  chartNote: ['研究草稿：圓點為該年來源數字、約數或下限，不一定是年終數；缺數據年份留空，不作插值。1907 為營地，統計口徑不同，不包括 WAGGGS。', 'Research draft: dots are source figures, approximations or lower bounds reported in that year, not necessarily year-end totals. Missing years are blank, without interpolation. 1907 is the camp; definitions vary and WAGGGS is excluded.'],
+  chartSources: ['統計出處', 'Data sources'],
+  timeline: ['時光軸', 'Timeline'],
+  timelineHint: ['拖動時間，展開故事', 'Move through time'],
+  viewing: ['正在探索', 'EXPLORING'],
+  timelineControls: ['時間軸控制', 'Timeline controls'],
+  previousStop: ['上一站', 'Previous stop'],
+  nextStop: ['下一站', 'Next stop'],
+  previousYear: ['上一年', 'Previous year'],
+  nextYear: ['下一年', 'Next year'],
+  play: ['播放', 'Play'],
+  pause: ['暫停', 'Pause'],
+  year: ['年份', 'Year'],
+  timelineInstruction: ['選擇地圖上的標記，閱讀每一個故事。', 'Select a marker on the map to explore its story.'],
+  footerDisclaimer: ['非世界童軍組織或任何童軍總會的官方作品', 'An unofficial project, not affiliated with WOSM or any Scout association.'],
+  footerLicense: ['授權待確認', 'Licensing pending'],
+  inspiredBy: ['玩法靈感：', 'Inspired by '],
+  aboutKicker: ['關於這張地圖', 'ABOUT THIS ATLAS'],
+  aboutTitle: ['故事，還在查證之中。', 'The research is still unfolding.'],
+  aboutDraft: ['這是研究草稿，不是正式發佈版本。成員名錄與歷史擴散地圖分開：地圖只繪有早期童軍團體來源的部分地區；空白不代表沒有童軍，亦不表示會籍中斷。所有日期仍須逐項核實。', 'This is a research draft, not a publication-ready release. The current directory is separate from the historical map, which plots only a partial sample with evidence for an early local group. A blank does not mean Scouting was absent or membership interrupted. All dates still need checking.'],
+  aboutBoundary: ['地圖採用 Natural Earth 的現代邊界，僅作示意，不代表對任何邊界或地區地位的立場。地圖單位是童軍成員組織所在地，並非國家排名。', 'The map uses modern Natural Earth boundaries for illustration, not to express a position on borders or territorial status. Locations refer to Scout member organisations, not a ranking of countries.'],
+  aboutStats: ['人口資料以 WOSM 公開數字為主，不包括世界女童軍協會；1907 年是白浪島營地人數，早於 WOSM 成立。早期主要記錄男童軍，現今亦包括女成員和成年義工。舊資料有時按國家、近年按組織計，口徑不可直接比較。只顯示來源數字、約數或下限；缺少數據的年份留空，不連線或推算。2025 年約 6,000 萬是估算覆蓋人數，並非登記普查。', 'Figures are based on WOSM, not the World Association of Girl Guides and Girl Scouts; the 1907 camp predates WOSM. Earlier figures primarily counted boys, while modern figures include girls and adult volunteers. Older sources sometimes count countries and newer ones member organisations; definitions are not directly comparable. Only source figures, approximations or lower bounds are plotted; missing years are blank, with no connecting lines or inferred counts. The roughly 60 million in 2025 is estimated reach, not a registered census.'],
+  aboutUnofficial: ['本站並非世界童軍組織或任何童軍總會的官方作品。玩法靈感來自「江山時序」；程式和地圖資料獨立製作。', 'This is not an official project of World Scouting or any Scout association. The interaction is inspired by Chronicles of the Realm; the code and map data were independently created.'],
+  credits: ['資料來源及致謝', 'Sources and credits'],
+  draft: ['研究草稿 · 上線前待核實', 'Research draft · verification pending'],
+  phaseEarly: ['早年', 'Early years'],
+  phaseMilitary: ['軍旅', 'Military service'],
+  phaseScouting: ['創辦童軍', 'Scouting begins'],
+  phaseLater: ['晚年', 'Later years'],
+  stopOf: ['旅程站數', 'JOURNEY STOP'],
+  nextStory: ['下一站', 'Next stop'],
+  source: ['出處', 'Sources'],
+  then: ['當時：', 'Then: '],
+  spreadIndex: ['童軍足跡', 'SCOUTING SPREADS'],
+  spreadTag: ['研究草稿', 'RESEARCH DRAFT'],
+  spreadHeading: ['一個想法，走向世界。', 'An idea travels the world.'],
+  spreadBody: ['選擇有顏色的地區或小圓點，閱讀已找到來源的早期童軍團體；名錄可另行查閱現時組織。', 'Select a coloured area or dot to read about a sourced early Scout group. The directory separately describes present-day organisations.'],
+  spreadCount: ['個已收錄地區有早期團體記錄', 'included locations have a documented early group'],
+  spreadCaveat: ['只是部分研究記錄；年份不保證最早，個別只表示最遲當年已有團體，不一定是成立年；亦不表示活動或會籍連續。', 'A partial research sample: years are not necessarily the earliest or founding dates; some only show a group existed by that year. They do not imply continuous activity or membership.'],
+  nsoIndex: ['成員組織所在地', 'MEMBER LOCATION'],
+  scoutingStart: ['早期當地童軍團／旅（暫定）', 'Early local troop / group (provisional)'],
+  orgFounded: ['現行組織成立', 'Present organisation founded'],
+  wosmDirectoryYear: ['WOSM 名錄會籍年份', 'WOSM directory membership year'],
+  wosmHistoryYear: ['WOSM 名錄會籍歷史', 'WOSM directory membership history'],
+  wosmNewsYear: ['WOSM 新聞會籍年份', 'WOSM news membership year'],
+  wosmUnverifiedYear: ['WOSM 會籍年份（名錄頁未能開啟）', 'WOSM membership year (directory detail unavailable)'],
+  wosmNotStated: ['未列明', 'Not stated'],
+  yearDisputed: ['年份有爭議 ↓', 'Conflicting years ↓'],
+  membershipContextFlag: ['另有說法／會籍背景 ↓', 'Other claims / membership context ↓'],
+  otherMembershipYears: ['其他會籍年份說法（暫定）', 'Other reported membership years (provisional)'],
+  joinedCaveat: ['WOSM 年份可能涉及前身或再認可，不一定是首次加入或持續會籍；其他年份可能屬不同事件或未解的爭議，仍待核實。', 'A WOSM year can refer to a predecessor or re-recognition; it is not necessarily first admission or uninterrupted membership. Other dates can describe different events or unresolved conflicts and still need checking.'],
+  researchLeads: ['其他研究線索', 'Other research leads'],
+  wikiFoundingLead: ['維基百科「組織成立」欄：{value}。未經獨立核實，可能指前身或童軍運動，並非首支旅的證據。', 'Wikipedia “organisation founded” column: {value}. Unverified; it may refer to a predecessor or the movement and is not evidence of a first troop.'],
+  prototypeStartLead: ['舊版起步年份線索：{year}。未確認是當地童軍旅，沒有用來着色。', 'Earlier prototype’s starting-year lead: {year}. It is not established as a local troop date and is not plotted.'],
+  unknown: ['待核實', 'To be verified'],
+  nsoDescription: ['此時間線顯示當地童軍開始的研究年份；加入世界童軍組織的年份另列。', 'The timeline shows a research date for Scouting’s local beginnings. The year of joining World Scouting is shown separately.'],
+  eventIndex: ['世界童軍大露營', 'WORLD SCOUT JAMBOREE'],
+  eventCancelled: ['已取消', 'Cancelled'],
+  cancel1979: ['1979 · 取消', '1979 · cancelled'],
+  eventPlanned: ['計劃中', 'Planned'],
+  eventNumber: ['第 {n} 屆世界童軍大露營', 'World Scout Jamboree {n}'],
+  eventBody: ['世界童軍大露營在這裏舉行，讓來自不同地方的童軍相聚。', 'A World Scout Jamboree was held here, bringing Scouts together from many places.'],
+  eventFutureBody: ['此屆大露營計劃在這裏舉行。', 'This World Scout Jamboree is planned for this location.'],
+  eventCancelledBody: ['原定在伊朗舉行的大露營已取消；1979 年改以世界大露營年及各地活動延續交流。', 'The planned jamboree in Iran was cancelled. World Jamboree Year and local events continued the spirit of international exchange in 1979.'],
+  participants: ['參加者', 'participants'],
+  people: ['人', 'people'],
+  noData: ['沒有統計', 'No data'],
+  approximate: ['約', 'about '],
+  atLeast: ['超過 ', 'over '],
+  dataPoint: ['來源數字', 'source figure'],
+  estimatedReach: ['估算覆蓋人數', 'estimated reach'],
+  chartBefore: ['1907 年以前沒有數據', 'No data before 1907'],
+  chartAfter: ['此年份尚無數據', 'No data for this year'],
+  copied: ['已複製目前畫面的連結', 'Link to this view copied'],
+  copyFailed: ['無法自動複製，請複製瀏覽器網址', 'Could not copy automatically. Please copy the address in your browser.'],
+  loadError: ['未能載入地圖資料。請使用網頁伺服器開啟，檢查連線後重試。', 'Could not load the map data. Open the site with a web server, check your connection and try again.'],
+  retry: ['重新載入', 'Try again'],
+  creditsBack: ['← 返回地圖', '← Back to the atlas'],
+  creditsKicker: ['研究筆記', 'RESEARCH NOTES'],
+  creditsTitle: ['資料來源與致謝', 'Sources & credits'],
+  creditsIntro: ['這是可互動的研究草稿，不是已核實的歷史資料庫。地區年份、總會名稱、行跡、大露營和數字均須逐項查證。', 'This is an interactive research draft, not a verified historical database. Local dates, organisation names, journey stops, jamborees and figures still need individual checking.'],
+  creditsScopeTitle: ['覆蓋範圍', 'Coverage'],
+  creditsScope: ['現況研究名錄有 176 項，當中 171 項的優先會籍年份來自 WOSM 現行名錄或新聞；四項名錄年份及歷史欄空白，蘇丹詳細頁未能開啟。這五項卡片另列 WOSM 舊存檔的年份說法，沒有用它們填補現行名錄欄；哥斯達黎加的舊存檔年份亦有分歧。年份可能指前身或重新加入，並非必然首次入會；衝突和其他說法保留在卡片。SCOUTWORLD 作身份研究線索，個別總會人數暫未整理。地圖只暫定繪出 37 個有早期團體來源的地區，未着色不等於沒有童軍。名錄非即時資料，數目吻合不等於已核實每項；加拿大、聯合會及跨地區組織有特殊情況。中文名稱為暫譯。', 'The present-day research directory has 176 entries, 171 with primary membership years from WOSM’s current directory or news. Four directory year and history fields are blank and Sudan’s detail was unavailable. Their cards separately cite historical WOSM archive claims without filling those current fields; Costa Rica’s archived claims also differ. Years may refer to predecessors or re-admission, not necessarily first joining; conflicts and other claims remain on the cards. SCOUTWORLD provided identity research leads; individual organisation counts have not been compiled. The historical map provisionally plots 37 locations with evidence of early groups; blank does not mean Scouting was absent. The directory is not live: matching the total does not verify every entry. Canada, federations and multi-territory organisations have special cases. Chinese names are provisional.'],
+  creditsMapTitle: ['地圖與呈現方式', 'The map and its interpretation'],
+  creditsMap: ['底圖採用 Natural Earth 1:50m 現代邊界，經簡化作示意，並不代表對邊界或地區地位的立場；大露營和行跡座標亦有待核實。小地區另用圓點。顏色表示暫定的早期團體記錄年代，個別只表示最遲當年已有團體，並非成立年份；顏色不是成員數量，也不表示組織曾否中斷。比例尺只近似適用於目前地圖中央。', 'The base map uses simplified Natural Earth 1:50m modern boundaries for illustration, not to express a position on borders or status. Journey and jamboree coordinates also need checking. Dots make small locations visible. Colour indicates a provisional early-group evidence year; some mean a group existed by that year, not that it was founded then. Colour does not show membership size or interruptions. The scale bar is approximate at the current map centre only.'],
+  creditsStatsTitle: ['人口數字和口徑', 'Membership figures and definitions'],
+  creditsStats: ['圖表以 WOSM 資料為主，不包括世界女童軍協會（WAGGGS）。1907 年的 20 人是白浪島營地人數，早於 WOSM 成立；並非 WOSM 會員普查。早年數字主要計算男童軍，近年亦包括女成員和成年義工。舊來源有時以國家計，近年以成員組織計；不同時期不可直接比較。', 'The chart is based on WOSM figures and excludes the World Association of Girl Guides and Girl Scouts (WAGGGS). The 20 people in 1907 were the Brownsea camp, before WOSM existed—not a WOSM census. Early figures mostly counted boys; recent ones include girls and adult volunteers. Older sources sometimes count countries and recent sources count member organisations: they are not directly comparable.'],
+  creditsStatsMethod: ['圓點表示該年來源所載數字、約數或下限，不一定是年終數。2024 年的 175 個組織來自 8 月 10 日新聞；阿爾巴尼亞其後於同年成為第 176 個成員。缺數據年份留空，不連線、不插值或外推。2025 年約 6,000 萬是 WOSM 估算覆蓋人數，並非登記普查；WOSM 後來報告 2023 年登記普查超過 5,140 萬，當年公開資料則說超過 5,700 萬，兩者口徑仍待釐清。以下連結是研究線索，不代表每項已核實。', 'Dots are figures, approximations or lower bounds reported in that year, not necessarily year-end totals. The 2024 figure of 175 organisations comes from a 10 August release; Albania became the 176th member later that year. Missing years remain blank; no lines, interpolation or extrapolation are used. The approximately 60 million in 2025 is WOSM’s estimated reach, not a registered census. WOSM later reported the 2023 registered census at over 51.4 million, while its 2023 public communications said over 57 million; their relationship needs clarification. Links below are research leads, not a claim that every entry has been verified.'],
+  creditsYear: ['年份', 'Year'],
+  creditsMembers: ['人數', 'People'],
+  creditsOrgs: ['組織／國家', 'Organisations / countries'],
+  creditsSources: ['出處', 'Sources'],
+  creditsDirectoryTitle: ['所有來源', 'Source directory'],
+  creditsDirectoryIntro: ['卡片及統計資料以編號指向以下資料。部分為二手、存檔或只提供線索，須核實內容及連結。', 'Cards and statistics refer to the sources below. Some are secondary, archived or only research leads; their claims and links need checking.'],
+  creditsLoading: ['正在載入來源清單…', 'Loading the source directory…'],
+  creditsLoadError: ['未能載入來源清單。請檢查連線後重新整理；原始資料連結仍可使用。', 'The source directory could not be loaded. Check your connection and reload; the raw data links remain available.'],
+  creditsRawData: ['原始資料：', 'Raw data: '],
+  creditsRightsTitle: ['地圖、程式庫與致謝', 'Map, libraries and acknowledgements'],
+  creditsRights: ['Natural Earth 地圖資料為公有領域。d3-geo、d3-array、internmap、topojson-client 及 world-atlas 的第三方授權和聲明見下方。玩法靈感來自「江山時序」，本站沒有複製其程式或地圖資料。', 'Natural Earth map data is public domain. Third-party licence notices for d3-geo, d3-array, internmap, topojson-client and world-atlas are linked below. The interaction is inspired by 江山時序 (Chronicles of the Realm); its code and map data were not copied.'],
+  creditsLicensePending: ['本專案的程式及原創內容授權尚待擁有者確認；規格提議的 MIT 與 CC BY 4.0 並非已授予的授權。', 'Licences for this project’s code and original content await the owner’s decision. MIT and CC BY 4.0 were proposed in the specification but have not been granted.'],
+  creditsWikipedia: ['成員年份及部分歷史線索改編自維基百科貢獻者的文章；我們分開起步、組織成立和入會欄位，並按 WOSM 等資料修正及標示衝突。改編部分適用 CC BY-SA 4.0；原文章及作者見下列版本歷史。地區名稱部分使用 Unicode CLDR／ICU 的本地化名稱。', 'Membership years and some historical leads are adapted from articles by Wikipedia contributors. We separated local beginnings, organisation founding and accession, and corrected or flagged conflicts using WOSM and other sources. Adapted material is under CC BY-SA 4.0; see the linked article histories for contributors. Some place names use Unicode CLDR / ICU localisations.'],
+  creditsNotices: ['第三方授權聲明', 'Third-party licence notices'],
+  creditsUnofficial: ['本站並非世界童軍組織或任何童軍總會的官方作品。', 'This is an unofficial project, not affiliated with WOSM or any Scout association.'],
+  oceanPacific: ['太平洋', 'PACIFIC OCEAN'],
+  oceanAtlantic: ['大西洋', 'ATLANTIC OCEAN'],
+  oceanIndian: ['印度洋', 'INDIAN OCEAN'],
+};
+
+export function getInitialLanguage(params = new URLSearchParams(window.location.search)) {
+  const requested = params.get('lang');
+  if (requested === 'zh' || requested === 'en') return requested;
+  // The project specification says an absent lang parameter follows the browser.
+  // Stored preference is only a fallback if the browser does not report a language.
+  const browserLanguage = typeof navigator !== 'undefined' ? navigator.language : '';
+  if (typeof browserLanguage === 'string' && browserLanguage.trim()) return browserLanguage.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+  try {
+    const saved = localStorage.getItem('bp-atlas.lang');
+    if (saved === 'zh' || saved === 'en') return saved;
+  } catch { /* Storage can be blocked in private browsing. */ }
+  return 'zh';
+}
+
+export function t(key, lang = document.documentElement.dataset.lang || 'zh', replacements = {}) {
+  const pair = messages[key];
+  let value = pair ? (lang === 'en' ? pair[1] || pair[0] : pair[0]) : key;
+  for (const [name, replacement] of Object.entries(replacements)) value = value.replaceAll(`{${name}}`, String(replacement));
+  return value;
+}
+
+export function localize(value, lang) {
+  if (!value) return '';
+  return value[lang] || value.zh || value.en || '';
+}
+
+export function applyLanguage(lang) {
+  document.documentElement.dataset.lang = lang;
+  document.documentElement.lang = lang === 'en' ? 'en' : 'zh-Hant-HK';
+  document.title = lang === 'en' ? 'B-P Atlas · Baden-Powell’s Journey v1.0 · © SCOUT SYSTEM' : '貝登堡行跡 · B-P Atlas v1.0 · © SCOUT SYSTEM';
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n, lang); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria, lang)); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle, lang); });
+  const toggle = document.querySelector('#language-button');
+  toggle.textContent = lang === 'zh' ? 'EN' : '中文';
+  toggle.setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切換至中文介面');
+  toggle.title = toggle.getAttribute('aria-label');
+  try { localStorage.setItem('bp-atlas.lang', lang); } catch { /* Non-essential preference. */ }
+}

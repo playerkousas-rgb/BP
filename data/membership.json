@@ -1,0 +1,352 @@
+[
+  {
+    "year": 1907,
+    "members": 20,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "wosm-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1922,
+    "members": 1019205,
+    "countries": 31,
+    "precision": "count",
+    "sources": [
+      "wosm-milestones",
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 1931,
+    "members": 2039349,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1939,
+    "members": 3305149,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1950,
+    "members": 5000000,
+    "countries": 50,
+    "precision": "approx",
+    "sources": [
+      "wosm-milestones"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 1952,
+    "members": 5561993,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1955,
+    "members": 6360762,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1957,
+    "members": 7589183,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1960,
+    "members": 8876707,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1962,
+    "members": 9366962,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1964,
+    "members": 10035540,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1966,
+    "members": 10462385,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1968,
+    "members": 11981737,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1969,
+    "members": 12000000,
+    "countries": null,
+    "precision": "approx",
+    "sources": [
+      "wosm-milestones"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1970,
+    "members": 12035452,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1971,
+    "members": null,
+    "countries": 100,
+    "precision": "at-least",
+    "sources": [
+      "wosm-milestones"
+    ],
+    "draft": true,
+    "countriesPrecision": "at-least"
+  },
+  {
+    "year": 1972,
+    "members": 13110259,
+    "countries": null,
+    "precision": "count",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1979,
+    "members": 15000000,
+    "countries": null,
+    "precision": "approx",
+    "sources": [
+      "uk-history"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1985,
+    "members": 16000000,
+    "countries": null,
+    "precision": "approx",
+    "sources": [
+      "encyclopedia-1985"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 1987,
+    "members": null,
+    "countries": 120,
+    "precision": "count",
+    "sources": [
+      "wosm-milestones"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 1990,
+    "members": null,
+    "countries": 131,
+    "precision": "count",
+    "sources": [
+      "wosm-milestones"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 1996,
+    "members": null,
+    "countries": 140,
+    "precision": "count",
+    "sources": [
+      "wosm-milestones"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 1999,
+    "members": null,
+    "countries": 152,
+    "precision": "count",
+    "sources": [
+      "wosm-milestones"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 2002,
+    "members": 28854678,
+    "countries": 154,
+    "precision": "count",
+    "sources": [
+      "wosm-2002",
+      "wosm-milestones"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 2007,
+    "members": 28000000,
+    "countries": null,
+    "precision": "approx",
+    "sources": [
+      "wosm-2007"
+    ],
+    "draft": true,
+    "countriesPrecision": null
+  },
+  {
+    "year": 2013,
+    "members": 40000000,
+    "countries": 162,
+    "precision": "at-least",
+    "sources": [
+      "wosm-2013"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 2018,
+    "members": 50000000,
+    "countries": 169,
+    "precision": "at-least",
+    "sources": [
+      "wosm-2018"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 2019,
+    "members": 54000000,
+    "countries": 171,
+    "precision": "at-least",
+    "sources": [
+      "wosm-2019"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 2023,
+    "members": 57000000,
+    "countries": 174,
+    "precision": "at-least",
+    "sources": [
+      "wosm-2023"
+    ],
+    "draft": true,
+    "countriesPrecision": "count"
+  },
+  {
+    "year": 2024,
+    "members": 57000000,
+    "countries": 175,
+    "precision": "at-least",
+    "sources": [
+      "wosm-2024",
+      "wosm-albania-176"
+    ],
+    "draft": true,
+    "countriesPrecision": "count",
+    "organisationNote": {
+      "zh": "8 月 10 日報道；同年其後增至 176。",
+      "en": "10 August report; later 176 that year."
+    }
+  },
+  {
+    "year": 2025,
+    "members": 60000000,
+    "countries": 176,
+    "precision": "approx",
+    "sources": [
+      "wosm-2025",
+      "wosm-2025-report"
+    ],
+    "draft": true,
+    "kind": "estimated-reach",
+    "countriesPrecision": "count"
+  }
+]

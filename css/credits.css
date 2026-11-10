@@ -1,0 +1,33 @@
+/* B-P Atlas v1.0 · © SCOUT SYSTEM */
+:root{color-scheme:light;--ink:#344b40;--forest:#31594a;--paper:#f6f5ed;--sheet:#fffdf6;--muted:#63766b;--line:#dae2d7}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.75 system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+a{color:var(--forest);text-underline-offset:3px;overflow-wrap:anywhere}
+a:hover{color:#aa684b}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #b97552;outline-offset:3px}
+.notes-header{background:var(--sheet);border-bottom:1px solid var(--line)}
+.notes-header-inner{max-width:1040px;min-height:72px;margin:auto;padding:10px 24px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);line-height:1.2}
+.brand svg{width:36px;height:36px;fill:none;stroke:var(--forest);stroke-width:1.2}
+.brand strong,.brand small{display:block}
+.brand strong{font-size:16px;letter-spacing:.08em}.brand small{font-size:9px;letter-spacing:.2em;color:var(--muted);margin-top:4px}
+#language-button{border:1px solid var(--line);border-radius:3px;background:transparent;padding:6px 12px;color:var(--forest);font-size:13px;font-weight:700}
+.notes-main{max-width:900px;margin:0 auto;padding:40px 24px 60px}
+.back-link{display:inline-block;font-size:13px;margin-bottom:34px}.overline{color:#708c7b;letter-spacing:.12em;font-size:11px;font-weight:700;margin:0 0 8px}
+h1,h2{font-family:Georgia,"Noto Serif TC",serif;line-height:1.35;color:var(--ink)}
+h1{font-size:clamp(28px,5vw,40px);margin:0 0 14px}h2{font-size:22px;margin:0 0 14px}
+.lead{font-size:16px;max-width:740px;margin:0;color:var(--muted)}
+section{background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:25px 28px;margin-top:18px;scroll-margin-top:18px}
+section:first-of-type{margin-top:38px}section p{color:var(--muted);margin:10px 0}section p:last-child{margin-bottom:0}
+.table-wrap{overflow-x:auto;margin-top:20px;border:1px solid var(--line);border-radius:3px}
+table{width:100%;border-collapse:collapse;text-align:left;min-width:590px;font-size:13px;line-height:1.5}
+th,td{border-bottom:1px solid #e7ece3;padding:10px 12px;vertical-align:top}th{background:#f2f5eb;color:#4e6658}tbody tr:last-child td{border-bottom:0}td:first-child{font-weight:700;color:var(--forest);white-space:nowrap}td:nth-child(2),td:nth-child(3){white-space:nowrap}
+.source-list{list-style:none;margin:18px 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 22px;font-size:13px}.source-list li{border-left:2px solid #d1dfd0;padding-left:10px}.source-id{display:block;font-size:10px;color:#788d7e;letter-spacing:.03em}.source-links a+a::before{content:' · ';color:#91a294}.raw-links,.rights-links{font-size:13px}
+.notes-footer{max-width:900px;margin:0 auto;padding:18px 24px 35px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;color:#6f8074;font-size:11px}
+@media(max-width:600px){.notes-header-inner{min-height:62px;padding:10px 16px}.notes-main{padding:28px 14px 45px}.back-link{margin-bottom:24px}section{padding:20px 17px}.source-list{grid-template-columns:1fr}.notes-footer{display:block;padding:16px}.notes-footer span{display:block;margin-bottom:6px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Sufficient contrast for research notes and source identifiers. */
+:root{--muted:#53695a}
+.overline,.source-id,.notes-footer{color:#53695a}

@@ -1,0 +1,69 @@
+<!doctype html>
+<!-- B-P Atlas v1.0 · © SCOUT SYSTEM; companion data and credits page. -->
+<html lang="zh-Hant-HK" data-lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#cfe0d5">
+  <meta name="description" content="貝登堡行跡研究草稿的資料來源、統計口徑和致謝。">
+  <meta name="copyright" content="© SCOUT SYSTEM">
+  <meta name="app-version" content="v1.0">
+  <title>資料來源與致謝 · B-P Atlas v1.0 · © SCOUT SYSTEM</title>
+  <link rel="icon" href="icons/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="css/credits.css">
+  <script type="module" src="js/credits.js"></script>
+</head>
+<body>
+  <header class="notes-header">
+    <div class="notes-header-inner">
+      <a class="brand" href="index.html" aria-label="B-P Atlas">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5"/><circle cx="16" cy="16" r="8.7"/><path d="m19.7 10.1-2 7.6-6.2 4.2 2-7.6zM16 1v3M16 28v3M1 16h3M28 16h3"/></svg>
+        <span><strong data-i18n="brandZh">貝登堡行跡</strong><small>B-P ATLAS</small></span>
+      </a>
+      <button type="button" id="language-button" data-lang-toggle aria-label="Switch to English" title="Switch to English">EN</button>
+    </div>
+  </header>
+  <main class="notes-main">
+    <a id="back-link" class="back-link" href="index.html" data-i18n="creditsBack">← 返回地圖</a>
+    <p class="overline" data-i18n="creditsKicker">研究筆記</p>
+    <h1 data-i18n="creditsTitle">資料來源與致謝</h1>
+    <p class="lead" data-i18n="creditsIntro">這是可互動的研究草稿，不是已核實的歷史資料庫。</p>
+    <section>
+      <h2 data-i18n="creditsScopeTitle">覆蓋範圍</h2>
+      <p data-i18n="creditsScope"></p>
+    </section>
+    <section>
+      <h2 data-i18n="creditsMapTitle">地圖與呈現方式</h2>
+      <p data-i18n="creditsMap"></p>
+    </section>
+    <section id="membership-figures">
+      <h2 data-i18n="creditsStatsTitle">人口數字和口徑</h2>
+      <p data-i18n="creditsStats"></p>
+      <p data-i18n="creditsStatsMethod"></p>
+      <div class="table-wrap" role="region" tabindex="0" aria-label="人口數字來源" data-i18n-aria="creditsStatsTitle">
+        <table>
+          <thead><tr><th scope="col" data-i18n="creditsYear">年份</th><th scope="col" data-i18n="creditsMembers">人數</th><th scope="col" data-i18n="creditsOrgs">組織／國家</th><th scope="col" data-i18n="creditsSources">出處</th></tr></thead>
+          <tbody id="membership-sources"></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="source-directory">
+      <h2 data-i18n="creditsDirectoryTitle">所有來源</h2>
+      <p data-i18n="creditsDirectoryIntro"></p>
+      <p id="sources-status" role="status" data-i18n="creditsLoading">正在載入來源清單…</p>
+      <ul id="source-list" class="source-list"></ul>
+      <p class="raw-links"><span data-i18n="creditsRawData">原始資料：</span><a href="data/nso.json">nso.json</a> · <a href="data/membership.json">membership.json</a> · <a href="data/sources.json">sources.json</a></p>
+      <noscript>JavaScript is required for the directory. Please use the raw JSON links above. / 來源清單需要 JavaScript；請使用上方原始資料連結。</noscript>
+    </section>
+    <section id="rights">
+      <h2 data-i18n="creditsRightsTitle">地圖、程式庫與致謝</h2>
+      <p data-i18n="creditsRights"></p>
+      <p data-i18n="creditsLicensePending"></p>
+      <p data-i18n="creditsWikipedia"></p>
+      <p class="rights-links"><a href="https://en.wikipedia.org/w/index.php?title=List_of_World_Organization_of_the_Scout_Movement_members&amp;action=history" target="_blank" rel="noopener noreferrer">Wikipedia: WOSM members · history</a> · <a href="https://en.wikipedia.org/w/index.php?title=List_of_the_oldest_Scout_groups&amp;action=history" target="_blank" rel="noopener noreferrer">Oldest Scout groups · history</a> · <a href="https://en.wikipedia.org/w/index.php?title=History_of_scouting_in_the_Philippines&amp;action=history" target="_blank" rel="noopener noreferrer">Philippines · history</a> · <a href="https://en.wikipedia.org/w/index.php?title=Scouting_and_Guiding_in_Belgium&amp;action=history" target="_blank" rel="noopener noreferrer">Belgium · history</a> · <a href="https://it.wikipedia.org/w/index.php?title=Scautismo_e_guidismo_in_Italia&amp;action=history" target="_blank" rel="noopener noreferrer">Italy · history</a> · <a href="https://en.wikipedia.org/w/index.php?title=Scouting_and_Guiding_in_Armenia&amp;action=history" target="_blank" rel="noopener noreferrer">Armenian Scouting · history</a> · <a href="https://en.wikipedia.org/w/index.php?title=Scout_Association_of_Macau&amp;action=history" target="_blank" rel="noopener noreferrer">Macau · history</a> · <a href="https://en.wikipedia.org/w/index.php?title=World_Scout_Jamboree&amp;action=history" target="_blank" rel="noopener noreferrer">World Scout Jamboree · history</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> · <a href="https://www.unicode.org/license.txt" target="_blank" rel="noopener noreferrer">Unicode licence</a></p>
+      <p class="rights-links"><a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener noreferrer">Natural Earth</a> · <a href="vendor/LICENSES.txt" data-i18n="creditsNotices">第三方授權聲明</a> · <a href="https://github.com/DeanChensj/jiangshan-map" target="_blank" rel="noopener noreferrer">江山時序</a></p>
+    </section>
+  </main>
+  <footer class="notes-footer"><span>© SCOUT SYSTEM · COPYRIGHT SCOUT SYSTEM · B-P Atlas v1.0</span><span data-i18n="creditsUnofficial">本站並非世界童軍組織或任何童軍總會的官方作品。</span></footer>
+</body>
+</html>

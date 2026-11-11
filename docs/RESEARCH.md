@@ -1,18 +1,21 @@
 # 設計參考 / Comparative research
 
-B-P Atlas v1.0 · © SCOUT SYSTEM · Reviewed 2026-11-10
+B-P Atlas v1.1 · © SCOUT SYSTEM · Reviewed 2026-11-10
 
 只研究公開介紹和互動概念，沒有複製以下網站的程式、地圖資料或視覺素材。以下是適合本規格的取捨，不代表功能或資料已得到歷史驗證。
 
 | 參考 | 觀察 | 本專案決定 |
 |---|---|---|
-| [江山時序 / Chronicles of the Realm](https://github.com/DeanChensj/jiangshan-map) | 以時間滑桿配合地圖、地點和行跡；提供雙語與深連結。 | 借鑑「時間＋地圖＋故事」的探索方式並明確致謝；本版不使用其歷史地圖或程式，底圖只顯示現代邊界。 |
+| [江山時序 / Chronicles of the Realm](https://github.com/DeanChensj/jiangshan-map) | 以時間滑桿配合地圖、地點和人物行跡；可逐站、播放、用鍵盤及深連結探索。 | 借鑑「時間＋地圖＋故事」與獨立主題時序，保留逐站、播放、雙語和網址；本版不複製其 GPL 程式或地圖資料，底圖只顯示現代邊界。 |
 | [Pastlas](https://pastlas.com/) | 讓地圖和時間同步，資料不足時說明缺口，並將敘述與證據相連。 | 說明卡附來源；圖表只顯示有來源的點，缺資料年份留空，不連線或插值；部分地區未收錄不等於沒有童軍。歷史國界和因果分析不在此版範圍。 |
-| [Age of Events](https://www.ageofevents.com/) | 以時間導覽、圖層與策展故事讓使用者從大地圖進入事件。 | 用「逐站」行跡及可切換大露營圖層；軍旅敘述按 WOSM 的公開介紹，不加入額外戰役或論述。 |
+| [Age of Events](https://www.ageofevents.com/) | 以時間導覽、圖層與策展故事讓使用者從大地圖進入事件。 | 用「逐站」行跡及獨立大露營時序；軍旅敘述按 WOSM 的公開介紹，不加入額外戰役或論述。 |
+| [Flourish bar chart race](https://flourish.studio/visualisations/bar-chart-race/) | 用時間動畫瀏覽多組連續數值和名次，適合有足夠時序資料的比較。 | 借鑑大數字、播放、選年和可見的變化；本資料只有疏落的全球來源點，**不製作國別排名、插值或偽造連續數值**。 |
+| [Our World in Data: population growth](https://ourworldindata.org/population-growth) / [Grapher](https://ourworldindata.org/grapher/population-unwpp) | 人口視覺化結合時間選擇、來源和方法／定義。 | 人口獨立頁提供散點、精度、逐年來源及統計口徑；不引入其人口資料。 |
 | [OpenHistory](https://github.com/kdhillon/openhistory) | 說明地理資料、事件來源與歷史邊界資料來源，將不同資料集分開。 | 分離現代底圖、事件、地區和出處 JSON；本版以靜態檔案運作，不引入其伺服器或資料管線。 |
 
 ### 資料研究備註
 
+- 成員版圖累積目前名錄日期而不是重建歷史會籍；歷史來源的組織／國家數單獨列出，不把兩者相加或直接比較。早期團體圖仍是獨立資料集。
 - 圖表早期計數、現代普查、估算覆蓋和歷史「國家數」口徑不同，見 [CREDITS](../CREDITS.md#membership-figures)。只畫來源所載點，缺數據年份留空，不連線或推算。
 - 香港的 1910 非正式訓練、1913 正式旅與來源提及的其他年份不可混為一談；澳門的 1911 草稿、1983 總會成立、2017 加入 WOSM 是不同事件。
 - 英國 1907 是實驗營；擴散圖暫用 1908 早期常設旅，哪一支最早仍有爭議。巴基斯坦的未知年份不從英屬印度整體日期推算。

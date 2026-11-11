@@ -1,4 +1,4 @@
-// B-P Atlas v1.0 · © SCOUT SYSTEM
+// B-P Atlas v1.1 · © SCOUT SYSTEM
 export function stopAtYear(stops, year) {
   let result = null;
   for (const stop of stops) if (stop.year <= year) result = stop; else break;

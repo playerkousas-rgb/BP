@@ -1,4 +1,4 @@
-// B-P Atlas v1.0 · © SCOUT SYSTEM
+// B-P Atlas v1.1 · © SCOUT SYSTEM
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, cpSync, copyFileSync, rmSync } from 'node:fs';
@@ -6,13 +6,14 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { parseView, readState, stateToSearch } from '../js/state.js';
+import { defaultYearForMode, parseView, readState, selectionAtYear, stateToSearch } from '../js/state.js';
+import { adjacentYear, locationRecordYear, locationsRecordedBy, recordedByYear, trackYears } from '../js/chronicles.js';
 import { stopAtYear, adjacentStop } from '../js/journey.js';
 import { membershipAtYear, organizationsAtYear } from '../js/chart.js';
 import { greatCircleKm } from '../js/map.js';
 import { getInitialLanguage } from '../js/i18n.js';
 const read = name => JSON.parse(readFileSync(new URL(`../data/${name}.json`, import.meta.url), 'utf8'));
-const data = { journey: read('journey'), nso: read('nso'), jamborees: read('jamborees') };
+const data = { journey: read('journey'), nso: read('nso'), jamborees: read('jamborees'), membership: read('membership') };
 
 test('journey lookup respects years and stable order for same-year stops', () => {
   assert.equal(stopAtYear(data.journey, 1907).id, 'brownsea');
@@ -25,15 +26,57 @@ test('invalid camera input is rejected and valid inputs are clamped', () => {
   assert.deepEqual(parseView('2,-10000,20'), { k: 2, x: -1000, y: 0 });
   assert.deepEqual(parseView('1,0,0,9'), { k: 1, x: 0, y: 0 });
 });
-test('deep link restores selected place, independent layers and camera', () => {
-  const params = new URLSearchParams('lang=en&year=2020&mode=spread&nso=HKG&view=2,-250,-200&orgs=1&jamborees=0&panel=chart');
+test('legacy spread, story and camera links round-trip; old chart links migrate explicitly', () => {
+  const params = new URLSearchParams('lang=en&year=2020&mode=spread&nso=HKG&view=2,-250,-200&orgs=1&jamborees=0&panel=story');
   const state = readState(params, data, 'en', 2026);
   assert.equal(state.year, 2020); assert.equal(state.mode, 'spread');
   assert.deepEqual(state.selected, { type: 'nso', id: 'HKG' });
-  assert.deepEqual(state.view, { k: 2, x: -250, y: -200 });
-  assert.equal(state.showJamborees, false); assert.equal(state.showOrganizations, true); assert.equal(state.panel, 'chart');
-  const restored = readState(new URLSearchParams(stateToSearch(state)), data, 'en', 2026);
-  assert.deepEqual(restored, state);
+  assert.deepEqual(state.view, { k: 2, x: -250, y: -200 }); assert.equal(state.panel, 'story');
+  const migrated = new URLSearchParams(stateToSearch(state));
+  assert.equal(migrated.has('orgs'), false); assert.equal(migrated.has('jamborees'), false);
+  assert.deepEqual(readState(migrated, data, 'en', 2026), state);
+  const oldChart = readState(new URLSearchParams('lang=en&year=2020&mode=spread&nso=HKG&view=2,-250,-200&orgs=1&panel=chart'), data, 'en', 2026);
+  assert.equal(oldChart.mode, 'population'); assert.equal(oldChart.year, 2020); assert.equal(oldChart.selected, null);
+  assert.deepEqual(readState(new URLSearchParams(stateToSearch(oldChart)), data, 'en', 2026), oldChart);
+});
+test('independent chronicles have meaningful defaults and round-trip', () => {
+  assert.equal(defaultYearForMode('journey', data, 2026), 1907);
+  assert.equal(defaultYearForMode('members', data, 2026), 1922);
+  assert.equal(defaultYearForMode('jamborees', data, 2026), 1920);
+  assert.equal(defaultYearForMode('population', data, 2026), 2025);
+  for (const query of ['mode=members&year=2004&nso=NAM&view=2,-250,-200', 'mode=jamborees&year=1979&jamboree=jamboree-1979-cancelled', 'mode=population&year=2025']) {
+    const state = readState(new URLSearchParams(query), data, 'en', 2026);
+    assert.deepEqual(readState(new URLSearchParams(stateToSearch(state)), data, 'en', 2026), state, query);
+  }
+  assert.deepEqual(selectionAtYear(data, 'jamborees', 1979, 2026), { type: 'jamboree', id: 'jamboree-1979-cancelled' });
+  assert.equal(selectionAtYear(data, 'jamborees', 1919, 2026), null);
+});
+test('member chronology only counts sourced WOSM dates for current entries, not early groups', () => {
+  for (const [year, count] of [[1907, 0], [1922, 19], [1950, 40], [1980, 105], [2000, 139], [2024, 171]]) {
+    assert.equal(locationsRecordedBy(data.nso, year).length, count, String(year));
+  }
+  const pakistan = data.nso.find(item => item.id === 'PAK');
+  assert.equal(locationRecordYear(pakistan, 'members'), 1948); assert.equal(locationRecordYear(pakistan, 'spread'), null);
+  assert.equal(recordedByYear(pakistan, 1947), false); assert.equal(recordedByYear(pakistan, 1948), true);
+  const costaRica = data.nso.find(item => item.id === 'CRI');
+  assert.equal(locationRecordYear(costaRica, 'members'), null);
+  assert.equal(recordedByYear(costaRica, 2026), false, 'Historical alternatives must not fill a blank current date');
+  assert.equal(data.nso.filter(item => locationRecordYear(item, 'members') !== null).length, 171);
+  assert.equal(data.nso.filter(item => locationRecordYear(item, 'spread') !== null).length, 37);
+  assert.notEqual(locationsRecordedBy(data.nso, 1922).length, organizationsAtYear(data.membership, 1922).value, 'A directory accumulation is not the historical source total');
+});
+test('record-year stepping is ordered, deduplicated and does not fabricate missing statistics', () => {
+  const memberYears = trackYears(data, 'members', 2026), populationYears = trackYears(data, 'population', 2026), events = trackYears(data, 'jamborees', 2026);
+  assert.equal(memberYears[0], 1922); assert.equal(memberYears.at(-1), 2025);
+  assert.ok(memberYears.includes(2018) && memberYears.includes(2025), 'Reported totals remain reachable even without a directory date in that year');
+  assert.equal(new Set(memberYears).size, memberYears.length);
+  assert.equal(populationYears[0], 1907); assert.equal(populationYears.at(-1), 2025);
+  assert.ok(!populationYears.includes(1971), 'An organisation-only row cannot become a population point');
+  assert.ok(events.includes(1979)); assert.ok(!events.includes(2027));
+  assert.equal(adjacentYear(populationYears, 1907, 1), 1922); assert.equal(adjacentYear(populationYears, 1923, -1), 1922);
+  assert.equal(adjacentYear(memberYears, 2017, 1), 2018);
+  assert.equal(adjacentYear(memberYears, 2024, 1), 2025);
+  assert.equal(adjacentYear(memberYears, 2026, 1), null); assert.equal(adjacentYear(memberYears, 1857, -1), null);
 });
 test('deep links cannot select future events beyond the current year', () => {
   const state = readState(new URLSearchParams('year=9999&jamboree=jamboree-26'), data, 'zh', 2026);
@@ -142,11 +185,15 @@ test('WOSM audit matches every location, source, basis and selected unresolved c
   assert.equal(data.nso.filter(item => item.wosmMembership.year != null).length, 171);
 });
 
-test('URL state cannot select an undated location and enables a selected event layer', () => {
+test('legacy selections migrate to their own chronicle without inventing dates', () => {
   const undated = readState(new URLSearchParams('year=2026&mode=spread&nso=PAK'), data, 'en', 2026);
   assert.equal(undated.selected, null);
   const cancelled = readState(new URLSearchParams('year=1920&jamboree=jamboree-1979-cancelled&jamborees=0'), data, 'en', 2026);
-  assert.equal(cancelled.year, 1979); assert.equal(cancelled.showJamborees, true);
+  assert.equal(cancelled.year, 1979); assert.equal(cancelled.mode, 'jamborees');
+  assert.deepEqual(cancelled.selected, { type: 'jamboree', id: 'jamboree-1979-cancelled' });
+  const wosm = readState(new URLSearchParams('year=1907&mode=members&nso=PAK'), data, 'en', 2026);
+  assert.equal(wosm.year, 1948); assert.deepEqual(wosm.selected, { type: 'nso', id: 'PAK' });
+  assert.equal(readState(new URLSearchParams('year=2026&mode=members&nso=CRI'), data, 'en', 2026).selected, null);
   assert.deepEqual(readState(new URLSearchParams(stateToSearch(cancelled)), data, 'en', 2026), cancelled);
 });
 test('directory references round-trip without changing the timeline or becoming historical selections', () => {
@@ -216,6 +263,22 @@ test('validation permits unknown accession dates but requires evidence for claim
   pakistan.scoutingStartSources = ['wiki-members'];
   result = validate();
   assert.notEqual(result.status, 0); assert.match(result.stderr, /undated record must not pretend to have a plotted start/);
+});
+test('static guard rejects stale runtime versions and missing translation keys', t => {
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const temp = mkdtempSync(path.join(tmpdir(), 'bp-guard-'));
+  t.after(() => rmSync(temp, { recursive: true, force: true }));
+  const excluded = new Set(['.git', 'node_modules', '.screenshots', '.vercel', 'coverage', 'dist', 'test-results', 'playwright-report']);
+  cpSync(root, temp, { recursive: true, filter: source => !excluded.has(path.basename(source)) });
+  const guard = () => spawnSync(process.execPath, [path.join(temp, 'scripts/guard.mjs')], { encoding: 'utf8' });
+  assert.equal(guard().status, 0, 'The unmodified temporary snapshot should pass');
+  const dictionary = path.join(temp, 'js/i18n.js'), original = readFileSync(dictionary, 'utf8');
+  writeFileSync(dictionary, original.replace('  journeyMode:', '  missingJourneyMode:'));
+  const missing = guard(); assert.notEqual(missing.status, 0); assert.match(missing.stderr, /missing translation key journeyMode/);
+  writeFileSync(dictionary, original);
+  const chart = path.join(temp, 'js/chart.js');
+  writeFileSync(chart, `${readFileSync(chart, 'utf8')}\n// v1.0 stale version test\n`);
+  const stale = guard(); assert.notEqual(stale.status, 0); assert.match(stale.stderr, /stale or inconsistent version v1\.0/);
 });
 test('a scale sample measures a short geodesic, including across the date line', () => {
   assert.equal(greatCircleKm([0, 0], [0, 0]), 0);

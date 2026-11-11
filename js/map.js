@@ -1,7 +1,8 @@
-// B-P Atlas v1.0 · © SCOUT SYSTEM
+// B-P Atlas v1.1 · © SCOUT SYSTEM
 import { feature, geoEqualEarth, geoGraticule, geoInterpolate, geoPath } from '../vendor/geography.min.js';
 import { localize, t } from './i18n.js';
 import { clamp } from './state.js';
+import { locationRecordYear, recordedByYear } from './chronicles.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const el = (name, attrs = {}) => { const node = document.createElementNS(NS, name); for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value)); return node; };
@@ -15,6 +16,13 @@ function spreadColour(year) {
   if (year <= 1919) return '#a2b99d';
   if (year <= 1949) return '#bfd0b5';
   return '#d5dec5';
+}
+function membershipColour(year) {
+  if (year <= 1939) return '#698c70';
+  if (year <= 1969) return '#86a788';
+  if (year <= 1989) return '#a6bfa0';
+  if (year <= 2009) return '#bfd0b4';
+  return '#d3dfc8';
 }
 // A short geodesic near the view's centre. Equal Earth has no single global scale.
 export function greatCircleKm([lon1, lat1], [lon2, lat2]) {
@@ -39,7 +47,13 @@ export function createMap(world, data, initialView, callbacks) {
   for (const item of features) {
     const country = el('path', { d: path(item) || '', class: 'map-country' });
     const title = el('title'); title.textContent = item.properties?.name || ''; country.append(title); land.append(country);
-    if (item.id != null) countryPaths.set(String(item.id).padStart(3, '0'), country);
+    if (item.id != null) {
+      const id = String(item.id).padStart(3, '0');
+      // Natural Earth can split one ISO area across separate features (for
+      // example Australia and Ashmore/Cartier). Retain all of them.
+      if (!countryPaths.has(id)) countryPaths.set(id, []);
+      countryPaths.get(id).push(country);
+    }
   }
   const nsoByMap = new Map(data.nso.filter(n => n.mapId).map(n => [n.mapId, n]));
   let view = withinView(initialView), state = null, suppressClickUntil = 0;
@@ -132,8 +146,9 @@ export function createMap(world, data, initialView, callbacks) {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); callbacks.onSelect(type, id); }
     });
   }
-  for (const [id, country] of countryPaths) {
-    const nso = nsoByMap.get(id); if (nso) activate(country, 'nso', nso.id);
+  for (const [id, parts] of countryPaths) {
+    const nso = nsoByMap.get(id);
+    if (nso) for (const country of parts) { country.dataset.nsoId = nso.id; activate(country, 'nso', nso.id); }
   }
   function addOceanLabel(key, coords, lang) {
     const p = projection(coords); if (!p) return;
@@ -146,8 +161,19 @@ export function createMap(world, data, initialView, callbacks) {
     const marker = el('g', { class: `map-marker ${type === 'nso' ? 'nso-marker' : type === 'jamboree' ? 'jamboree-marker' : 'stop-marker'}${selected ? ' selected' : ''}${item.cancelled ? ' cancelled' : ''}`, role: 'button', tabindex: '0' });
     marker.dataset.x = point[0]; marker.dataset.y = point[1]; marker.dataset.dx = dx; marker.dataset.dy = dy;
     marker.dataset.type = type; marker.dataset.id = item.id;
-    const label = type === 'stop' ? `${item.year} · ${localize(item.place, lang)} · ${localize(item.title, lang)}` : type === 'nso' ? localize(item.name, lang) : `${item.year} · ${localize(item.place, lang)} · ${item.cancelled ? t('eventCancelled', lang) : t('eventNumber', lang, { n: item.n })}`;
-    marker.setAttribute('aria-label', label);
+    const nsoYear = type === 'nso' ? locationRecordYear(item, state.mode) : null;
+    const dispute = type === 'nso' && state.mode === 'members' && item.wosmMembership.dispute === 'year';
+    const label = type === 'stop' ? `${item.year} · ${localize(item.place, lang)} · ${localize(item.title, lang)}`
+      : type === 'nso' ? `${localize(item.name, lang)} · ${nsoYear}${dispute ? ` · ${t('directoryYearDisputed', lang)}` : ''}`
+      : `${item.year} · ${localize(item.place, lang)} · ${item.cancelled ? t('eventCancelled', lang) : t('eventNumber', lang, { n: item.n })}`;
+    marker.classList.toggle('is-disputed', Boolean(dispute));
+    if (type === 'nso') {
+      // Small locations must follow the same date encoding as the polygons;
+      // otherwise Hong Kong or Macau could appear older than they are.
+      marker.style.setProperty('--nso-record-fill', state.mode === 'members' ? membershipColour(nsoYear) : spreadColour(nsoYear));
+      marker.classList.toggle('is-new-record', state.mode === 'members' && nsoYear === state.year);
+    }
+    marker.setAttribute('aria-label', label); marker.setAttribute('aria-pressed', String(Boolean(selected)));
     const title = el('title'); title.textContent = label; marker.append(title);
     if (dx || dy) marker.append(el('line', { x1: -dx, y1: -dy, x2: 0, y2: 0, class: 'marker-leader' }));
     if (selected) marker.append(el('circle', { r: 15, class: 'marker-halo' }));
@@ -176,16 +202,35 @@ export function createMap(world, data, initialView, callbacks) {
     const focusedKey = focused && svg.contains(focused) ? [focused.dataset.type, focused.dataset.id] : null;
     oceans.replaceChildren();
     addOceanLabel('oceanPacific', [-145, 7], lang); addOceanLabel('oceanAtlantic', [-32, 7], lang); addOceanLabel('oceanIndian', [78, -31], lang);
-    for (const [id, country] of countryPaths) {
-      const nso = nsoByMap.get(id), available = mode === 'spread' && nso && nso.scoutingStart && nso.scoutingStart <= year;
-      country.style.fill = available ? spreadColour(nso.scoutingStart) : '';
-      country.classList.toggle('is-selectable', Boolean(available));
-      country.classList.toggle('is-selected', Boolean(available && selected?.type === 'nso' && selected.id === nso.id));
-      if (available) {
-        country.setAttribute('role', 'button'); country.setAttribute('tabindex', '0'); country.setAttribute('aria-label', `${localize(nso.name, lang)} · ${nso.scoutingStart}`);
-      } else { country.removeAttribute('role'); country.removeAttribute('tabindex'); country.removeAttribute('aria-label'); }
-      // Clicks on a country that is not active must not open a future or hidden record.
-      country.style.pointerEvents = available ? 'auto' : 'none';
+    for (const [id, parts] of countryPaths) {
+      const nso = nsoByMap.get(id);
+      const available = Boolean(nso && recordedByYear(nso, year, mode));
+      const recordYear = available ? locationRecordYear(nso, mode) : null;
+      const disputed = available && mode === 'members' && nso.wosmMembership.dispute === 'year';
+      parts.forEach((country, index) => {
+        country.style.fill = available ? (mode === 'members' ? membershipColour(recordYear) : spreadColour(recordYear)) : '';
+        country.classList.toggle('is-selectable', available);
+        country.classList.toggle('is-selected', Boolean(available && selected?.type === 'nso' && selected.id === nso.id));
+        country.classList.toggle('is-disputed', Boolean(disputed));
+        country.classList.toggle('is-new-record', Boolean(available && recordYear === year));
+        if (available) {
+          const label = `${localize(nso.name, lang)} · ${recordYear}${disputed ? ` · ${t('directoryYearDisputed', lang)}` : ''}`;
+          // Extra pieces remain clickable, but only the first is a keyboard
+          // target to avoid duplicate controls for the same organisation.
+          if (index === 0) {
+            country.setAttribute('role', 'button'); country.setAttribute('tabindex', '0'); country.setAttribute('aria-label', label);
+            country.setAttribute('aria-pressed', String(selected?.type === 'nso' && selected.id === nso.id));
+          } else {
+            country.removeAttribute('role'); country.removeAttribute('tabindex'); country.removeAttribute('aria-label'); country.removeAttribute('aria-pressed');
+          }
+          country.querySelector('title').textContent = label;
+        } else {
+          country.removeAttribute('role'); country.removeAttribute('tabindex'); country.removeAttribute('aria-label'); country.removeAttribute('aria-pressed');
+          if (nso) country.querySelector('title').textContent = localize(nso.name, lang);
+        }
+        // No primary date (or a later date) is not a historical map selection.
+        country.style.pointerEvents = available ? 'auto' : 'none';
+      });
     }
     routes.replaceChildren(); markers.replaceChildren();
     const visibleMarkers = [];
@@ -199,16 +244,26 @@ export function createMap(world, data, initialView, callbacks) {
         routes.append(el('path', { d: path({ type: 'LineString', coordinates }) || '', class: `map-route${selected?.type === 'stop' && selected.id === b.id ? ' current' : ''}` }));
       }
       stops.forEach(stop => visibleMarkers.push({ item: stop, type: 'stop', index: data.journey.indexOf(stop), selected: selected?.type === 'stop' && selected.id === stop.id }));
-    } else {
-      data.nso.filter(nso => nso.small && nso.scoutingStart && nso.scoutingStart <= year).forEach(nso => {
+    } else if (mode === 'members' || mode === 'spread') {
+      data.nso.filter(nso => nso.small && nso.marker && recordedByYear(nso, year, mode)).forEach(nso => {
         visibleMarkers.push({ item: nso, type: 'nso', index: 0, selected: selected?.type === 'nso' && selected.id === nso.id });
       });
       // Selected larger areas also get a labelled point so the selection is visible.
-      const selectedNso = data.nso.find(n => selected?.type === 'nso' && selected.id === n.id && !n.small && n.scoutingStart <= year);
+      const selectedNso = data.nso.find(n => selected?.type === 'nso' && selected.id === n.id && !n.small && n.marker && recordedByYear(n, year, mode));
       if (selectedNso) visibleMarkers.push({ item: selectedNso, type: 'nso', index: 0, selected: true });
-    }
-    if (state.showJamborees) for (const event of data.jamborees.filter(item => item.year <= year)) {
-      visibleMarkers.push({ item: event, type: 'jamboree', index: 0, selected: selected?.type === 'jamboree' && selected.id === event.id });
+    } else if (mode === 'jamborees') {
+      const events = data.jamborees.filter(item => item.year <= year);
+      // The line is an event sequence, not a route travelled; cancelled events
+      // remain marked but are not included among held sites.
+      const held = events.filter(item => !item.cancelled);
+      for (let i = 1; i < held.length; i++) {
+        const a = held[i - 1], b = held[i];
+        if (a.lon === b.lon && a.lat === b.lat) continue;
+        const interpolate = geoInterpolate([a.lon, a.lat], [b.lon, b.lat]);
+        const coordinates = Array.from({ length: 21 }, (_, j) => interpolate(j / 20));
+        routes.append(el('path', { d: path({ type: 'LineString', coordinates }) || '', class: `map-route jamboree-route${selected?.type === 'jamboree' && selected.id === b.id ? ' current' : ''}` }));
+      }
+      events.forEach(event => visibleMarkers.push({ item: event, type: 'jamboree', index: 0, selected: selected?.type === 'jamboree' && selected.id === event.id }));
     }
     // Coincident records (e.g. a journey stop and a jamboree at the same park)
     // need distinct click targets even at maximum zoom. Their offsets are in CSS px.

@@ -1,5 +1,7 @@
-// B-P Atlas v1.0 · © SCOUT SYSTEM
+// B-P Atlas v1.1 · © SCOUT SYSTEM
 import { localize, t } from './i18n.js';
+import { locationRecordYear, locationsRecordedBy } from './chronicles.js';
+import { organizationsAtYear, formatValue } from './chart.js';
 
 function element(tag, className, text) {
   const el = document.createElement(tag);
@@ -64,7 +66,66 @@ function footer(el, item, data, lang, onNext, showNext) {
   el.append(foot);
   if (item.draft) el.append(element('div', 'draft-line', t('draft', lang)));
 }
-function overview(container, state, data) {
+function memberOverview(container, state, data, onSelect, onYear) {
+  const { lang, year } = state;
+  const total = data.nso.filter(item => locationRecordYear(item, 'members') !== null).length;
+  const count = locationsRecordedBy(data.nso, year).length;
+  container.append(heading(t('membersIndex', lang), t('spreadTag', lang)), yearLine(year));
+  container.append(element('h2', '', t('membersHeading', lang)));
+  const stat = element('div', 'members-stat');
+  stat.append(element('strong', '', String(count)), element('span', '', `${t('membersCount', lang)} ${t('membersCountDenominator', lang, { total })}`));
+  container.append(stat, element('p', 'card-note membership-caveat', t('membersCaveat', lang)), element('p', 'card-body', t('membersBody', lang)));
+
+  // Separately sourced historical count. It has a different scope from the
+  // present-day directory dates above and is never used as the map's count.
+  const reported = organizationsAtYear(data.membership, year);
+  const picker = element('div', 'reported-year-picker');
+  const label = element('label', '', t('reportedJump', lang)); label.htmlFor = 'reported-year-select';
+  const select = element('select'); select.id = 'reported-year-select';
+  const placeholder = element('option', '', t('reportedChoose', lang)); placeholder.value = ''; placeholder.disabled = true; select.append(placeholder);
+  for (const row of data.membership.filter(item => Number.isFinite(item.countries) && item.year <= new Date().getFullYear())) {
+    const option = element('option', '', `${row.year} · ${formatValue(organizationsAtYear(data.membership, row.year), lang)}`);
+    option.value = String(row.year); select.append(option);
+  }
+  select.value = reported ? String(year) : '';
+  select.addEventListener('change', () => { if (select.value) onYear(Number(select.value)); });
+  picker.append(label, select); container.append(picker);
+  if (reported) {
+    const box = element('div', 'reported-stat');
+    box.append(element('span', '', t('reportedCount', lang)), element('strong', '', formatValue(reported, lang)));
+    if (reported.note) box.append(element('p', '', localize(reported.note, lang)));
+    box.append(element('p', '', t('reportedCountCaveat', lang)));
+    const row = data.membership.find(item => item.year === year && Number.isFinite(item.countries));
+    box.append(sourceBlock(row.sources, new Map(data.sources.map(source => [source.id, source])), lang, 'reported-count'));
+    container.append(box);
+  }
+  const listWrap = element('div', 'member-year-list');
+  listWrap.append(element('h3', '', t('membersThisYear', lang)));
+  const entries = data.nso.filter(item => locationRecordYear(item, 'members') === year);
+  const collator = new Intl.Collator(lang === 'zh' ? 'zh-Hant-HK' : 'en');
+  entries.sort((a, b) => collator.compare(localize(a.name, lang), localize(b.name, lang)));
+  if (!entries.length) listWrap.append(element('p', '', t('membersNoneThisYear', lang)));
+  else {
+    const list = element('ul', 'member-year-entries');
+    for (const item of entries) {
+      const li = element('li'), button = element('button', 'member-year-entry'); button.type = 'button'; button.dataset.nsoId = item.id;
+      button.append(element('span', '', localize(item.name, lang)));
+      if (item.wosmMembership.dispute === 'year') button.append(element('span', 'year-dispute', t('directoryYearDisputed', lang)));
+      button.addEventListener('click', () => onSelect('nso', item.id)); li.append(button); list.append(li);
+    }
+    listWrap.append(list);
+  }
+  container.append(listWrap, element('div', 'draft-line', t('draft', lang)));
+}
+
+function eventOverview(container, state) {
+  const { lang, year } = state;
+  container.append(heading(t('eventIndex', lang), t('spreadTag', lang)), yearLine(year));
+  container.append(element('h2', '', t('eventOverviewHeading', lang)), element('p', 'card-body', t('eventOverviewBody', lang)));
+  container.append(element('p', 'card-note', t('eventRouteNote', lang)), element('div', 'draft-line', t('draft', lang)));
+}
+
+function earlyGroupsOverview(container, state, data) {
   const { lang, year } = state;
   const count = data.nso.filter(nso => nso.scoutingStart && nso.scoutingStart <= year).length;
   container.append(heading(t('spreadIndex', lang), t('spreadTag', lang)));
@@ -78,14 +139,21 @@ function overview(container, state, data) {
   container.append(foot, element('p', 'card-note', t('spreadCaveat', lang)), element('div', 'draft-line', t('draft', lang)));
 }
 
-export function renderCard(state, data, onNext) {
+
+function overview(container, state, data, onSelect, onYear) {
+  if (state.mode === 'members') memberOverview(container, state, data, onSelect, onYear);
+  else if (state.mode === 'jamborees') eventOverview(container, state);
+  else earlyGroupsOverview(container, state, data);
+}
+
+export function renderCard(state, data, { onNext, onSelect, onOverview, onYear }) {
   const el = document.querySelector('#card-content'); el.replaceChildren();
   const { lang, selected } = state;
-  if (!selected) { overview(el, state, data); return; }
+  if (!selected) { overview(el, state, data, onSelect, onYear); return; }
   if (selected.type === 'stop') {
     const index = data.journey.findIndex(stop => stop.id === selected.id);
     const stop = data.journey[index];
-    if (!stop) { overview(el, state, data); return; }
+    if (!stop) { overview(el, state, data, onSelect, onYear); return; }
     const phaseKey = { early: 'phaseEarly', military: 'phaseMilitary', scouting: 'phaseScouting', later: 'phaseLater' }[stop.phase];
     el.append(heading(`${t('stopOf', lang)}  ${String(index + 1).padStart(2, '0')} / ${data.journey.length}`, t(phaseKey, lang)));
     el.append(yearLine(stop.year, stop.yearEnd), element('h2', '', localize(stop.title, lang)), placeLine(stop.place, stop.country, lang));
@@ -95,12 +163,14 @@ export function renderCard(state, data, onNext) {
   }
   if (selected.type === 'nso' || selected.type === 'nso-reference') {
     const nso = data.nso.find(n => n.id === selected.id);
-    if (!nso) { overview(el, state, data); return; }
+    if (!nso) { overview(el, state, data, onSelect, onYear); return; }
     const reference = selected.type === 'nso-reference';
     const sourceIndex = new Map(data.sources.map(source => [source.id, source]));
     el.append(heading(t('nsoIndex', lang), t('spreadTag', lang)));
     if (reference) el.append(element('p', 'reference-banner', t('directoryReference', lang)));
-    else el.append(yearLine(nso.scoutingStart));
+    else el.append(yearLine(locationRecordYear(nso, state.mode)));
+    const back = element('button', 'back-overview', t(state.mode === 'spread' ? 'backEarlyOverview' : 'backOverview', lang)); back.type = 'button';
+    back.addEventListener('click', onOverview);
     el.append(element('h2', '', localize(nso.name, lang)), element('div', 'card-place', localize(nso.nso, lang)));
     if (reference) el.append(element('p', 'card-note reference-note', t('directoryReferenceNote', lang)));
     const facts = element('div', 'nso-facts');
@@ -130,7 +200,7 @@ export function renderCard(state, data, onNext) {
     if (otherYears.length) fact('otherMembershipYears', otherYears.join(' / '), nso.membershipSources, 'membership', 'nso-fact-related');
     fact('scoutingStart', nso.scoutingStart == null ? '' : String(nso.scoutingStart), nso.scoutingStartSources, 'start');
     fact('orgFounded', localize(nso.organisationFounded, lang), nso.organisationFoundedSources, 'founding');
-    el.append(facts, element('p', 'card-note membership-caveat', t('joinedCaveat', lang)));
+    el.append(facts, element('p', 'card-note membership-caveat', t('joinedCaveat', lang)), back);
     const body = [localize(nso.note, lang), localize(nso.membershipNote, lang)].filter(Boolean).join(' ');
     el.append(element('p', 'card-body', body));
     if (nso.membershipNote) el.append(sourceBlock(nso.membershipSources, sourceIndex, lang, 'membership-note'));
@@ -149,12 +219,16 @@ export function renderCard(state, data, onNext) {
     footer(el, nso, data, lang, onNext, false); return;
   }
   const event = data.jamborees.find(j => j.id === selected.id);
-  if (!event) { overview(el, state, data); return; }
+  if (!event) { overview(el, state, data, onSelect, onYear); return; }
   const future = event.year > new Date().getFullYear();
-  const tag = event.cancelled ? t('eventCancelled', lang) : future ? t('eventPlanned', lang) : t('eventIndex', lang);
-  el.append(heading(t('eventIndex', lang), tag), yearLine(event.year, event.yearEnd));
+  const tag = event.cancelled ? t('eventCancelled', lang) : future ? t('eventPlanned', lang) : t('eventHeld', lang);
+  const availableCount = data.jamborees.filter(item => !item.cancelled && item.year <= new Date().getFullYear()).length;
+  const index = event.cancelled ? '—' : String(event.n).padStart(2, '0');
+  el.append(heading(`${t('eventStop', lang)}  ${index} / ${availableCount}`, tag), yearLine(event.year, event.yearEnd));
   el.append(element('h2', '', event.cancelled ? t('eventCancelled', lang) : t('eventNumber', lang, { n: event.n })), placeLine(event.place, event.country, lang));
   el.append(element('p', 'card-body', t(event.cancelled ? 'eventCancelledBody' : future ? 'eventFutureBody' : 'eventBody', lang)));
   if (event.participants != null) el.append(element('p', 'card-note', `${event.participants.toLocaleString(lang === 'zh' ? 'zh-HK' : 'en')} ${t('participants', lang)} · ${t('draft', lang)}`));
-  footer(el, event, data, lang, onNext, false);
+  el.append(element('p', 'card-note event-route-note', t('eventRouteNote', lang)));
+  const next = data.jamborees[data.jamborees.findIndex(item => item.id === event.id) + 1];
+  footer(el, event, data, lang, onNext, Boolean(next && next.year <= new Date().getFullYear()));
 }

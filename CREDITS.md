@@ -1,6 +1,6 @@
 # 資料來源及致謝 / Sources & credits
 
-B-P Atlas v1.1 · © SCOUT SYSTEM · Research draft / 研究草稿
+B-P Atlas v1.2 · © SCOUT SYSTEM · Research draft / 研究草稿
 
 ## 重要限制 / Important limitations
 
@@ -19,9 +19,9 @@ The separate **historical map** provisionally plots 37 locations with sources de
 
 ## Membership figures
 
-資料以 WOSM 的公開數字及其歷史資料為主，不包括世界女童軍協會（WAGGGS）。1907 年的 20 人是白浪島營地人數，**早於 WOSM 成立**，並非 WOSM 人口普查。早期數字主要記錄男童軍；現代數字包括女成員和成年義工。舊資料有時數國家、近年數成員組織，兩者不能直接等同。圓點是來源記錄、約數或下限；缺資料年份留空，不連線、不插值或外推，也不將缺失視為零。
+資料以 WOSM 的公開數字及其歷史資料為主，不包括世界女童軍協會（WAGGGS）。1907 年的 20 人是白浪島營地人數，**早於 WOSM 成立**，並非 WOSM 人口普查。早期數字主要記錄男童軍；現代數字包括女成員和成年義工。舊資料有時數國家、近年數成員組織，兩者不能直接等同。柱形是來源記錄、約數或下限；記錄年份等距排列，並非時間間距。缺資料年份省略，不插值或外推，也不將缺失視為零。1907 年 20 人的柱形在該線性尺度上小得看不見，可用年份選單選取。
 
-The 2025 roughly **60 million is estimated reach**, not a registered census. WOSM later reported that its 2023 registered census exceeded 51.4 million, whereas a 2023 communication said over 57 million; the relationship between these figures needs clarification. Points capture a claim made in that year, not necessarily a year-end total: for example the 2024 point of 175 organisations comes from an [August 10 release](https://www.scout.org/news/news/world-scouting-and-unicef-sign-global-partnership), while WOSM's [2023–24 annual report](https://www.scout.org/sites/default/files/2026-01/wosm_annual_report_2024_en.pdf) describes Albania as the 176th member later in 2024. Some historical counts are secondary reports or rounded/lower-bound claims. The data file records member `precision`, separate `countriesPrecision`, and `kind` where applicable. The chart does not invent intermediate values or connect unlike points.
+The 2025 roughly **60 million is estimated reach**, not a registered census. WOSM later reported that its 2023 registered census exceeded 51.4 million, whereas a 2023 communication said over 57 million; the relationship between these figures needs clarification. Each record captures a claim made in that year, not necessarily a year-end total: for example the 2024 figure of 175 organisations comes from an [August 10 release](https://www.scout.org/news/news/world-scouting-and-unicef-sign-global-partnership), while WOSM's [2023–24 annual report](https://www.scout.org/sites/default/files/2026-01/wosm_annual_report_2024_en.pdf) describes Albania as the 176th member later in 2024. Some historical counts are secondary reports or rounded/lower-bound claims. The data file records member `precision`, separate `countriesPrecision`, and `kind` where applicable. The population bar chart places reported years at equal categorical intervals (not elapsed-time intervals), omits missing years rather than treating them as zero, and neither interpolates nor extrapolates. The very small 1907 bar is not visually discernible at this linear scale; use the year selector.
 
 每一個年份的數值和出處見 [`data/membership.json`](data/membership.json)（出處 ID 對應 [`data/sources.json`](data/sources.json)），或開啟可讀的 [`credits.html#membership-figures`](credits.html#membership-figures)。重要研究線索：
 
@@ -64,3 +64,7 @@ Some English and Traditional Chinese region names were obtained using Node.js `I
 玩法靈感來自 [江山時序 / Chronicles of the Realm](https://github.com/DeanChensj/jiangshan-map)。沒有複製其程式碼或地圖資料。其他比較研究只作設計參考，見 [docs/RESEARCH.md](docs/RESEARCH.md)。
 
 Project code and original-content licences remain **undecided**. MIT and CC BY 4.0 were proposed, not granted; [`LICENSE`](LICENSE) is a status notice, not a licence. Third-party licences, including CC BY-SA for adapted Wikipedia material, continue to apply independently. User-facing attribution and disclaimers appear in the app and the sources page.
+
+## Language and translation / 語言及翻譯
+
+Interface and the 20 journey stories are provided in Traditional Chinese, English, Japanese, Korean, French, Spanish, Indonesian, Portuguese and Hindi. Additional-language region names use the browser’s ICU / CLDR; the Curaçao entry retains all three territories. Some detailed historical notes, official names and source titles remain in English or their original language. English is the primary fallback for other languages, and relevant text is tagged for screen readers. These translations and research notes need human review; language coverage does not verify the underlying claims.

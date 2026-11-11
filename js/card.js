@@ -1,5 +1,5 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
-import { localize, t } from './i18n.js';
+// B-P Atlas v1.2 · © SCOUT SYSTEM
+import { localize, localizationLanguage, localeFor, t } from './i18n.js';
 import { locationRecordYear, locationsRecordedBy } from './chronicles.js';
 import { organizationsAtYear, formatValue } from './chart.js';
 
@@ -7,6 +7,11 @@ function element(tag, className, text) {
   const el = document.createElement(tag);
   if (className) el.className = className;
   if (text != null) el.textContent = text;
+  return el;
+}
+function localizedElement(tag, className, value, lang) {
+  const el = element(tag, className, localize(value, lang));
+  const actual = localizationLanguage(value, lang); if (actual) el.lang = actual;
   return el;
 }
 function icon(name) {
@@ -40,7 +45,7 @@ function sourceBlock(ids, sourceIndex, lang, slot = 'record') {
 function placeLine(place, country, lang) {
   const line = element('div', 'card-place');
   line.append(element('span', 'place-dot'));
-  line.append(document.createTextNode(`${localize(place, lang)} · ${localize(country, lang)}`));
+  line.append(localizedElement('span', '', place, lang), document.createTextNode(' · '), localizedElement('span', '', country, lang));
   return line;
 }
 function heading(top, tag) {
@@ -93,7 +98,7 @@ function memberOverview(container, state, data, onSelect, onYear) {
   if (reported) {
     const box = element('div', 'reported-stat');
     box.append(element('span', '', t('reportedCount', lang)), element('strong', '', formatValue(reported, lang)));
-    if (reported.note) box.append(element('p', '', localize(reported.note, lang)));
+    if (reported.note) box.append(localizedElement('p', '', reported.note, lang));
     box.append(element('p', '', t('reportedCountCaveat', lang)));
     const row = data.membership.find(item => item.year === year && Number.isFinite(item.countries));
     box.append(sourceBlock(row.sources, new Map(data.sources.map(source => [source.id, source])), lang, 'reported-count'));
@@ -102,14 +107,14 @@ function memberOverview(container, state, data, onSelect, onYear) {
   const listWrap = element('div', 'member-year-list');
   listWrap.append(element('h3', '', t('membersThisYear', lang)));
   const entries = data.nso.filter(item => locationRecordYear(item, 'members') === year);
-  const collator = new Intl.Collator(lang === 'zh' ? 'zh-Hant-HK' : 'en');
+  const collator = new Intl.Collator(localeFor(lang));
   entries.sort((a, b) => collator.compare(localize(a.name, lang), localize(b.name, lang)));
   if (!entries.length) listWrap.append(element('p', '', t('membersNoneThisYear', lang)));
   else {
     const list = element('ul', 'member-year-entries');
     for (const item of entries) {
       const li = element('li'), button = element('button', 'member-year-entry'); button.type = 'button'; button.dataset.nsoId = item.id;
-      button.append(element('span', '', localize(item.name, lang)));
+      button.append(localizedElement('span', '', item.name, lang));
       if (item.wosmMembership.dispute === 'year') button.append(element('span', 'year-dispute', t('directoryYearDisputed', lang)));
       button.addEventListener('click', () => onSelect('nso', item.id)); li.append(button); list.append(li);
     }
@@ -156,9 +161,9 @@ export function renderCard(state, data, { onNext, onSelect, onOverview, onYear }
     if (!stop) { overview(el, state, data, onSelect, onYear); return; }
     const phaseKey = { early: 'phaseEarly', military: 'phaseMilitary', scouting: 'phaseScouting', later: 'phaseLater' }[stop.phase];
     el.append(heading(`${t('stopOf', lang)}  ${String(index + 1).padStart(2, '0')} / ${data.journey.length}`, t(phaseKey, lang)));
-    el.append(yearLine(stop.year, stop.yearEnd), element('h2', '', localize(stop.title, lang)), placeLine(stop.place, stop.country, lang));
-    el.append(element('p', 'card-body', localize(stop.body, lang)));
-    if (stop.placeThen) el.append(element('p', 'card-note', `${t('then', lang)}${localize(stop.placeThen, lang)}`));
+    el.append(yearLine(stop.year, stop.yearEnd), localizedElement('h2', '', stop.title, lang), placeLine(stop.place, stop.country, lang));
+    el.append(localizedElement('p', 'card-body', stop.body, lang));
+    if (stop.placeThen) { const line = element('p', 'card-note', t('then', lang)); line.append(localizedElement('span', '', stop.placeThen, lang)); el.append(line); }
     footer(el, stop, data, lang, onNext, index < data.journey.length - 1); return;
   }
   if (selected.type === 'nso' || selected.type === 'nso-reference') {
@@ -171,7 +176,7 @@ export function renderCard(state, data, { onNext, onSelect, onOverview, onYear }
     else el.append(yearLine(locationRecordYear(nso, state.mode)));
     const back = element('button', 'back-overview', t(state.mode === 'spread' ? 'backEarlyOverview' : 'backOverview', lang)); back.type = 'button';
     back.addEventListener('click', onOverview);
-    el.append(element('h2', '', localize(nso.name, lang)), element('div', 'card-place', localize(nso.nso, lang)));
+    el.append(localizedElement('h2', '', nso.name, lang), localizedElement('div', 'card-place', nso.nso, lang));
     if (reference) el.append(element('p', 'card-note reference-note', t('directoryReferenceNote', lang)));
     const facts = element('div', 'nso-facts');
     function fact(key, value, sources, slot, extraClass = '') {
@@ -192,7 +197,7 @@ export function renderCard(state, data, { onNext, onSelect, onOverview, onYear }
     }
     if (official.note) {
       const context = element('div', 'wosm-context');
-      context.append(element('p', '', localize(official.note, lang)), sourceBlock(official.noteSources, sourceIndex, lang, 'membership-context'));
+      context.append(localizedElement('p', '', official.note, lang), sourceBlock(official.noteSources, sourceIndex, lang, 'membership-context'));
       primary.append(context);
     }
     // Preserve older sources and visibly surface every additional year, without
@@ -201,8 +206,13 @@ export function renderCard(state, data, { onNext, onSelect, onOverview, onYear }
     fact('scoutingStart', nso.scoutingStart == null ? '' : String(nso.scoutingStart), nso.scoutingStartSources, 'start');
     fact('orgFounded', localize(nso.organisationFounded, lang), nso.organisationFoundedSources, 'founding');
     el.append(facts, element('p', 'card-note membership-caveat', t('joinedCaveat', lang)), back);
-    const body = [localize(nso.note, lang), localize(nso.membershipNote, lang)].filter(Boolean).join(' ');
-    el.append(element('p', 'card-body', body));
+    const body = element('p', 'card-body');
+    for (const value of [nso.note, nso.membershipNote].filter(Boolean)) {
+      if (body.childNodes.length) body.append(document.createTextNode(' '));
+      body.append(localizedElement('span', '', value, lang));
+    }
+    el.append(body);
+    if (!['zh', 'en'].includes(lang)) el.append(element('p', 'card-note translation-note', t('translationNote', lang)));
     if (nso.membershipNote) el.append(sourceBlock(nso.membershipSources, sourceIndex, lang, 'membership-note'));
     if (nso.wikiFoundingLead || nso.startLead) {
       const leads = element('details', 'research-leads');
@@ -227,7 +237,7 @@ export function renderCard(state, data, { onNext, onSelect, onOverview, onYear }
   el.append(heading(`${t('eventStop', lang)}  ${index} / ${availableCount}`, tag), yearLine(event.year, event.yearEnd));
   el.append(element('h2', '', event.cancelled ? t('eventCancelled', lang) : t('eventNumber', lang, { n: event.n })), placeLine(event.place, event.country, lang));
   el.append(element('p', 'card-body', t(event.cancelled ? 'eventCancelledBody' : future ? 'eventFutureBody' : 'eventBody', lang)));
-  if (event.participants != null) el.append(element('p', 'card-note', `${event.participants.toLocaleString(lang === 'zh' ? 'zh-HK' : 'en')} ${t('participants', lang)} · ${t('draft', lang)}`));
+  if (event.participants != null) el.append(element('p', 'card-note', `${event.participants.toLocaleString(localeFor(lang))} ${t('participants', lang)} · ${t('draft', lang)}`));
   el.append(element('p', 'card-note event-route-note', t('eventRouteNote', lang)));
   const next = data.jamborees[data.jamborees.findIndex(item => item.id === event.id) + 1];
   footer(el, event, data, lang, onNext, Boolean(next && next.year <= new Date().getFullYear()));

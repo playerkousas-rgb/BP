@@ -1,8 +1,8 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
+// B-P Atlas v1.2 · © SCOUT SYSTEM
 import { stopAtYear } from './journey.js';
 import { locationRecordYear } from './chronicles.js';
 export const MIN_YEAR = 1857;
-export const APP_VERSION = 'v1.1';
+export const APP_VERSION = 'v1.2';
 export const currentYear = () => Math.max(MIN_YEAR, new Date().getFullYear());
 export const clamp = (n, low, high) => Math.max(low, Math.min(high, n));
 export const MODES = ['journey', 'members', 'spread', 'jamborees', 'population'];

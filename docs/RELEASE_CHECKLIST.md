@@ -1,6 +1,6 @@
 # 正式上線前清單 / Release blockers
 
-B-P Atlas v1.1 · © SCOUT SYSTEM · 2026-11-10
+B-P Atlas v1.2 · © SCOUT SYSTEM · 2026-11-10
 
 此原型已可互動，但**以下項目尚未全部完成，不應以「已核實」或完整名單發佈**。
 
@@ -22,3 +22,10 @@ B-P Atlas v1.1 · © SCOUT SYSTEM · 2026-11-10
 - [ ] 在 iOS Safari、Android Chrome、桌面主要瀏覽器及 VoiceOver／TalkBack 實機測試拖動、雙指、抽屜、對比度、捲動及鍵盤焦點；自動工具不能替代人工無障礙測試。
 - [ ] 回歸 `npm run check`、`npm run test:browser`、first-load 大小與 share URL，人工檢查中英文、來源連結及歷史用語。
 - [ ] 確認正式名稱、網域和社交預覽圖片絕對 URL；檢查 Vercel 根目錄靜態部署、HTTP headers、PR 預覽、保護設定與公開連結。尚未正式部署。
+
+
+## v1.2 多語與圖表後續
+
+- [ ] 請日文、韓文、法文、西班牙文、印尼文、葡萄牙文和印地文母語者覆核介面、20 站行跡與數據限定詞；目前譯文未經專業校對。
+- [ ] 逐項核對地區名稱及跨地域組織的本地化結果；瀏覽器 ICU 版本可能不同，官方名稱及部分歷史註記仍沿用原文或英文。
+- [ ] 在真實手機及 Safari、VoiceOver／TalkBack 驗證語言選單、無資料年份、不可見的 1907 極小柱及來源連結；自動化測試不能替代實機。

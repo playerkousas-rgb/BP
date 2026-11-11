@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// B-P Atlas v1.1 · © SCOUT SYSTEM
+// B-P Atlas v1.2 · © SCOUT SYSTEM
 // Static-project guard: deliberately does not require a build, dist/ or environment variables.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -9,13 +9,13 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const file = name => path.join(root, name), read = name => readFileSync(file(name), 'utf8');
 const errors = [];
 const check = (ok, message) => { if (!ok) errors.push(message); };
-const required = ['README.md', 'Readme', 'LICENSE', 'CREDITS.md', '.gitignore', '.vercelignore', '.env.example', '.github/workflows/check.yml', 'vercel.json', 'package.json', 'package-lock.json', 'index.html', 'credits.html', 'bp-atlas_v1.1.html', 'credits_v1.1.html', 'css/style.css', 'css/credits.css', 'js/state.js', 'js/chronicles.js', 'data/world.json', 'data/sources.json', 'vendor/geography.min.js', 'vendor/LICENSES.txt', 'docs/RESEARCH.md', 'docs/DESIGN_REVIEW.md', 'docs/CONSISTENCY_AUDIT.md', 'docs/NSO_DATA.md', 'docs/RELEASE_CHECKLIST.md'];
+const required = ['README.md', 'Readme', 'LICENSE', 'CREDITS.md', '.gitignore', '.vercelignore', '.env.example', '.github/workflows/check.yml', 'vercel.json', 'package.json', 'package-lock.json', 'index.html', 'credits.html', 'bp-atlas_v1.2.html', 'credits_v1.2.html', 'css/style.css', 'css/credits.css', 'js/state.js', 'js/chronicles.js', 'js/translations.js', 'js/data-translations.js', 'data/world.json', 'data/sources.json', 'vendor/geography.min.js', 'vendor/LICENSES.txt', 'docs/RESEARCH.md', 'docs/DESIGN_REVIEW.md', 'docs/CONSISTENCY_AUDIT.md', 'docs/NSO_DATA.md', 'docs/RELEASE_CHECKLIST.md'];
 for (const name of required) check(existsSync(file(name)), `Missing required file: ${name}`);
 if (errors.length) { errors.forEach(error => console.error(`FAIL ${error}`)); process.exit(1); }
-const version = 'v1.1';
+const version = 'v1.2';
 const sync = spawnSync(process.execPath, [file('scripts/sync-html.mjs'), '--check'], { encoding: 'utf8' });
 check(sync.status === 0, `HTML deployment copies differ from their sources: ${(sync.stderr || sync.error?.message || '').trim()}`);
-for (const name of ['bp-atlas_v1.1.html', 'credits_v1.1.html', 'index.html', 'credits.html']) {
+for (const name of ['bp-atlas_v1.2.html', 'credits_v1.2.html', 'index.html', 'credits.html']) {
   const html = read(name);
   check(html.includes(`<meta name="app-version" content="${version}">`), `${name}: app-version missing`);
   check(html.includes('<meta name="copyright" content="© SCOUT SYSTEM">'), `${name}: copyright meta missing`);
@@ -43,7 +43,7 @@ for (const dir of ['js', 'css']) for (const name of readdirSync(file(dir))) {
 // Catch missing static translation keys without assuming anything about runtime
 // language selection; dynamic keys still require browser coverage.
 const dictionary = new Set([...read('js/i18n.js').matchAll(/^\s{2}(\w+):\s*\[/gm)].map(match => match[1]));
-for (const name of ['bp-atlas_v1.1.html', 'credits_v1.1.html']) {
+for (const name of ['bp-atlas_v1.2.html', 'credits_v1.2.html']) {
   for (const match of read(name).matchAll(/\bdata-i18n(?:-aria|-title)?=["']([^"']+)["']/g)) check(dictionary.has(match[1]), `${name}: missing translation key ${match[1]}`);
 }
 for (const name of readdirSync(file('js')).filter(name => name.endsWith('.js'))) {
@@ -58,7 +58,7 @@ const csp = headers.find(header => header.key.toLowerCase() === 'content-securit
 check(csp.includes("script-src 'self'") && csp.includes("object-src 'none'"), 'Expected restrictive Content-Security-Policy missing');
 check(read('.gitignore').includes('.env*'), '.gitignore must exclude .env*');
 for (const entry of ['.env*', 'tests/', 'scripts/', 'docs/']) check(read('.vercelignore').includes(entry), `.vercelignore must exclude ${entry}`);
-const initialAssets = ['index.html', 'css/style.css', 'js/app.js', 'js/state.js', 'js/chronicles.js', 'js/chart.js', 'js/timeline.js', 'js/journey.js', 'js/map.js', 'js/card.js', 'js/i18n.js', 'vendor/geography.min.js', 'data/world.json', 'data/journey.json', 'data/nso.json', 'data/jamborees.json', 'data/membership.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'];
+const initialAssets = ['index.html', 'css/style.css', 'js/app.js', 'js/state.js', 'js/chronicles.js', 'js/chart.js', 'js/timeline.js', 'js/journey.js', 'js/map.js', 'js/card.js', 'js/i18n.js', 'js/translations.js', 'js/data-translations.js', 'vendor/geography.min.js', 'data/world.json', 'data/journey.json', 'data/nso.json', 'data/jamborees.json', 'data/membership.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'];
 let bytes = 0;
 for (const asset of initialAssets) {
   check(existsSync(file(asset)), `Missing runtime asset: ${asset}`);

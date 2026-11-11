@@ -1,5 +1,6 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
-import { applyLanguage, getInitialLanguage, localize, t } from './i18n.js';
+// B-P Atlas v1.2 · © SCOUT SYSTEM
+import { applyLanguage, getInitialLanguage, localize, localizationLanguage, localeFor, t } from './i18n.js';
+import { enhanceLocalizedData } from './data-translations.js';
 import { clamp, currentYear, defaultYearForMode, MIN_YEAR, readState, selectionAtYear, stateToSearch } from './state.js';
 import { adjacentYear, locationRecordYear, locationsRecordedBy, recordedByYear, trackYears } from './chronicles.js';
 import { createMap } from './map.js';
@@ -23,7 +24,7 @@ async function loadData() {
 }
 
 try {
-  const data = await loadData();
+  const data = enhanceLocalizedData(await loadData());
   const state = readState(params, data, initialLang, maxYear);
   let playTimer = null, urlTimer = null, toastTimer = null, displayedCardKey = null, directoryLang = null;
   const snapshots = new Map();
@@ -34,13 +35,14 @@ try {
     if (directoryLang === lang) return;
     directoryLang = lang;
     const list = document.querySelector('#directory-list'); list.replaceChildren();
-    const collator = new Intl.Collator(lang === 'zh' ? 'zh-Hant-HK' : 'en');
+    const collator = new Intl.Collator(localeFor(lang));
     const entries = [...data.nso].sort((a, b) => collator.compare(localize(a.name, lang), localize(b.name, lang)));
     for (const item of entries) {
       const li = document.createElement('li'), button = document.createElement('button');
       const name = document.createElement('strong'), organisation = document.createElement('span'), year = document.createElement('span');
       button.type = 'button'; button.className = 'directory-entry'; button.dataset.nsoId = item.id;
-      name.textContent = localize(item.name, lang); organisation.textContent = localize(item.nso, lang);
+      name.textContent = localize(item.name, lang); name.lang = localizationLanguage(item.name, lang) || localeFor(lang);
+      organisation.textContent = localize(item.nso, lang); organisation.lang = localizationLanguage(item.nso, lang) || localeFor(lang);
       const membership = item.wosmMembership;
       const label = { field: 'directoryYearField', history: 'directoryYearHistory', news: 'directoryYearNews', blank: 'directoryYearBlank', unavailable: 'directoryYearUnknown' }[membership.basis];
       year.className = 'directory-year'; year.textContent = t(label, lang, { year: membership.year });
@@ -240,7 +242,7 @@ try {
   }
   document.querySelectorAll('.mode-button').forEach(button => button.addEventListener('click', () => switchMode(button.dataset.mode)));
   document.querySelector('#basis-button').addEventListener('click', () => switchMode(state.mode === 'members' ? 'spread' : 'members', { keepYear: true }));
-  document.querySelector('#language-button').addEventListener('click', () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; render(); });
+  document.querySelector('#language-select').addEventListener('change', event => { state.lang = event.target.value; render(); });
   window.addEventListener('resize', () => { if (state.mode === 'population') chart.render(state); });
   document.querySelector('#mobile-teaser').addEventListener('click', () => { state.panel = 'story'; render(); });
   document.querySelector('#mobile-story').addEventListener('click', () => { state.panel = state.panel === 'story' ? null : 'story'; render(); });
@@ -297,8 +299,8 @@ try {
     const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = t('retry', fallbackLang);
     retry.addEventListener('click', () => location.reload()); message.append(retry);
   }
-  document.querySelector('#language-button').addEventListener('click', () => {
-    fallbackLang = fallbackLang === 'zh' ? 'en' : 'zh';
+  document.querySelector('#language-select').addEventListener('change', event => {
+    fallbackLang = event.target.value;
     try {
       const url = new URL(location.href); url.searchParams.set('lang', fallbackLang);
       history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);

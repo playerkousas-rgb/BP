@@ -1,9 +1,9 @@
 {
   "name": "bp-atlas",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
-  "description": "A static, bilingual research-draft atlas of Baden-Powell and World Scouting.",
+  "description": "A static, multilingual research-draft atlas of Baden-Powell and World Scouting.",
   "scripts": {
     "validate": "node scripts/validate.js",
     "test": "node --test tests/*.test.js",

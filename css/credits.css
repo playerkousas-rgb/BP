@@ -1,4 +1,4 @@
-/* B-P Atlas v1.1 · © SCOUT SYSTEM */
+/* B-P Atlas v1.2 · © SCOUT SYSTEM */
 :root{color-scheme:light;--ink:#344b40;--forest:#31594a;--paper:#f6f5ed;--sheet:#fffdf6;--muted:#63766b;--line:#dae2d7}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -13,7 +13,9 @@ button{font:inherit;cursor:pointer}
 .brand svg{width:36px;height:36px;fill:none;stroke:var(--forest);stroke-width:1.2}
 .brand strong,.brand small{display:block}
 .brand strong{font-size:16px;letter-spacing:.08em}.brand small{font-size:9px;letter-spacing:.2em;color:var(--muted);margin-top:4px}
-#language-button{border:1px solid var(--line);border-radius:3px;background:transparent;padding:6px 12px;color:var(--forest);font-size:13px;font-weight:700}
+.language-select{width:115px;min-height:36px;border:1px solid var(--line);border-radius:3px;background:var(--sheet);padding:6px;color:var(--forest);font-size:13px;font-weight:700}
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.translation-note{color:var(--muted);font-size:13px;line-height:1.6;margin:12px 0 0}
 .notes-main{max-width:900px;margin:0 auto;padding:40px 24px 60px}
 .back-link{display:inline-block;font-size:13px;margin-bottom:34px}.overline{color:#708c7b;letter-spacing:.12em;font-size:11px;font-weight:700;margin:0 0 8px}
 h1,h2{font-family:Georgia,"Noto Serif TC",serif;line-height:1.35;color:var(--ink)}

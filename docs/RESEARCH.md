@@ -1,12 +1,12 @@
 # 設計參考 / Comparative research
 
-B-P Atlas v1.1 · © SCOUT SYSTEM · Reviewed 2026-11-10
+B-P Atlas v1.2 · © SCOUT SYSTEM · Reviewed 2026-11-10
 
 只研究公開介紹和互動概念，沒有複製以下網站的程式、地圖資料或視覺素材。以下是適合本規格的取捨，不代表功能或資料已得到歷史驗證。
 
 | 參考 | 觀察 | 本專案決定 |
 |---|---|---|
-| [江山時序 / Chronicles of the Realm](https://github.com/DeanChensj/jiangshan-map) | 以時間滑桿配合地圖、地點和人物行跡；可逐站、播放、用鍵盤及深連結探索。 | 借鑑「時間＋地圖＋故事」與獨立主題時序，保留逐站、播放、雙語和網址；本版不複製其 GPL 程式或地圖資料，底圖只顯示現代邊界。 |
+| [江山時序 / Chronicles of the Realm](https://github.com/DeanChensj/jiangshan-map) | 以時間滑桿配合地圖、地點和人物行跡；可逐站、播放、用鍵盤及深連結探索。 | 借鑑「時間＋地圖＋故事」與獨立主題時序，保留逐站、播放、多語和網址；本版不複製其 GPL 程式或地圖資料，底圖只顯示現代邊界。 |
 | [Pastlas](https://pastlas.com/) | 讓地圖和時間同步，資料不足時說明缺口，並將敘述與證據相連。 | 說明卡附來源；圖表只顯示有來源的點，缺資料年份留空，不連線或插值；部分地區未收錄不等於沒有童軍。歷史國界和因果分析不在此版範圍。 |
 | [Age of Events](https://www.ageofevents.com/) | 以時間導覽、圖層與策展故事讓使用者從大地圖進入事件。 | 用「逐站」行跡及獨立大露營時序；軍旅敘述按 WOSM 的公開介紹，不加入額外戰役或論述。 |
 | [Flourish bar chart race](https://flourish.studio/visualisations/bar-chart-race/) | 用時間動畫瀏覽多組連續數值和名次，適合有足夠時序資料的比較。 | 借鑑大數字、播放、選年和可見的變化；本資料只有疏落的全球來源點，**不製作國別排名、插值或偽造連續數值**。 |

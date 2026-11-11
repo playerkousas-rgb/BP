@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# B-P Atlas v1.1 · © SCOUT SYSTEM
+# B-P Atlas v1.2 · © SCOUT SYSTEM
 # Optional data-maintenance command. The website itself has no build step.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"

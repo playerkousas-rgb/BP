@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# B-P Atlas v1.1 · © SCOUT SYSTEM
+# B-P Atlas v1.2 · © SCOUT SYSTEM
 # Optional maintenance only: rebuild the local runtime bundle, not the website.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"

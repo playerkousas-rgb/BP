@@ -1,6 +1,6 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
+// B-P Atlas v1.2 · © SCOUT SYSTEM
 import { feature, geoEqualEarth, geoGraticule, geoInterpolate, geoPath } from '../vendor/geography.min.js';
-import { localize, t } from './i18n.js';
+import { localize, localeFor, t } from './i18n.js';
 import { clamp } from './state.js';
 import { locationRecordYear, recordedByYear } from './chronicles.js';
 
@@ -79,7 +79,7 @@ export function createMap(world, data, initialView, callbacks) {
     const km = greatCircleKm(points[0], points[1]);
     if (!Number.isFinite(km) || km <= 0) { scale.hidden = true; return; }
     const step = km >= 1000 ? 100 : km >= 100 ? 10 : km >= 10 ? 1 : .1;
-    const distance = (Math.round(km / step) * step).toLocaleString(state?.lang === 'en' ? 'en' : 'zh-HK', { maximumFractionDigits: 1 });
+    const distance = (Math.round(km / step) * step).toLocaleString(localeFor(state?.lang), { maximumFractionDigits: 1 });
     label.textContent = t('scaleAtCentre', state?.lang || 'zh', { distance }); scale.hidden = false;
   }
   function setView(next, notify = true) {

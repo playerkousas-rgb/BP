@@ -1,6 +1,6 @@
 # 成員名錄與歷史地圖資料 / NSO data notes
 
-B-P Atlas v1.1 · Research draft / 研究草稿 · 2026-11-10
+B-P Atlas v1.2 · Research draft / 研究草稿 · 2026-11-10
 
 這份筆記說明資料如何整理，不代表歷史、成員身份或使用權已經全面核實。完整出處及連結在 [`data/sources.json`](../data/sources.json)；每個地區的資料在 [`data/nso.json`](../data/nso.json)。
 

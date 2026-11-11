@@ -1,7 +1,10 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
+// B-P Atlas v1.2 · © SCOUT SYSTEM
+import { extraLanguages, extraMessages } from './translations.js';
 const messages = {
   skip: ['跳到主要內容', 'Skip to main content'],
   brandZh: ['貝登堡行跡', 'Baden-Powell'],
+  languageLabel: ['語言', 'Language'],
+  translationNote: ['部分歷史註記、組織名稱和來源標題沿用原文或英文；翻譯仍待核對。', 'Some historical notes, organisation names and source titles remain in the original language or English. Translations need review.'],
   mapModes: ['探索主題', 'Explore the atlas'],
   journeyMode: ['B-P 行跡', 'B-P journey'],
   membersMode: ['成員版圖', 'Members'],
@@ -71,18 +74,19 @@ const messages = {
   chartKicker: ['數字背後的故事', 'A STORY IN NUMBERS'],
   chartTitle: ['世界童軍人口', 'Scout membership'],
   organizations: ['組織／地區', 'Orgs / countries'],
-  chartClick: ['點擊圖表選擇最近的有資料年份；方向鍵移動一年，Home／End 跳至起點／終點', 'Click the chart to select the nearest reported year; arrow keys move one year, Home or End jump to the bounds'],
-  chartNote: ['研究草稿：圓點是來源數字、約數或下限，不一定是年終數；缺數據年份留空，不連線或推算。1907 是白浪島營地；2025 為估算覆蓋而非登記普查。不同時期口徑不同，不包括 WAGGGS。', 'Research draft: dots are source figures, approximations or lower bounds, not necessarily year-end totals. Missing years stay blank; no connecting lines or inferred values. 1907 is the Brownsea camp; 2025 is estimated reach, not a registered census. Definitions vary; WAGGGS is excluded.'],
+  chartClick: ['選擇柱狀圖中的資料年份；方向鍵移動一年，Home／End 跳至起點／終點', 'Select a bar for its reported year; arrow keys move one year, Home or End jump to the bounds'],
+  chartNote: ['研究草稿：柱形是來源數字、約數或下限，不一定是年終數；缺數據年份省略，不插值或外推。1907 是白浪島營地；2025 為估算覆蓋而非登記普查。不同時期口徑不同，不包括 WAGGGS。', 'Research draft: bars show source figures, approximations or lower bounds, not necessarily year-end totals. Missing years are omitted, with no interpolation or extrapolation. 1907 is the Brownsea camp; 2025 is estimated reach, not a registered census. Definitions vary; WAGGGS is excluded.'],
   populationKicker: ['數字背後的故事', 'A STORY IN NUMBERS'],
   populationTitle: ['世界童軍人口演變', 'World Scouting membership over time'],
-  populationIntro: ['沿着有來源的數據點，看看童軍人口如何變化。', 'Explore how Scouting membership has changed through published data points.'],
+  populationIntro: ['沿着有來源的數字，看看童軍人口如何變化。', 'Explore how Scouting membership has changed through published figures.'],
   populationYear: ['所選年份', 'SELECTED YEAR'],
   populationMeterNote: ['只在有資料的年份顯示數字', 'A value is shown only for a reported year'],
   populationGraphTitle: ['有記錄的年份', 'Reported years'],
-  populationGraphHint: ['點選圖表或使用下方時間軸', 'Select the chart or use the timeline below'],
+  populationGraphHint: ['選擇柱形或使用下方時間軸', 'Select a bar or use the timeline below'],
+  populationSpacing: ['柱形按有資料年份等距排列，並非按實際時間間隔；省略的年份不是零。1907 年的柱形在此比例下太小而看不見，可使用年份選單。', 'Bars are equally spaced by reported year, not elapsed time. Omitted years are not zero. The 1907 bar is too small to see at this scale; use the year selector.'],
   populationJump: ['跳至資料年份', 'Jump to a reported year'],
   populationChoose: ['選擇資料年份', 'Choose a reported year'],
-  populationPoint: ['來源數據點', 'Reported figure'],
+  populationPoint: ['來源數字', 'Reported figure'],
   populationEstimate: ['估算覆蓋', 'Estimated reach'],
   populationSource: ['這個數字的出處', 'Sources for this figure'],
   populationNoSource: ['所選年份沒有已整理的人口數據。', 'No population figure has been compiled for this year.'],
@@ -113,7 +117,7 @@ const messages = {
   aboutTitle: ['故事，還在查證之中。', 'The research is still unfolding.'],
   aboutDraft: ['這是研究草稿，不是正式發佈版本。成員版圖累積現行名錄的會籍年份，不是當年實際會籍快照，也未反映停會；早期團體圖是另一組部分資料。空白不代表沒有童軍。所有日期仍須逐項核實。', 'This is a research draft, not a publication-ready release. The member map accumulates dates from the current directory; it is not a historical membership snapshot and does not reconstruct interruptions. Early local groups use a separate partial dataset. Blank areas do not mean Scouting was absent. All dates need checking.'],
   aboutBoundary: ['地圖採用 Natural Earth 的現代邊界，僅作示意，不代表對任何邊界或地區地位的立場。地圖單位是童軍成員組織所在地，並非國家排名。', 'The map uses modern Natural Earth boundaries for illustration, not to express a position on borders or territorial status. Locations refer to Scout member organisations, not a ranking of countries.'],
-  aboutStats: ['人口資料以 WOSM 公開數字為主，不包括世界女童軍協會；1907 年是白浪島營地人數，早於 WOSM 成立。早期主要記錄男童軍，現今亦包括女成員和成年義工。舊資料有時按國家、近年按組織計，口徑不可直接比較。只顯示來源數字、約數或下限；缺少數據的年份留空，不連線或推算。2025 年約 6,000 萬是估算覆蓋人數，並非登記普查。', 'Figures are based on WOSM, not the World Association of Girl Guides and Girl Scouts; the 1907 camp predates WOSM. Earlier figures primarily counted boys, while modern figures include girls and adult volunteers. Older sources sometimes count countries and newer ones member organisations; definitions are not directly comparable. Only source figures, approximations or lower bounds are plotted; missing years are blank, with no connecting lines or inferred counts. The roughly 60 million in 2025 is estimated reach, not a registered census.'],
+  aboutStats: ['人口資料以 WOSM 公開數字為主，不包括世界女童軍協會；1907 年是白浪島營地人數，早於 WOSM 成立。早期主要記錄男童軍，現今亦包括女成員和成年義工。舊資料有時按國家、近年按組織計，口徑不可直接比較。只顯示來源數字、約數或下限；缺少數據的年份省略，不插值或外推。2025 年約 6,000 萬是估算覆蓋人數，並非登記普查。', 'Figures are based on WOSM, not the World Association of Girl Guides and Girl Scouts; the 1907 camp predates WOSM. Earlier figures primarily counted boys, while modern figures include girls and adult volunteers. Older sources sometimes count countries and newer ones member organisations; definitions are not directly comparable. Only source figures, approximations or lower bounds are plotted; missing years are omitted, with no interpolation or extrapolation. The roughly 60 million in 2025 is estimated reach, not a registered census.'],
   aboutUnofficial: ['本站並非世界童軍組織或任何童軍總會的官方作品。玩法靈感來自「江山時序」；程式和地圖資料獨立製作。', 'This is not an official project of World Scouting or any Scout association. The interaction is inspired by Chronicles of the Realm; the code and map data were independently created.'],
   credits: ['資料來源及致謝', 'Sources and credits'],
   draft: ['研究草稿 · 上線前待核實', 'Research draft · verification pending'],
@@ -198,7 +202,7 @@ const messages = {
   creditsMap: ['底圖採用 Natural Earth 1:50m 現代邊界，經簡化作示意，並不代表對邊界或地區地位的立場；大露營和行跡座標亦有待核實。成員版圖按現行名錄的 WOSM 年份累積，並非歷史會籍快照，也不反映停會。早期團體圖另用部分暫定記錄；個別只表示最遲當年已有團體。小地區另用圓點；比例尺只近似適用於目前地圖中央。', 'The map uses simplified Natural Earth 1:50m modern boundaries for illustration, not to express a position on borders or status. Journey and jamboree coordinates need checking. The member map accumulates WOSM dates for current directory entries; it is not a historical membership snapshot and does not show interruptions. The early-group view uses a separate partial sample; some dates only show a group existed by that year. Dots identify small locations. The scale bar is approximate at the current map centre only.'],
   creditsStatsTitle: ['人口數字和口徑', 'Membership figures and definitions'],
   creditsStats: ['圖表以 WOSM 資料為主，不包括世界女童軍協會（WAGGGS）。1907 年的 20 人是白浪島營地人數，早於 WOSM 成立；並非 WOSM 會員普查。早年數字主要計算男童軍，近年亦包括女成員和成年義工。舊來源有時以國家計，近年以成員組織計；不同時期不可直接比較。', 'The chart is based on WOSM figures and excludes the World Association of Girl Guides and Girl Scouts (WAGGGS). The 20 people in 1907 were the Brownsea camp, before WOSM existed—not a WOSM census. Early figures mostly counted boys; recent ones include girls and adult volunteers. Older sources sometimes count countries and recent sources count member organisations: they are not directly comparable.'],
-  creditsStatsMethod: ['圓點表示該年來源所載數字、約數或下限，不一定是年終數。2024 年的 175 個組織來自 8 月 10 日新聞；阿爾巴尼亞其後於同年成為第 176 個成員。缺數據年份留空，不連線、不插值或外推。2025 年約 6,000 萬是 WOSM 估算覆蓋人數，並非登記普查；WOSM 後來報告 2023 年登記普查超過 5,140 萬，當年公開資料則說超過 5,700 萬，兩者口徑仍待釐清。以下連結是研究線索，不代表每項已核實。', 'Dots are figures, approximations or lower bounds reported in that year, not necessarily year-end totals. The 2024 figure of 175 organisations comes from a 10 August release; Albania became the 176th member later that year. Missing years remain blank; no lines, interpolation or extrapolation are used. The approximately 60 million in 2025 is WOSM’s estimated reach, not a registered census. WOSM later reported the 2023 registered census at over 51.4 million, while its 2023 public communications said over 57 million; their relationship needs clarification. Links below are research leads, not a claim that every entry has been verified.'],
+  creditsStatsMethod: ['柱形表示該年來源所載數字、約數或下限，不一定是年終數；按有資料年份等距排列，不代表時間間隔。2024 年的 175 個組織來自 8 月 10 日新聞；阿爾巴尼亞其後於同年成為第 176 個成員。缺數據年份省略，不插值或外推。2025 年約 6,000 萬是 WOSM 估算覆蓋人數，並非登記普查；WOSM 後來報告 2023 年登記普查超過 5,140 萬，當年公開資料則說超過 5,700 萬，兩者口徑仍待釐清。以下連結是研究線索，不代表每項已核實。', 'Bars show figures, approximations or lower bounds reported in that year, not necessarily year-end totals. They are equally spaced by reported year rather than elapsed time. The 2024 figure of 175 organisations comes from a 10 August release; Albania became the 176th member later that year. Missing years are omitted, with no interpolation or extrapolation. The approximately 60 million in 2025 is WOSM’s estimated reach, not a registered census. WOSM later reported the 2023 registered census at over 51.4 million, while its 2023 public communications said over 57 million; their relationship needs clarification. Links below are research leads, not a claim that every entry has been verified.'],
   creditsYear: ['年份', 'Year'],
   creditsMembers: ['人數', 'People'],
   creditsOrgs: ['組織／國家', 'Organisations / countries'],
@@ -219,42 +223,70 @@ const messages = {
   oceanIndian: ['印度洋', 'INDIAN OCEAN'],
 };
 
-export function getInitialLanguage(params = new URLSearchParams(window.location.search)) {
-  const requested = params.get('lang');
-  if (requested === 'zh' || requested === 'en') return requested;
-  // The project specification says an absent lang parameter follows the browser.
-  // Stored preference is only a fallback if the browser does not report a language.
-  const browserLanguage = typeof navigator !== 'undefined' ? navigator.language : '';
-  if (typeof browserLanguage === 'string' && browserLanguage.trim()) return browserLanguage.toLowerCase().startsWith('zh') ? 'zh' : 'en';
-  try {
-    const saved = localStorage.getItem('bp-atlas.lang');
-    if (saved === 'zh' || saved === 'en') return saved;
-  } catch { /* Storage can be blocked in private browsing. */ }
-  return 'zh';
-}
+export const SUPPORTED_LANGUAGES = Object.freeze(['zh', 'en', ...extraLanguages]);
+export const messageKeys = Object.freeze(Object.keys(messages));
 
-export function t(key, lang = document.documentElement.dataset.lang || 'zh', replacements = {}) {
-  const pair = messages[key];
-  let value = pair ? (lang === 'en' ? pair[1] || pair[0] : pair[0]) : key;
+// URL/share links win; otherwise try the browser's ordered language preferences.
+// Storage is used only when the browser reports no language, matching the
+// original atlas behaviour. Language-region tags resolve to their base language.
+export function normalizeLanguage(value) {
+  if (typeof value !== 'string') return null;
+  const base = value.trim().toLowerCase().replaceAll('_', '-').split('-')[0];
+  return SUPPORTED_LANGUAGES.includes(base) ? base : null;
+}
+export function getInitialLanguage(params = new URLSearchParams(window.location.search)) {
+  const requested = normalizeLanguage(params.get('lang'));
+  if (requested) return requested;
+  const preferences = typeof navigator === 'undefined' ? [] : [
+    ...(Array.isArray(navigator.languages) ? navigator.languages : []), navigator.language,
+  ].filter(value => typeof value === 'string' && value.trim());
+  for (const preference of preferences) {
+    const supported = normalizeLanguage(preference);
+    if (supported) return supported;
+  }
+  if (preferences.length) return 'en';
+  try { return normalizeLanguage(localStorage.getItem('bp-atlas.lang')) || 'zh'; }
+  catch { return 'zh'; }
+}
+export function localeFor(lang) { return lang === 'zh' ? 'zh-Hant-HK' : normalizeLanguage(lang) || 'en'; }
+
+export function t(key, lang = typeof document !== 'undefined' ? document.documentElement.dataset.lang || 'zh' : 'zh', replacements = {}) {
+  const pair = messages[key], index = extraLanguages.indexOf(lang);
+  let value = pair ? (index >= 0 ? extraMessages[key]?.[index] || pair[1] : lang === 'en' ? pair[1] || pair[0] : pair[0]) : key;
   for (const [name, replacement] of Object.entries(replacements)) value = value.replaceAll(`{${name}}`, String(replacement));
   return value;
 }
 
+// Non-Chinese interfaces fall back to English, not Chinese. Return the actual
+// language too, so screen readers can switch pronunciation for source text.
+export function localizationLanguage(value, lang) {
+  if (!value || typeof value !== 'object') return null;
+  if (value[lang]) return localeFor(lang);
+  if (lang !== 'zh' && value.en) return 'en';
+  if (value.zh) return 'zh-Hant-HK';
+  if (value.en) return 'en';
+  return null;
+}
 export function localize(value, lang) {
-  if (!value) return '';
-  return value[lang] || value.zh || value.en || '';
+  if (!value || typeof value !== 'object') return '';
+  if (value[lang]) return value[lang];
+  return lang === 'zh' ? value.zh || value.en || '' : value.en || value.zh || '';
 }
 
 export function applyLanguage(lang) {
+  lang = normalizeLanguage(lang) || 'zh';
   document.documentElement.dataset.lang = lang;
-  document.documentElement.lang = lang === 'en' ? 'en' : 'zh-Hant-HK';
-  document.title = lang === 'en' ? 'B-P Atlas · Baden-Powell’s Journey v1.1 · © SCOUT SYSTEM' : '貝登堡行跡 · B-P Atlas v1.1 · © SCOUT SYSTEM';
-  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n, lang); });
+  document.documentElement.lang = localeFor(lang);
+  document.title = `${t('brandZh', lang)} · B-P Atlas v1.2 · © SCOUT SYSTEM`;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n, lang);
+    // If a future interface key is untranslated, identify its English fallback.
+    if (extraLanguages.includes(lang) && !extraMessages[el.dataset.i18n]?.[extraLanguages.indexOf(lang)]) el.lang = 'en';
+    else el.removeAttribute('lang');
+  });
   document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria, lang)); });
   document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle, lang); });
-  const toggle = document.querySelector('#language-button');
-  toggle.textContent = lang === 'zh' ? 'EN' : '中文';
-  toggle.setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切換至中文介面');
-  toggle.title = toggle.getAttribute('aria-label');
+  const select = document.querySelector('#language-select');
+  if (select) select.value = lang;
   try { localStorage.setItem('bp-atlas.lang', lang); } catch { /* Non-essential preference. */ }
 }

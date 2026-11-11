@@ -1,4 +1,4 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
+// B-P Atlas v1.2 · © SCOUT SYSTEM
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, cpSync, copyFileSync, rmSync } from 'node:fs';
@@ -9,9 +9,11 @@ import { fileURLToPath } from 'node:url';
 import { defaultYearForMode, parseView, readState, selectionAtYear, stateToSearch } from '../js/state.js';
 import { adjacentYear, locationRecordYear, locationsRecordedBy, recordedByYear, trackYears } from '../js/chronicles.js';
 import { stopAtYear, adjacentStop } from '../js/journey.js';
-import { membershipAtYear, organizationsAtYear } from '../js/chart.js';
+import { formatValue, membershipAtYear, organizationsAtYear } from '../js/chart.js';
 import { greatCircleKm } from '../js/map.js';
-import { getInitialLanguage } from '../js/i18n.js';
+import { getInitialLanguage, localizationLanguage, localize, messageKeys, normalizeLanguage, SUPPORTED_LANGUAGES, t } from '../js/i18n.js';
+import { extraLanguages, extraMessages } from '../js/translations.js';
+import { enhanceLocalizedData } from '../js/data-translations.js';
 const read = name => JSON.parse(readFileSync(new URL(`../data/${name}.json`, import.meta.url), 'utf8'));
 const data = { journey: read('journey'), nso: read('nso'), jamborees: read('jamborees'), membership: read('membership') };
 
@@ -301,5 +303,80 @@ test('explicit language wins; without it the browser language takes precedence o
   } finally {
     if (navigatorDescriptor) Object.defineProperty(globalThis, 'navigator', navigatorDescriptor); else delete globalThis.navigator;
     if (storageDescriptor) Object.defineProperty(globalThis, 'localStorage', storageDescriptor); else delete globalThis.localStorage;
+  }
+});
+
+
+test('all interface messages and substitution tokens exist in the seven additional languages', () => {
+  assert.deepEqual(SUPPORTED_LANGUAGES, ['zh', 'en', 'ja', 'ko', 'fr', 'es', 'id', 'pt', 'hi']);
+  assert.deepEqual(new Set(Object.keys(extraMessages)), new Set(messageKeys));
+  const placeholders = text => [...text.matchAll(/\{(\w+)\}/g)].map(match => match[1]).sort();
+  for (const key of messageKeys) for (const [index, lang] of extraLanguages.entries()) {
+    const translation = extraMessages[key][index];
+    assert.ok(typeof translation === 'string' && translation.trim(), `${key}: ${lang}`);
+    assert.deepEqual(placeholders(translation), placeholders(t(key, 'en')), `${key}: ${lang} placeholders`);
+    assert.equal(t(key, lang), translation);
+  }
+  assert.match(t('eventNumber', 'hi', { n: 12 }), /12/);
+  assert.match(t('populationSpacing', 'en'), /not elapsed time.*not zero.*too small/i);
+});
+
+test('non-Chinese data falls back to English with an accurate language tag', () => {
+  const bilingual = { zh: '中文', en: 'English source' };
+  assert.equal(localize(bilingual, 'ja'), 'English source');
+  assert.equal(localizationLanguage(bilingual, 'ja'), 'en');
+  assert.equal(localize(bilingual, 'zh'), '中文');
+  assert.equal(localizationLanguage(bilingual, 'zh'), 'zh-Hant-HK');
+  assert.equal(localize({ zh: '中文' }, 'ko'), '中文');
+  assert.equal(localizationLanguage({ zh: '中文' }, 'ko'), 'zh-Hant-HK');
+  assert.equal(normalizeLanguage('PT-br'), 'pt');
+  assert.equal(normalizeLanguage('ja_JP'), 'ja');
+  assert.equal(normalizeLanguage('de-DE'), null);
+  assert.match(formatValue({ value: 40000000, precision: 'at-least' }, 'ja'), /40,000,000超/);
+  assert.match(formatValue({ value: 40000000, precision: 'at-least' }, 'hi'), /4,00,00,000 से अधिक/);
+  assert.match(formatValue({ value: 60000000, precision: 'approx' }, 'fr'), /^environ /);
+});
+
+test('display translations preserve records and multi-territory scope', () => {
+  const source = structuredClone(data), translated = enhanceLocalizedData(structuredClone(data));
+  for (const stop of translated.journey) for (const lang of extraLanguages) {
+    assert.ok(stop.title[lang] && stop.body[lang], `${stop.id} ${lang}`);
+    const original = source.journey.find(entry => entry.id === stop.id);
+    assert.deepEqual(stop.sources, original.sources); assert.equal(stop.year, original.year);
+  }
+  for (const item of translated.nso) {
+    const original = source.nso.find(entry => entry.id === item.id);
+    assert.deepEqual(item.wosmMembership, original.wosmMembership);
+    assert.deepEqual(item.membershipYears, original.membershipYears);
+    assert.equal(item.name.en, original.name.en);
+  }
+  const combined = translated.nso.find(entry => entry.id === 'CUW');
+  assert.match(combined.name.fr, /Curaçao.*Saint-Martin.*Pays-Bas/i);
+  assert.match(combined.name.en, /Curaçao.*Sint Maarten.*Caribbean Netherlands/);
+  for (const row of translated.membership) {
+    const original = source.membership.find(entry => entry.year === row.year);
+    assert.equal(row.members, original.members); assert.equal(row.countries, original.countries);
+    assert.equal(row.precision, original.precision); assert.deepEqual(row.sources, original.sources);
+  }
+  assert.ok(translated.membership.find(row => row.year === 2024).organisationNote.ja);
+});
+
+test('language selection respects URL, ordered browser preferences, fallback and blocked storage', () => {
+  const nav = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
+  const storage = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  try {
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { language: 'de-DE', languages: ['de-DE', 'fr-CA', 'en-US'] } });
+    Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: { getItem: () => 'ko' } });
+    assert.equal(getInitialLanguage(new URLSearchParams('')), 'fr');
+    assert.equal(getInitialLanguage(new URLSearchParams('lang=pt-BR')), 'pt');
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { language: 'de-DE', languages: ['de-DE'] } });
+    assert.equal(getInitialLanguage(new URLSearchParams('lang=invalid')), 'en');
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { language: '' } });
+    assert.equal(getInitialLanguage(new URLSearchParams('')), 'ko');
+    Object.defineProperty(globalThis, 'localStorage', { configurable: true, get() { throw new Error('blocked'); } });
+    assert.equal(getInitialLanguage(new URLSearchParams('')), 'zh');
+  } finally {
+    if (nav) Object.defineProperty(globalThis, 'navigator', nav); else delete globalThis.navigator;
+    if (storage) Object.defineProperty(globalThis, 'localStorage', storage); else delete globalThis.localStorage;
   }
 });

@@ -1,4 +1,4 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
+// B-P Atlas v1.2 · © SCOUT SYSTEM
 // These are reported dates for present-day directory entries, not reconstructed
 // year-by-year membership histories. Never replace a missing WOSM year with a
 // founding date, a local-group date, or an unsourced estimate.

@@ -1,17 +1,17 @@
 <!doctype html>
-<!-- B-P Atlas v1.1 · © SCOUT SYSTEM -->
+<!-- B-P Atlas v1.2 · © SCOUT SYSTEM -->
 <html lang="zh-Hant-HK" data-lang="zh">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="沿著貝登堡的足跡，探索世界童軍運動的故事。">
   <meta name="copyright" content="© SCOUT SYSTEM">
-  <meta name="app-version" content="v1.1">
+  <meta name="app-version" content="v1.2">
   <meta name="theme-color" content="#cfe0d5">
   <meta property="og:type" content="website">
   <meta property="og:title" content="貝登堡行跡 · B-P Atlas">
   <meta property="og:description" content="Follow Baden-Powell’s footsteps and explore the story of Scouting around the world.">
-  <title>貝登堡行跡 · B-P Atlas v1.1 · © SCOUT SYSTEM</title>
+  <title>貝登堡行跡 · B-P Atlas v1.2 · © SCOUT SYSTEM</title>
   <link rel="icon" href="icons/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -58,7 +58,9 @@
         <button type="button" id="directory-button" class="directory-button" aria-haspopup="dialog" aria-controls="directory-dialog" aria-label="成員名錄" title="成員名錄" data-i18n-aria="directoryButton" data-i18n-title="directoryButton"><svg class="icon" aria-hidden="true"><use href="#icon-book"></use></svg><span data-i18n="directoryButton">成員名錄</span></button>
         <button type="button" id="about-button" class="icon-button about-button" data-i18n-aria="about" data-i18n-title="about" aria-label="關於資料" title="關於資料"><svg class="icon"><use href="#icon-info"></use></svg></button>
         <span class="header-divider" aria-hidden="true"></span>
-        <button type="button" id="language-button" data-lang-toggle class="language-button" aria-label="Switch to English" title="Switch to English">EN</button>
+        <label for="language-select" class="visually-hidden" data-i18n="languageLabel">語言</label><select id="language-select" class="language-select" aria-label="語言" data-i18n-aria="languageLabel">
+          <option value="zh" lang="zh-Hant">中文</option><option value="en" lang="en">English</option><option value="ja" lang="ja">日本語</option><option value="ko" lang="ko">한국어</option><option value="fr" lang="fr">Français</option><option value="es" lang="es">Español</option><option value="id" lang="id">Indonesia</option><option value="pt" lang="pt">Português</option><option value="hi" lang="hi">हिन्दी</option>
+        </select>
         <button type="button" id="share-button" class="share-button" data-i18n-aria="share" data-i18n-title="share" aria-label="分享目前畫面" title="分享目前畫面"><svg class="icon"><use href="#icon-share"></use></svg><span data-i18n="shareShort">分享</span></button>
       </div>
     </div>
@@ -119,7 +121,7 @@
 
     <section id="chart-panel" class="population-view" aria-labelledby="population-title" hidden>
       <div class="population-heading">
-        <div><p class="panel-kicker" data-i18n="populationKicker">數字背後的故事</p><h2 id="population-title" data-i18n="populationTitle">世界童軍人口演變</h2><p data-i18n="populationIntro">沿着有來源的數據點，看看童軍人口如何變化。</p></div>
+        <div><p class="panel-kicker" data-i18n="populationKicker">數字背後的故事</p><h2 id="population-title" data-i18n="populationTitle">世界童軍人口演變</h2><p data-i18n="populationIntro">沿着有來源的數字，看看童軍人口如何變化。</p></div>
         <span class="population-draft" data-i18n="spreadTag">研究草稿</span>
       </div>
       <div class="population-layout">
@@ -132,15 +134,16 @@
         </div>
         <div class="population-graph">
           <div class="population-graph-heading">
-            <div><h3 data-i18n="populationGraphTitle">有記錄的年份</h3><p data-i18n="populationGraphHint">點選圖表或使用下方時間軸</p></div>
+            <div><h3 data-i18n="populationGraphTitle">有記錄的年份</h3><p data-i18n="populationGraphHint">選擇柱形或使用下方時間軸</p></div>
             <label for="chart-year-select" data-i18n="populationJump">跳至資料年份</label>
             <select id="chart-year-select" aria-label="跳至有資料的年份" data-i18n-aria="populationJump"></select>
           </div>
-          <svg id="membership-chart" viewBox="0 0 800 230" tabindex="0" role="slider" aria-valuemin="1857" aria-valuemax="2026" aria-valuenow="2025" aria-label="點擊圖表選擇年份" data-i18n-aria="chartClick"></svg>
-          <div class="population-legend"><span><i class="legend-dot"></i><span data-i18n="populationPoint">來源數據點</span></span><span><i class="legend-estimate"></i><span data-i18n="populationEstimate">估算覆蓋</span></span></div>
+          <svg id="membership-chart" viewBox="0 0 800 230" tabindex="0" role="slider" aria-orientation="horizontal" aria-describedby="population-spacing" aria-valuemin="1857" aria-valuemax="2026" aria-valuenow="2025" aria-label="選擇柱狀圖中的資料年份" data-i18n-aria="chartClick"></svg>
+          <div class="population-legend"><span><i class="legend-bar" aria-hidden="true"></i><span data-i18n="populationPoint">來源數字</span></span><span><i class="legend-estimate" aria-hidden="true"></i><span data-i18n="populationEstimate">估算覆蓋</span></span></div>
+          <p id="population-spacing" class="population-spacing" data-i18n="populationSpacing">柱形按有資料年份等距排列，並非按實際時間間隔；省略的年份不是零。1907 年的柱形在此比例下太小而看不見，可使用年份選單。</p>
         </div>
       </div>
-      <p class="chart-note"><span data-i18n="chartNote">研究草稿：圓點是來源數字、約數或下限，不一定是年終數；缺數據年份留空，不連線或推算。1907 是白浪島營地；2025 為估算覆蓋而非登記普查。不同時期口徑不同，不包括 WAGGGS。</span> <a href="credits.html#membership-figures" target="_blank" rel="noopener noreferrer" data-i18n="chartSources">統計出處</a></p>
+      <p class="chart-note"><span data-i18n="chartNote">研究草稿：柱形是來源數字、約數或下限，不一定是年終數；缺數據年份省略，不插值或外推。1907 是白浪島營地；2025 為估算覆蓋而非登記普查。不同時期口徑不同，不包括 WAGGGS。</span> <a href="credits.html#membership-figures" target="_blank" rel="noopener noreferrer" data-i18n="chartSources">統計出處</a></p>
     </section>
 
     <section class="timeline" aria-labelledby="timeline-heading">
@@ -159,12 +162,13 @@
       </div>
       <p class="timeline-instruction"><svg class="icon"><use href="#icon-info"></use></svg><span data-i18n="timelineInstruction">選擇地圖上的標記，閱讀每一個故事。</span></p>
     </section>
-    <footer class="site-footer"><span>© SCOUT SYSTEM · COPYRIGHT SCOUT SYSTEM · B-P Atlas v1.1 · <a href="credits.html#rights" target="_blank" rel="noopener noreferrer" data-i18n="footerLicense">授權待確認</a></span><span data-i18n="footerDisclaimer">非世界童軍組織或任何童軍總會的官方作品</span><span><span data-i18n="inspiredBy">玩法靈感：</span><a href="https://github.com/DeanChensj/jiangshan-map" target="_blank" rel="noopener noreferrer">江山時序</a></span></footer>
+    <footer class="site-footer"><span>© SCOUT SYSTEM · COPYRIGHT SCOUT SYSTEM · B-P Atlas v1.2 · <a href="credits.html#rights" target="_blank" rel="noopener noreferrer" data-i18n="footerLicense">授權待確認</a></span><span data-i18n="footerDisclaimer">非世界童軍組織或任何童軍總會的官方作品</span><span><span data-i18n="inspiredBy">玩法靈感：</span><a href="https://github.com/DeanChensj/jiangshan-map" target="_blank" rel="noopener noreferrer">江山時序</a></span></footer>
   </main>
 
   <dialog id="directory-dialog" class="directory-dialog" aria-labelledby="directory-title" aria-describedby="directory-intro">
     <div class="dialog-heading"><div><p class="panel-kicker" data-i18n="directoryKicker">現時成員 · 研究草稿</p><h2 id="directory-title" data-i18n="directoryTitle">成員組織名錄</h2></div><button type="button" id="directory-close" class="dialog-close" data-i18n-aria="close" aria-label="關閉面板"><svg class="icon"><use href="#icon-close"></use></svg></button></div>
     <p id="directory-intro" class="directory-intro" data-i18n="directoryIntro">176 項現況研究資料；優先顯示 WOSM 所列會籍年份（可能是前身或重新加入），未整理個別組織人數。選取只開啟現況參考，不改變年份或表示當時會籍；詳見卡片。</p>
+    <p class="translation-note" data-i18n="translationNote">部分歷史註記、組織名稱和來源標題沿用原文或英文；翻譯仍待核對。</p>
     <ol id="directory-list" class="directory-list" aria-label="成員組織所在地" data-i18n-aria="directoryTitle"></ol>
   </dialog>
 
@@ -172,7 +176,8 @@
     <div class="dialog-heading"><div><p class="panel-kicker" data-i18n="aboutKicker">關於這張地圖</p><h2 id="about-title" data-i18n="aboutTitle">故事，還在查證之中。</h2></div><button type="button" id="about-close" class="dialog-close" data-i18n-aria="close" aria-label="關閉面板"><svg class="icon"><use href="#icon-close"></use></svg></button></div>
     <p data-i18n="aboutDraft">這是研究草稿，不是正式發佈版本。成員版圖累積現行名錄的會籍年份，不是當年實際會籍快照，也未反映停會；早期團體圖是另一組部分資料。空白不代表沒有童軍。所有日期仍須逐項核實。</p>
     <p data-i18n="aboutBoundary">地圖採用 Natural Earth 的現代邊界，僅作示意，不代表對任何邊界或地區地位的立場。地圖單位是童軍成員組織所在地，並非國家排名。</p>
-    <p data-i18n="aboutStats">人口資料以 WOSM 為主，不包括世界女童軍協會；早期與現今統計口徑不同。圓點是來源數字、約數或下限，缺少數據的年份留空，不連線或推算。</p>
+    <p data-i18n="aboutStats">人口資料以 WOSM 為主，不包括世界女童軍協會；早期與現今統計口徑不同。柱形是來源數字、約數或下限，缺少數據的年份省略，不插值或外推。</p>
+    <p data-i18n="translationNote">部分歷史註記、組織名稱和來源標題沿用原文或英文；翻譯仍待核對。</p>
     <p data-i18n="aboutUnofficial">本站並非世界童軍組織或任何童軍總會的官方作品。玩法靈感來自「江山時序」；程式和地圖資料獨立製作。</p>
     <a class="dialog-link" href="credits.html" target="_blank" rel="noopener noreferrer"><span data-i18n="credits">資料來源及致謝</span><svg class="icon"><use href="#icon-external"></use></svg></a>
   </dialog>

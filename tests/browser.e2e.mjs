@@ -1,4 +1,4 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
+// B-P Atlas v1.2 · © SCOUT SYSTEM
 // Optional, dev-only browser tests. The website itself requires no build or server-side code.
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -8,6 +8,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
+import { SUPPORTED_LANGUAGES, t as translate } from '../js/i18n.js';
+import { enhanceLocalizedData } from '../js/data-translations.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const contentTypes = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.webmanifest': 'application/manifest+json', '.ico': 'image/x-icon', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8' };
@@ -82,7 +84,7 @@ test('journey, camera, keyboard focus and sharing stay in sync', async t => {
   assert.ok(transferred > 0 && transferred < 1_000_000, `First load should be under 1 MB, got ${transferred}`);
 });
 
-test('standalone population chart explores only source points, with qualifiers and accessible controls', async t => {
+test('standalone population bar chart explores only reported years, with qualifiers and accessible controls', async t => {
   const { page } = await pageFor(t);
   await visit(page, '?lang=en&year=1857&mode=population');
   const chart = page.locator('#membership-chart');
@@ -101,8 +103,8 @@ test('standalone population chart explores only source points, with qualifiers a
   assert.ok(await page.locator('#chart-source [data-source-id="wosm-2025"]').count());
   assert.equal(await chart.locator('polyline, .chart-line, .chart-org-line').count(), 0, 'No lines may imply intermediate values');
   const rows = JSON.parse(await readFile(path.join(root, 'data/membership.json'), 'utf8'));
-  assert.equal(await chart.locator('.chart-point').count(), rows.filter(row => row.members != null && row.year <= new Date().getFullYear()).length);
-  assert.equal(await chart.locator('.chart-point.is-estimate').count(), 1);
+  assert.equal(await chart.locator('.chart-bar').count(), rows.filter(row => row.members != null && row.year <= new Date().getFullYear()).length);
+  assert.equal(await chart.locator('.chart-bar.is-estimate').count(), 1);
   await setYear(page, 1923);
   assert.equal(await page.locator('#chart-value').textContent(), 'No data');
   assert.equal(await page.locator('#chart-year-select').inputValue(), '');
@@ -119,7 +121,7 @@ test('standalone population chart explores only source points, with qualifiers a
   assert.ok(Math.abs(percent - 20 / 60000000 * 100) < 0.000001, 'The bar must be proportional even for 1907');
   await page.locator('#next-button').click(); assert.equal(await page.locator('#year-range').inputValue(), '1922');
   await page.locator('#previous-button').click(); assert.equal(await page.locator('#year-range').inputValue(), '1907');
-  await chart.locator('.chart-point[data-year="1950"]').click();
+  await chart.locator('.chart-bar[data-year="1950"]').click();
   assert.equal(await page.locator('#year-range').inputValue(), '1950');
   assert.equal(await page.locator('#chart-value').textContent(), 'about 5,000,000');
   await visit(page, '?lang=en&year=2024&orgs=1&panel=chart');
@@ -167,7 +169,7 @@ test('browser language wins without a URL parameter and storage failures are har
   await page.addInitScript(() => { Object.defineProperty(window, 'localStorage', { get() { throw new Error('blocked'); } }); });
   await visit(page);
   assert.equal(await page.locator('html').getAttribute('lang'), 'en');
-  await page.locator('#language-button').click();
+  await page.locator('#language-select').selectOption('zh');
   assert.equal(await page.locator('html').getAttribute('lang'), 'zh-Hant-HK');
   await page.waitForTimeout(160); await page.reload({ waitUntil: 'networkidle' });
   assert.equal(await page.locator('html').getAttribute('lang'), 'zh-Hant-HK');
@@ -181,7 +183,7 @@ test('load error has a translated accessible retry and recovers', async t => {
   assert.equal(await page.locator('#load-error').getAttribute('role'), 'alert');
   assert.match(await page.locator('#load-error').textContent(), /could not load/i);
   assert.equal(await page.locator('.atlas-workspace').isVisible(), false);
-  await page.locator('#language-button').click();
+  await page.locator('#language-select').selectOption('zh');
   assert.match(await page.locator('#load-error').textContent(), /未能載入/);
   await page.unroute(pattern);
   await Promise.all([page.waitForURL('**/*'), page.locator('#load-error button').click()]);
@@ -210,7 +212,7 @@ test('bilingual credits provide year-by-year source links and accurate qualifier
   const row2024 = page.locator('#membership-sources tr').filter({ hasText: /^2024/ });
   assert.match(await row2024.textContent(), /175.*10 August report.*176/i);
   assert.equal(await row2024.locator('a[href="https://www.scout.org/news/news/scouting-albania-joins-176th-member-organization"]').count(), 1);
-  await page.locator('#language-button').click();
+  await page.locator('#language-select').selectOption('zh');
   assert.match(await row2024.textContent(), /175.*8 月 10 日.*176/);
   assert.equal(await page.locator('html').getAttribute('lang'), 'zh-Hant-HK');
   assert.match(await page.locator('h1').textContent(), /資料來源/);
@@ -321,7 +323,7 @@ test('organisation cards prioritise WOSM while retaining field-specific evidence
   assert.equal(await page.locator('[data-source-slot="wiki-lead"][data-source-id="wiki-members"]').count(), 1);
   await setYear(page, 1911);
   assert.equal(await page.locator('.research-leads').evaluate(el => el.open), true, 'Rerenders should preserve expanded leads');
-  await page.locator('#language-button').click();
+  await page.locator('#language-select').selectOption('zh');
   assert.match(await page.locator('.reference-banner').textContent(), /與時間軸年份無關/);
   assert.match(await fact('start').textContent(), /早期當地童軍團／旅.*1911/);
   assert.match(await fact('wosm-membership').textContent(), /WOSM 名錄會籍年份.*1950/);
@@ -365,7 +367,7 @@ test('organisation cards prioritise WOSM while retaining field-specific evidence
   assert.match(await page.locator('#card-content .card-body').textContent(), /constituent.*not the federation itself.*not necessarily the founding or accession/i);
   assert.equal(await page.locator('[data-source-slot="start"][data-source-id="portugal-aep-history"]').count(), 1);
   assert.equal(await page.locator('[data-source-slot="membership-context"][data-source-id="portugal-aep-history"]').count(), 1);
-  await page.locator('#language-button').click();
+  await page.locator('#language-select').selectOption('zh');
   assert.match(await page.locator('#card-content .card-body').textContent(), /AEP.*1912.*1913.*成員組織.*1922/);
 });
 
@@ -377,7 +379,7 @@ test('conflicts, re-admissions, blank directory fields and unavailable WOSM page
   assert.match(await fact('membership').textContent(), /1994/);
   assert.match(await fact('wosm-membership').locator('.membership-flag.is-disputed').textContent(), /conflicting years/i);
   assert.equal(await page.locator('[data-source-slot="membership-context"][data-source-id="slovenia-zts-wosm"]').count(), 1);
-  await page.locator('#language-button').click();
+  await page.locator('#language-select').selectOption('zh');
   assert.match(await fact('wosm-membership').textContent(), /1997.*1994.*矛盾/);
   assert.match(await fact('wosm-membership').locator('.membership-flag.is-disputed').textContent(), /年份有爭議/);
   await page.locator('#directory-button').click();
@@ -445,7 +447,7 @@ test('conflicts, re-admissions, blank directory fields and unavailable WOSM page
   assert.equal(await page.locator('[data-source-slot="membership-context"][data-source-id="wosm-statistics-2007"]').count(), 1);
   assert.equal(await page.locator('[data-source-slot="membership-context"][data-source-id="wosm-statistics-2010"]').count(), 1);
   assert.match(await fact('membership').textContent(), /1925.*1935/);
-  await page.locator('#language-button').click();
+  await page.locator('#language-select').selectOption('zh');
   assert.match(await fact('wosm-membership').textContent(), /未列明.*年份有爭議.*1925.*1935/);
   await visit(page, '?lang=en&year=1907&nso=SDN&ref=1');
   assert.match(await fact('wosm-membership').textContent(), /directory detail unavailable.*to be verified.*2010 WOSM archive.*1956/i);
@@ -485,7 +487,7 @@ test('directory and reference cards fit narrow screens in both languages', async
     assert.equal(await last.isVisible(), true, 'The end of the directory must be reachable');
     await page.keyboard.press('Escape');
     assert.equal(await page.evaluate(() => document.activeElement.id), 'directory-button');
-    if (language === 'en') await page.locator('#language-button').click();
+    if (language === 'en') await page.locator('#language-select').selectOption('zh');
   }
   await page.locator('#directory-button').click();
   await page.locator('.directory-entry[data-nso-id="PAK"]').click();
@@ -579,7 +581,7 @@ test('sample organisation names are sourced, bilingual and wrap on a small scree
   assert.equal(await page.locator('#card-content [data-source-id="wosm-directory"]').count(), 1);
   const dimensions = await page.locator('#story-panel').evaluate(el => ({ width: el.clientWidth, content: el.scrollWidth, document: document.documentElement.scrollWidth, viewport: innerWidth }));
   assert.ok(dimensions.content <= dimensions.width && dimensions.document <= dimensions.viewport, JSON.stringify(dimensions));
-  await page.locator('#language-button').click();
+  await page.locator('#language-select').selectOption('zh');
   assert.equal(await page.locator('#card-content .card-place').textContent(), '德國童軍聯合會');
   await visit(page, '?lang=en&year=2025&mode=spread&nso=CAN&panel=story');
   assert.equal(await page.locator('#card-content .card-place').textContent(), 'Scouts Canada');
@@ -833,4 +835,192 @@ test('without JavaScript the page shows a clear bilingual fallback rather than d
   assert.equal(await page.locator('#noscript-error').isVisible(), true);
   assert.match(await page.locator('#noscript-error').textContent(), /needs JavaScript/i);
   assert.equal(await page.locator('.atlas-workspace').isVisible(), false);
+});
+
+
+test('bar geometry is proportional, categorical and contains only reported years at desktop and mobile sizes', async t => {
+  const { page } = await pageFor(t);
+  await visit(page, '?lang=en&mode=population&year=2025');
+  const rows = JSON.parse(await readFile(path.join(root, 'data/membership.json'), 'utf8'))
+    .filter(row => Number.isFinite(row.members) && row.year <= new Date().getFullYear());
+  const chart = page.locator('#membership-chart');
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 320, height: 568 }]) {
+    await page.setViewportSize(viewport);
+    // The chart redraws on resize; the selected value remains an exact source figure.
+    await page.waitForFunction(() => Number(document.querySelector('#membership-chart').getAttribute('viewBox').split(' ')[2]) === Math.max(240, Math.round(document.querySelector('#membership-chart').getBoundingClientRect().width)));
+    const geometry = await chart.evaluate(svg => {
+      const bars = [...svg.querySelectorAll('rect.chart-bar')].map(el => ({ year: Number(el.dataset.year), x: Number(el.getAttribute('x')), y: Number(el.getAttribute('y')), width: Number(el.getAttribute('width')), height: Number(el.getAttribute('height')) }));
+      const max = Math.max(...bars.map(bar => bar.height));
+      return { bars, max, circles: svg.querySelectorAll('circle, polyline, path.chart-line').length };
+    });
+    assert.equal(geometry.circles, 0);
+    assert.deepEqual(geometry.bars.map(bar => bar.year), rows.map(row => row.year));
+    assert.equal(geometry.bars.some(bar => bar.year === 1923 || bar.year === 1971), false);
+    assert.equal(await chart.locator('.chart-bar.is-estimate').count(), 1);
+    assert.match(await chart.locator('.chart-bar.is-estimate').getAttribute('class'), /is-current/);
+    const maxValue = Math.max(60000000, ...rows.map(row => row.members));
+    for (const [index, bar] of geometry.bars.entries()) {
+      assert.ok(Math.abs(bar.height / geometry.max - rows[index].members / maxValue) < 1e-10, `${viewport.width} ${bar.year} height`);
+      if (index >= 2) assert.ok(Math.abs((bar.x - geometry.bars[index - 1].x) - (geometry.bars[1].x - geometry.bars[0].x)) < 1e-8, 'Reported years are evenly spaced categories');
+    }
+    assert.match(await page.locator('#population-spacing').textContent(), /not elapsed time.*not zero.*1907.*too small/i);
+    assert.equal(await chart.getAttribute('aria-describedby'), 'population-spacing');
+    // A near-zero 1907 bar is not artificially enlarged. Its category can still
+    // be clicked anywhere in its band, or selected from the year menu.
+    const first = await chart.evaluate(svg => {
+      const bar = svg.querySelector('rect.chart-bar[data-year="1907"]'), vb = svg.viewBox.baseVal, box = svg.getBoundingClientRect();
+      return { x: (Number(bar.getAttribute('x')) + Number(bar.getAttribute('width')) / 2) / vb.width * box.width, y: 12 };
+    });
+    await chart.scrollIntoViewIfNeeded(); await chart.click({ position: first });
+    assert.equal(await page.locator('#year-range').inputValue(), '1907');
+    assert.equal(await page.locator('#chart-value').textContent(), '20');
+    assert.match(await page.locator('#chart-value-label').textContent(), /Brownsea camp, not worldwide/i);
+    await setYear(page, 1923);
+    assert.equal(await chart.locator('.chart-bar.is-current').count(), 0);
+    assert.equal(await page.locator('#chart-value').textContent(), 'No data');
+    assert.equal(await page.locator('#chart-source a').count(), 0);
+    await setYear(page, 2025);
+  }
+});
+
+test('all nine languages translate interface and journey, preserve sources, qualifiers and share links', async t => {
+  const { page } = await pageFor(t);
+  await page.addInitScript(() => { Object.defineProperty(navigator, 'clipboard', { value: { writeText: async text => { window.copiedLink = text; } } }); });
+  await visit(page, '?lang=ja-JP&mode=population&year=2025');
+  assert.equal(await page.locator('html').getAttribute('lang'), 'ja');
+  const chooser = page.locator('#language-select');
+  assert.equal(await chooser.locator('option').count(), 9);
+  for (const lang of SUPPORTED_LANGUAGES) {
+    await chooser.selectOption(lang);
+    assert.equal(await page.locator('html').getAttribute('lang'), lang === 'zh' ? 'zh-Hant-HK' : lang);
+    assert.equal(await page.locator('#page-title').textContent(), translate('populationHeadline', lang));
+    assert.equal(await page.locator('#population-spacing').textContent(), translate('populationSpacing', lang));
+    assert.equal(await page.locator('#chart-value-label').textContent(), `${translate('people', lang)} · ${translate('estimatedReach', lang)}`);
+    assert.ok(await page.locator('#chart-source [data-source-id="wosm-2025"]').count());
+    if (!['zh', 'en'].includes(lang)) assert.equal(await page.locator('#chart-source [data-source-id="wosm-2025"]').getAttribute('lang'), 'en');
+    await page.locator('#chart-year-select').selectOption('2013');
+    const number = await page.evaluate(locale => (40000000).toLocaleString(locale), lang === 'zh' ? 'zh-Hant-HK' : lang);
+    assert.ok((await page.locator('#chart-value').textContent()).includes(number), `${lang}: formatted number`);
+    assert.ok((await page.locator('#chart-value').textContent()).includes(translate('atLeast', lang).trim()), `${lang}: lower bound`);
+    await setYear(page, 1923); assert.equal(await page.locator('#chart-value').textContent(), translate('noData', lang));
+    await page.locator('#chart-year-select').selectOption('1907');
+    assert.equal(await page.locator('#chart-value').textContent(), '20');
+    assert.equal(await page.locator('#chart-value-label').textContent(), translate('populationCamp', lang));
+    await page.locator('#chart-year-select').selectOption('2025');
+  }
+  await chooser.selectOption('hi');
+  await page.locator('#share-button').click();
+  const shared = new URL(await page.evaluate(() => window.copiedLink));
+  assert.equal(shared.searchParams.get('lang'), 'hi'); assert.equal(shared.searchParams.get('year'), '2025'); assert.equal(shared.searchParams.get('mode'), 'population');
+  await page.reload({ waitUntil: 'networkidle' });
+  assert.equal(await page.locator('html').getAttribute('lang'), 'hi');
+  assert.match(await page.locator('#chart-value-label').textContent(), /अनुमानित/);
+
+  // The 20 journey stories are translated, while unsupplied historical notes
+  // deliberately retain English and identify that language to assistive tech.
+  const journey = enhanceLocalizedData({ journey: JSON.parse(await readFile(path.join(root, 'data/journey.json'), 'utf8')) }).journey;
+  const brownsea = journey.find(stop => stop.id === 'brownsea');
+  for (const lang of ['ja', 'ko', 'fr', 'es', 'id', 'pt', 'hi']) {
+    await visit(page, `?lang=${lang}&mode=journey&year=1907&stop=brownsea`);
+    assert.equal(await page.locator('#card-content h2').textContent(), brownsea.title[lang]);
+    assert.equal(await page.locator('#card-content .card-body').textContent(), brownsea.body[lang]);
+    assert.equal(await page.locator('#card-content .card-body').getAttribute('lang'), lang);
+    assert.match(await page.locator('a[href^="credits.html"]').first().getAttribute('href'), new RegExp(`lang=${lang}`));
+  }
+  await visit(page, '?lang=fr&mode=members&year=2025&nso=SVN&ref=1');
+  assert.equal(await page.locator('.wosm-context p').getAttribute('lang'), 'en');
+  assert.match(await page.locator('.wosm-context p').textContent(), /1997.*1994/);
+  assert.equal(await page.locator('#card-content .translation-note').textContent(), translate('translationNote', 'fr'));
+  await visit(page, '?lang=fr&mode=members&year=2025&nso=CUW&ref=1');
+  assert.match(await page.locator('#card-content h2').textContent(), /Curaçao.*Saint-Martin.*Pays-Bas/i);
+
+  await visit(page, 'credits.html?lang=es#membership-figures');
+  assert.equal(await page.locator('html').getAttribute('lang'), 'es');
+  assert.equal(await page.locator('h1').textContent(), translate('creditsTitle', 'es'));
+  const year2024 = page.locator('#membership-sources tr').filter({ hasText: /^2024/ });
+  assert.match(await year2024.textContent(), /10 de agosto.*176/i);
+  assert.equal(await year2024.locator('a').first().getAttribute('lang'), 'en');
+  await page.locator('#language-select').selectOption('pt');
+  assert.match(await page.locator('#back-link').getAttribute('href'), /lang=pt/);
+  assert.match(page.url(), /lang=pt/); assert.match(page.url(), /#membership-figures/);
+  assert.equal(await page.locator('[data-i18n="translationNote"]').textContent(), translate('translationNote', 'pt'));
+});
+
+test('browser preference selection supports ordered fallbacks and multilingual recovery', async t => {
+  const { page } = await pageFor(t, { locale: 'de-DE' });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'languages', { configurable: true, value: ['de-DE', 'ko-KR', 'en-US'] });
+    Object.defineProperty(window, 'localStorage', { get() { throw new Error('blocked'); } });
+  });
+  await visit(page);
+  assert.equal(await page.locator('html').getAttribute('lang'), 'ko');
+  assert.equal(await page.locator('#language-select').inputValue(), 'ko');
+  await page.locator('#language-select').selectOption('ja');
+  await page.waitForTimeout(160); await page.reload({ waitUntil: 'networkidle' });
+  assert.equal(await page.locator('html').getAttribute('lang'), 'ja');
+  assert.match(page.url(), /lang=ja/);
+
+  await page.route('**/data/world.json', route => route.fulfill({ status: 503, body: 'unavailable' }));
+  await visit(page, '?lang=fr');
+  assert.equal(await page.locator('#load-error').getAttribute('role'), 'alert');
+  assert.match(await page.locator('#load-error').textContent(), /Impossible de charger/i);
+  await page.locator('#language-select').selectOption('ko');
+  assert.match(await page.locator('#load-error').textContent(), /불러오지 못했습니다/);
+  assert.equal(new URL(page.url()).searchParams.get('lang'), 'ko');
+  await page.unroute('**/data/world.json'); await page.locator('#load-error button').click();
+  await page.waitForSelector('.map-country');
+  assert.equal(await page.locator('html').getAttribute('lang'), 'ko');
+});
+
+test('nine-language header, navigation and chart fit mobile and compact desktop widths', async t => {
+  const { page } = await pageFor(t, { reducedMotion: 'reduce' });
+  await visit(page, '?lang=en&mode=journey&year=1907');
+  for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 }, { width: 1024, height: 768 }]) {
+    await page.setViewportSize(viewport);
+    for (const lang of SUPPORTED_LANGUAGES) {
+      await page.locator('#language-select').selectOption(lang);
+      for (const mode of ['journey', 'members', 'jamborees', 'population']) {
+        await page.locator(`[data-mode="${mode}"]`).click();
+        const layout = await page.evaluate(() => {
+          const bounds = el => { const rect = el.getBoundingClientRect(); return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom }; };
+          return { document: document.documentElement.scrollWidth, viewport: innerWidth, brand: bounds(document.querySelector('.brand')), nav: bounds(document.querySelector('.primary-nav')), buttons: [...document.querySelectorAll('.mode-button')].map(bounds), actions: bounds(document.querySelector('.header-actions')) };
+        });
+        assert.equal(layout.document, viewport.width, `${lang} ${mode} ${viewport.width}: ${JSON.stringify(layout)}`);
+        assert.ok(layout.actions.right <= viewport.width + 1 && layout.actions.left >= 0, `${lang} header: ${JSON.stringify(layout)}`);
+        if (viewport.width > 900) assert.ok(layout.brand.right <= layout.nav.left && layout.nav.right <= layout.actions.left + 1, `${lang} desktop header: ${JSON.stringify(layout)}`);
+        for (const [i, button] of layout.buttons.entries()) {
+          assert.ok(button.left >= layout.nav.left - 1 && button.right <= layout.nav.right + 1, `${lang} navigation button`);
+          if (i) assert.ok(button.left >= layout.buttons[i - 1].right - 1, `${lang} navigation overlap`);
+        }
+      }
+    }
+  }
+});
+
+test('multilingual selectors and source fallbacks remain accessible with keyboard and axe', async t => {
+  const { page } = await pageFor(t, { reducedMotion: 'reduce' });
+  const audit = async label => {
+    const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+    assert.deepEqual(result.violations.map(item => `${item.id}: ${item.nodes.map(node => node.target.join(' ')).join(', ')}`), [], label);
+  };
+  await visit(page, '?lang=ja&mode=population&year=2025');
+  assert.equal(await page.locator('#language-select').getAttribute('aria-label'), translate('languageLabel', 'ja'));
+  await page.locator('#language-select').focus(); await page.keyboard.press('ArrowDown');
+  assert.equal(await page.locator('html').getAttribute('lang'), 'ko');
+  assert.equal(await page.evaluate(() => document.activeElement.id), 'language-select');
+  assert.equal(await page.locator('#language-select').getAttribute('aria-label'), translate('languageLabel', 'ko'));
+  assert.equal(await page.locator('#chart-source [data-source-id="wosm-2025"]').getAttribute('lang'), 'en');
+  assert.equal(await page.locator('#chart-source .translation-note').textContent(), translate('translationNote', 'ko'));
+  await audit('Korean population and native selector');
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.locator('#language-select').selectOption('hi');
+  await page.locator('#chart-year-select').selectOption('1907');
+  assert.equal(await page.locator('#membership-chart').getAttribute('aria-valuenow'), '1907');
+  assert.match(await page.locator('#membership-chart').getAttribute('aria-valuetext'), /1907.*20/);
+  assert.match(await page.locator('#chart-value-label').textContent(), /विश्व सदस्य संख्या नहीं/);
+  await audit('Hindi mobile population');
+  await visit(page, 'credits.html?lang=pt#membership-figures');
+  assert.equal(await page.locator('html').getAttribute('lang'), 'pt');
+  assert.equal(await page.locator('#source-list a').first().getAttribute('lang'), 'en');
+  await audit('Portuguese mobile sources');
 });

@@ -1,5 +1,7 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
-import { applyLanguage, getInitialLanguage, localize, t } from './i18n.js';
+// B-P Atlas v1.2 · © SCOUT SYSTEM
+import { applyLanguage, getInitialLanguage, localize, localizationLanguage, localeFor, t } from './i18n.js';
+import { enhanceLocalizedData } from './data-translations.js';
+import { formatValue } from './chart.js';
 
 const params = new URLSearchParams(location.search);
 let lang = getInitialLanguage(params), data = null, failed = false;
@@ -11,16 +13,15 @@ function sourceLink(source) {
   try { url = new URL(source.url); } catch { return null; }
   if (!['https:', 'http:'].includes(url.protocol)) return null;
   link.href = url.href; link.target = '_blank'; link.rel = 'noopener noreferrer';
-  link.textContent = localize(source.title, lang); return link;
+  link.textContent = localize(source.title, lang); link.lang = localizationLanguage(source.title, lang) || localeFor(lang); return link;
 }
 function number(value, precision) {
   if (value == null) return '—';
-  const prefix = precision === 'approx' ? t('approximate', lang) : precision === 'at-least' ? t('atLeast', lang) : '';
-  return `${prefix}${value.toLocaleString(lang === 'zh' ? 'zh-HK' : 'en')}`;
+  return formatValue({ value, precision }, lang);
 }
 function render() {
   applyLanguage(lang);
-  document.title = `${t('creditsTitle', lang)} · B-P Atlas v1.1 · © SCOUT SYSTEM`;
+  document.title = `${t('creditsTitle', lang)} · B-P Atlas v1.2 · © SCOUT SYSTEM`;
   document.querySelector('#back-link').href = `index.html?lang=${lang}`;
   document.querySelector('.brand').href = `index.html?lang=${lang}`;
   const status = document.querySelector('#sources-status');
@@ -39,7 +40,7 @@ function render() {
       const note = document.createElement('span'); note.textContent = `${t('estimatedReach', lang)}: `; sources.append(note);
     }
     if (row.organisationNote) {
-      const note = document.createElement('span'); note.textContent = localize(row.organisationNote, lang); sources.append(note);
+      const note = document.createElement('span'); note.textContent = localize(row.organisationNote, lang); note.lang = localizationLanguage(row.organisationNote, lang) || localeFor(lang); sources.append(note);
     }
     for (const id of row.sources) {
       const source = byId.get(id), link = source && sourceLink(source); if (link) sources.append(link);
@@ -52,8 +53,8 @@ function render() {
     id.className = 'source-id'; id.textContent = source.id; li.append(id, link); list.append(li);
   }
 }
-document.querySelector('#language-button').addEventListener('click', () => {
-  lang = lang === 'zh' ? 'en' : 'zh';
+document.querySelector('#language-select').addEventListener('change', event => {
+  lang = event.target.value;
   try {
     const url = new URL(location.href); url.searchParams.set('lang', lang);
     history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
@@ -68,6 +69,6 @@ try {
     const value = await response.json(); if (!Array.isArray(value)) throw new Error(`Invalid ${name}`);
     return [name, value];
   }));
-  data = Object.fromEntries(entries);
+  data = enhanceLocalizedData(Object.fromEntries(entries));
 } catch (error) { failed = true; console.error('Sources could not be loaded:', error); }
 render();

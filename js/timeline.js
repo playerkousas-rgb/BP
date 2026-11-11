@@ -1,4 +1,4 @@
-// B-P Atlas v1.1 · © SCOUT SYSTEM
+// B-P Atlas v1.2 · © SCOUT SYSTEM
 import { t } from './i18n.js';
 import { MIN_YEAR } from './state.js';
 import { adjacentYear, trackYears } from './chronicles.js';

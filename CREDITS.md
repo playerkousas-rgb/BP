@@ -1,6 +1,6 @@
 # 資料來源及致謝 / Sources & credits
 
-B-P Atlas v1.0 · © SCOUT SYSTEM · Research draft / 研究草稿
+B-P Atlas v1.1 · © SCOUT SYSTEM · Research draft / 研究草稿
 
 ## 重要限制 / Important limitations
 

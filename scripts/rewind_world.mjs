@@ -1,4 +1,4 @@
-// B-P Atlas v1.0 · © SCOUT SYSTEM
+// B-P Atlas v1.1 · © SCOUT SYSTEM
 // Mapshaper can reverse small rings across the antimeridian during simplification.
 // Restore d3-geo's spherical winding convention without altering shared arcs.
 import { readFileSync, writeFileSync } from 'node:fs';

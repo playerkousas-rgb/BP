@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// B-P Atlas v1.0 · © SCOUT SYSTEM
+// B-P Atlas v1.1 · © SCOUT SYSTEM
 // Structural validation only: passing this script does NOT verify historical claims.
 import { readFileSync, statSync } from 'node:fs';
 import { feature, geoArea } from '../vendor/geography.min.js';

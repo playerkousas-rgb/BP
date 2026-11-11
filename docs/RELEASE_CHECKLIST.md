@@ -1,6 +1,6 @@
 # 正式上線前清單 / Release blockers
 
-B-P Atlas v1.0 · © SCOUT SYSTEM · 2026-11-10
+B-P Atlas v1.1 · © SCOUT SYSTEM · 2026-11-10
 
 此原型已可互動，但**以下項目尚未全部完成，不應以「已核實」或完整名單發佈**。
 

@@ -1,4 +1,4 @@
-// B-P Atlas v1.0 · © SCOUT SYSTEM
+// B-P Atlas v1.1 · © SCOUT SYSTEM
 // Optional, dev-only browser tests. The website itself requires no build or server-side code.
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -35,7 +35,7 @@ async function pageFor(t, options = {}) {
   if (process.env.CHROMIUM_SINGLE_PROCESS === '1') launchOptions.args = ['--no-sandbox', '--no-zygote', '--single-process', '--disable-dev-shm-usage', '--disable-gpu'];
   const browser = await chromium.launch(launchOptions); t.after(() => browser.close());
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'en-US', ...options });
-  const page = await context.newPage(), errors = [];
+  const page = await context.newPage(), errors = []; page.setDefaultTimeout(8_000);
   page.on('pageerror', error => errors.push(error.message));
   t.after(() => assert.deepEqual(errors, [], 'Unexpected browser JavaScript errors'));
   return { page, context };
@@ -44,7 +44,7 @@ const visit = (page, query = '') => page.goto(`${origin}${query}`, { waitUntil: 
 const setYear = (page, year) => page.locator('#year-range').evaluate((input, value) => { input.value = value; input.dispatchEvent(new Event('input', { bubbles: true })); }, String(year));
 
 // One browser per test also supports constrained single-process/headless environments.
-test('journey, camera, keyboard focus, cancellation and sharing stay in sync', async t => {
+test('journey, camera, keyboard focus and sharing stay in sync', async t => {
   const { page } = await pageFor(t);
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', { value: { writeText: async text => { if (window.rejectClipboard) throw new Error('blocked'); window.copiedLink = text; } } });
@@ -76,21 +76,18 @@ test('journey, camera, keyboard focus, cancellation and sharing stay in sync', a
   await page.locator('#share-button').click();
   assert.equal(await page.evaluate(() => window.fallbackLink), page.url());
   assert.equal(await page.evaluate(() => document.activeElement.id), 'share-button');
-  const cancel = page.locator('.timeline-cancel'); await cancel.focus(); await page.keyboard.press('Enter');
-  assert.equal(await page.locator('#year-range').inputValue(), '1979');
-  assert.match(await page.locator('#card-content h2').textContent(), /cancelled/i);
-  assert.equal(await page.evaluate(() => document.activeElement.classList.contains('timeline-cancel')), true);
-  assert.equal(await page.locator('#jamboree-toggle').getAttribute('aria-pressed'), 'true');
-  await page.locator('#jamboree-toggle').click();
-  assert.equal(await page.locator('.jamboree-marker').count(), 0);
+  assert.equal(await page.locator('.jamboree-marker').count(), 0, 'Journey and jamboree markers now live in separate chronicles');
+  assert.equal(await page.locator('.timeline-cancel').count(), 0);
   const transferred = await page.evaluate(() => [...performance.getEntriesByType('navigation'), ...performance.getEntriesByType('resource')].reduce((sum, entry) => sum + entry.transferSize, 0));
   assert.ok(transferred > 0 && transferred < 1_000_000, `First load should be under 1 MB, got ${transferred}`);
 });
 
-test('chart slider, source qualifiers, URL bounds and selected marker focus', async t => {
+test('standalone population chart explores only source points, with qualifiers and accessible controls', async t => {
   const { page } = await pageFor(t);
-  await visit(page, '?lang=en&year=1857&mode=spread');
+  await visit(page, '?lang=en&year=1857&mode=population');
   const chart = page.locator('#membership-chart');
+  assert.equal(await page.locator('.atlas-workspace').isVisible(), false);
+  assert.equal(await page.locator('#chart-panel').isVisible(), true);
   assert.equal(await chart.getAttribute('role'), 'slider');
   assert.equal(await chart.getAttribute('aria-valuemin'), '1857');
   await chart.focus(); await page.keyboard.press('ArrowRight');
@@ -101,56 +98,37 @@ test('chart slider, source qualifiers, URL bounds and selected marker focus', as
   assert.equal(await page.locator('#chart-value').textContent(), 'about 60,000,000');
   assert.match(await page.locator('#chart-value-label').textContent(), /estimated reach/i);
   assert.match(await chart.getAttribute('aria-valuetext'), /2025.*estimated reach/i);
-  await page.locator('.timeline-cancel').click();
-  assert.equal(await page.locator('#year-range').inputValue(), '1979', 'The timeline cancellation should jump back from a later year');
-  await page.locator('#chart-org-toggle').click();
-  assert.equal(await chart.locator('polyline, .chart-line, .chart-org-line').count(), 0, 'Neither series may imply intermediate values');
+  assert.ok(await page.locator('#chart-source [data-source-id="wosm-2025"]').count());
+  assert.equal(await chart.locator('polyline, .chart-line, .chart-org-line').count(), 0, 'No lines may imply intermediate values');
   const rows = JSON.parse(await readFile(path.join(root, 'data/membership.json'), 'utf8'));
   assert.equal(await chart.locator('.chart-point').count(), rows.filter(row => row.members != null && row.year <= new Date().getFullYear()).length);
-  assert.equal(await chart.locator('.chart-org-point').count(), rows.filter(row => row.countries != null && row.year <= new Date().getFullYear()).length);
+  assert.equal(await chart.locator('.chart-point.is-estimate').count(), 1);
   await setYear(page, 1923);
   assert.equal(await page.locator('#chart-value').textContent(), 'No data');
-  assert.equal(await page.locator('#chart-org-value').textContent(), 'No data');
-  assert.match(await chart.getAttribute('aria-valuetext'), /1923.*No data.*Orgs \/ countries: No data/i);
-  await setYear(page, 1971);
-  assert.equal(await page.locator('#chart-value').textContent(), 'No data');
-  assert.equal(await page.locator('#chart-org-value').textContent(), 'over 100');
-  await setYear(page, 1931);
-  assert.equal(await page.locator('#chart-value').textContent(), '2,039,349');
-  assert.equal(await page.locator('#chart-org-value').textContent(), 'No data');
-  await setYear(page, 2013);
-  assert.equal(await page.locator('#chart-value').textContent(), 'over 40,000,000');
-  assert.equal(await page.locator('#chart-org-value').textContent(), '162');
-  await setYear(page, 2024);
-  assert.equal(await page.locator('#chart-org-value').textContent(), '175');
-  assert.match(await page.locator('#chart-org-note').textContent(), /10 August report.*176/i);
-  assert.match(await chart.getAttribute('aria-valuetext'), /175.*10 August report.*176/i);
-  await setYear(page, 2025);
-  assert.equal(await page.locator('#chart-org-value').textContent(), '176');
-  assert.equal(await page.locator('#chart-org-note').textContent(), '');
-  await visit(page, '?lang=en&year=9999&mode=spread&nso=PAK');
-  assert.equal(await page.locator('#year-range').inputValue(), String(new Date().getFullYear()));
-  assert.match(await page.locator('#card-content h2').textContent(), /idea travels/i);
-  await visit(page, '?lang=en&year=1857&stop=brownsea');
-  assert.equal(await page.locator('#year-range').inputValue(), '1907');
-  const marker = page.locator('.map-marker[data-id="brownsea"]'); await marker.focus(); await page.keyboard.press('Enter');
-  assert.equal(await page.evaluate(() => document.activeElement.dataset.id), 'brownsea');
-  assert.match(await page.locator('#card-content h2').textContent(), /one camp/i);
-  await visit(page, '?lang=en&year=1920&jamboree=jamboree-1979-cancelled&jamborees=0');
-  assert.equal(await page.locator('#year-range').inputValue(), '1979');
-  assert.equal(await page.locator('#jamboree-toggle').getAttribute('aria-pressed'), 'true');
-  await visit(page, '?lang=en&year=1937&stop=vogelenzang');
-  await page.locator('.map-marker[data-id="vogelenzang"]').focus(); await page.keyboard.press('Enter');
-  const samePlaceStop = page.locator('.map-marker[data-id="vogelenzang"]');
-  const samePlaceEvent = page.locator('.map-marker[data-id="jamboree-5"]');
-  assert.notEqual(await samePlaceStop.getAttribute('data-dy'), await samePlaceEvent.getAttribute('data-dy'));
-  await samePlaceEvent.click();
-  assert.match(await page.locator('#card-content h2').textContent(), /Jamboree 5/i);
-  await page.locator('.map-marker[data-id="vogelenzang"]').click();
-  assert.match(await page.locator('#card-content h2').textContent(), /farewell/i);
+  assert.equal(await page.locator('#chart-year-select').inputValue(), '');
+  assert.equal(await page.locator('#chart-meter span').count(), 0);
+  assert.equal(await page.locator('#chart-meter').evaluate(el => el.style.width), '0%');
+  assert.match(await chart.getAttribute('aria-valuetext'), /1923.*No data/i);
+  await setYear(page, 1971); assert.equal(await page.locator('#chart-value').textContent(), 'No data');
+  await setYear(page, 1931); assert.equal(await page.locator('#chart-value').textContent(), '2,039,349');
+  await setYear(page, 2013); assert.equal(await page.locator('#chart-value').textContent(), 'over 40,000,000');
+  await page.locator('#chart-year-select').selectOption('1907');
+  assert.equal(await page.locator('#chart-value').textContent(), '20');
+  assert.match(await page.locator('#chart-value-label').textContent(), /Brownsea camp, not worldwide membership/i);
+  const percent = await page.locator('#chart-meter').evaluate(el => parseFloat(el.style.width));
+  assert.ok(Math.abs(percent - 20 / 60000000 * 100) < 0.000001, 'The bar must be proportional even for 1907');
+  await page.locator('#next-button').click(); assert.equal(await page.locator('#year-range').inputValue(), '1922');
+  await page.locator('#previous-button').click(); assert.equal(await page.locator('#year-range').inputValue(), '1907');
+  await chart.locator('.chart-point[data-year="1950"]').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1950');
+  assert.equal(await page.locator('#chart-value').textContent(), 'about 5,000,000');
+  await visit(page, '?lang=en&year=2024&orgs=1&panel=chart');
+  assert.equal(await page.locator('#chart-panel').isVisible(), true, 'Legacy chart links open the independent population view');
+  assert.equal(await page.locator('#chart-value').textContent(), 'over 57,000,000');
+  await page.waitForTimeout(160); assert.equal(new URL(page.url()).searchParams.get('mode'), 'population');
 });
 
-test('mobile drawers, 1979 control and genuine two-finger zoom', async t => {
+test('mobile story drawer, separate chart, cancellation and genuine two-finger zoom', async t => {
   const { page, context } = await pageFor(t, { viewport: { width: 390, height: 844 }, locale: 'zh-HK', isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
   await visit(page);
   const cdp = await context.newCDPSession(page);
@@ -169,13 +147,12 @@ test('mobile drawers, 1979 control and genuine two-finger zoom', async t => {
   await page.locator('#story-panel [data-close-panel]').click();
   assert.equal(await page.locator('#story-panel').isVisible(), false);
   assert.equal(await page.evaluate(() => document.activeElement.id), 'mobile-story');
-  await page.locator('#mobile-chart').click();
+  await page.locator('[data-mode="population"]').click();
   assert.equal(await page.locator('#chart-panel').isVisible(), true);
-  assert.equal(await page.locator('#story-panel').isVisible(), false);
-  await page.keyboard.press('Escape');
-  assert.equal(await page.locator('#chart-panel').isVisible(), false);
-  assert.equal(await page.evaluate(() => document.activeElement.id), 'mobile-chart');
-  await page.locator('[data-mode="spread"]').click();
+  assert.equal(await page.locator('.atlas-workspace').isVisible(), false);
+  await page.locator('#chart-year-select').selectOption('1922');
+  assert.equal(await page.locator('#chart-value').textContent(), '1,019,205');
+  await page.locator('[data-mode="jamborees"]').click();
   await page.locator('.timeline-cancel').click();
   assert.equal(await page.locator('#year-range').inputValue(), '1979');
   assert.equal(await page.locator('#story-panel').isVisible(), true);
@@ -549,14 +526,20 @@ test('disputed years and chart context remain visible and scrollable on 320px sc
     assert.ok(size.content <= size.width && size.document <= size.viewport, `${lang} ${id}: ${JSON.stringify(size)}`);
   }
   for (const lang of ['en', 'zh']) {
-    await visit(page, `?lang=${lang}&year=2024&orgs=1&panel=chart`);
-    assert.match(await page.locator('#chart-org-current').textContent(), lang === 'en' ? /175.*10 August.*176/ : /175.*8 月 10 日.*176/);
+    await visit(page, `?lang=${lang}&year=2024&mode=members&panel=story`);
+    assert.match(await page.locator('.reported-stat').textContent(), lang === 'en' ? /175.*10 August.*176/ : /175.*8 月 10 日.*176/);
+    await page.locator('.reported-stat').scrollIntoViewIfNeeded();
+    const source = page.locator('.reported-stat a[data-source-slot="reported-count"]').first();
+    await source.scrollIntoViewIfNeeded(); assert.equal(await source.isVisible(), true);
+    await visit(page, `?lang=${lang}&year=2024&mode=population`);
+    assert.match(await page.locator('#chart-value').textContent(), /57,000,000/);
     const graph = await inside(page.locator('#membership-chart'), '#chart-panel');
-    assert.ok(graph.top >= graph.panelTop && graph.bottom <= graph.panelBottom, `${lang}: whole chart should fit in the initial view ${JSON.stringify(graph)}`);
+    assert.ok(graph.left >= graph.panelLeft && graph.right <= graph.panelRight, `${lang}: graph must fit the panel ${JSON.stringify(graph)}`);
     const link = page.locator('#chart-panel .chart-note a');
     await link.scrollIntoViewIfNeeded();
     const visible = await inside(link, '#chart-panel');
     assert.ok(visible.top >= visible.panelTop && visible.bottom <= visible.panelBottom, `${lang}: chart source link must be reachable ${JSON.stringify(visible)}`);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
   }
 });
 
@@ -566,7 +549,10 @@ test('representative desktop, mobile and credits states pass automated accessibi
     const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
     assert.deepEqual(result.violations.map(item => `${item.id}: ${item.nodes.map(node => node.target.join(' ')).join(', ')}`), [], label);
   };
-  await visit(page, '?lang=en&year=2025&mode=spread'); await audit('desktop spread');
+  await visit(page, '?lang=en&year=2025&mode=spread'); await audit('desktop early groups');
+  await visit(page, '?lang=en&year=1922&mode=members'); await audit('desktop members');
+  await visit(page, '?lang=en&year=1979&mode=jamborees'); await audit('desktop jamborees');
+  await visit(page, '?lang=en&year=2025&mode=population'); await audit('desktop population');
   await page.locator('#about-button').click(); await audit('about dialog'); await page.locator('#about-close').click();
   await page.locator('#directory-button').click(); await audit('desktop directory'); await page.keyboard.press('Escape');
   await visit(page, '?lang=en&year=1907&nso=PAK&ref=1'); await audit('desktop reference card');
@@ -576,9 +562,13 @@ test('representative desktop, mobile and credits states pass automated accessibi
   await page.locator('#mobile-story').click();
   await page.locator('#story-panel').evaluate(el => Promise.all(el.getAnimations().map(animation => animation.finished.catch(() => {}))));
   await audit('mobile story');
-  await page.locator('#mobile-chart').click();
-  await page.locator('#chart-panel').evaluate(el => Promise.all(el.getAnimations().map(animation => animation.finished.catch(() => {}))));
-  await audit('mobile chart');
+  await page.locator('[data-mode="population"]').click();
+  await audit('mobile population');
+  await page.setViewportSize({ width: 320, height: 568 });
+  await visit(page, '?lang=en&year=2018&mode=members');
+  await page.locator('#mobile-story').click();
+  await page.locator('#reported-year-select').scrollIntoViewIfNeeded();
+  await audit('small mobile reported total');
   await visit(page, 'credits.html?lang=en'); await audit('credits');
 });
 
@@ -615,7 +605,8 @@ test('changing a long story resets the scroll position without leaving focus off
     return sourceRect.top >= panelRect.top && sourceRect.bottom <= panelRect.bottom;
   });
   assert.equal(sourceInView, true, 'Sources must remain reachable by scrolling');
-  await page.locator('#chart-org-toggle').click();
+  await page.locator('#directory-button').click();
+  await page.locator('#directory-close').click();
   assert.equal(await panel.evaluate(el => el.scrollTop), scrollTop, 'Rerendering the same story should preserve scroll');
   // Select a different country while the previous card is scrolled to its sources.
   await page.locator('.map-country[aria-label^="France"]').dispatchEvent('click');
@@ -630,6 +621,210 @@ test('changing a long story resets the scroll position without leaving focus off
     return { panel: el.id === 'story-panel', next: el.classList.contains('next-story'), visible: rect.top >= panelRect.top && rect.bottom <= panelRect.bottom };
   });
   assert.ok((focused.panel || focused.next) && focused.visible, JSON.stringify(focused));
+});
+
+test('member chronology separates directory dates from historical totals and local-group starts', async t => {
+  const { page } = await pageFor(t);
+  await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { value: { writeText: async text => { window.copiedLink = text; } } }));
+  const entries = JSON.parse(await readFile(path.join(root, 'data/nso.json'), 'utf8'));
+  await visit(page, '?lang=en&mode=members&year=1922');
+  assert.equal(await page.locator('[data-mode="members"]').getAttribute('aria-pressed'), 'true');
+  assert.match(await page.locator('#map-subtitle').textContent(), /not a historical snapshot/i);
+  assert.match(await page.locator('#map-counter').textContent(), /19 \/ 171/);
+  assert.equal(await page.locator('.members-stat strong').textContent(), '19');
+  assert.equal(await page.locator('.reported-stat strong').textContent(), '31');
+  assert.match(await page.locator('.reported-stat').textContent(), /different scopes.*cannot be directly compared/i);
+  assert.match(await page.locator('.membership-caveat').textContent(), /current directory.*not the actual membership total.*interruptions/i);
+  assert.equal(await page.locator('a[data-source-slot="reported-count"]').count(), 2);
+  const expected = entries.filter(item => item.wosmMembership.year !== null && item.wosmMembership.year <= 1922).map(item => item.id).sort();
+  const mapped = await page.evaluate(() => [...new Set([...document.querySelectorAll('.map-country.is-selectable, .nso-marker')].map(node => node.dataset.nsoId || node.dataset.id))].sort());
+  assert.deepEqual(mapped, expected, 'The map must reflect WOSM dates, including small-location markers');
+  await page.locator('.member-year-entry[data-nso-id="ARG"]').click();
+  assert.equal(await page.locator('#card-content h2').textContent(), 'Argentina');
+  assert.equal(await page.locator('#card-content .card-year').textContent(), '1922');
+  assert.ok(await page.locator('[data-source-slot="wosm-membership"][data-source-id="wosm-member-arg"]').count());
+  await page.locator('#share-button').click();
+  const shared = await page.evaluate(() => window.copiedLink), params = new URL(shared).searchParams;
+  assert.equal(params.get('mode'), 'members'); assert.equal(params.get('nso'), 'ARG');
+  await page.goto(shared, { waitUntil: 'networkidle' });
+  assert.equal(await page.locator('#card-content h2').textContent(), 'Argentina');
+  assert.equal(await page.locator('.map-country[data-nso-id="ARG"]').getAttribute('aria-pressed'), 'true');
+  await page.locator('.back-overview').click();
+  assert.equal(await page.locator('.members-stat strong').textContent(), '19');
+
+  await setYear(page, 1947);
+  assert.equal(await page.locator('.map-country[data-nso-id="PAK"].is-selectable').count(), 0);
+  await setYear(page, 1948);
+  const pakistan = page.locator('.map-country[data-nso-id="PAK"].is-selectable');
+  assert.equal(await pakistan.count(), 1, 'Pakistan has a WOSM year even though its early-group year is missing');
+  await pakistan.dispatchEvent('click');
+  assert.equal(await page.locator('#card-content .card-year').textContent(), '1948');
+  assert.match(await page.locator('[data-fact="start"]').textContent(), /to be verified/i);
+  await page.locator('#basis-button').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1948');
+  assert.equal(await page.locator('.map-country[data-nso-id="PAK"].is-selectable').count(), 0);
+  assert.match(await page.locator('.intro p').textContent(), /separate from WOSM/i);
+  await page.locator('#basis-button').click();
+  assert.equal(await page.locator('.map-country[data-nso-id="PAK"].is-selectable').count(), 1);
+  await setYear(page, 2017);
+  const macau = page.locator('.nso-marker[data-id="MAC"]');
+  assert.equal(await macau.evaluate(marker => marker.classList.contains('is-new-record')), true, 'Newly dated small locations receive the same outline cue as countries');
+  assert.equal(await macau.evaluate(marker => marker.style.getPropertyValue('--nso-record-fill')), '#d3dfc8');
+  assert.equal(await page.locator('.nso-marker[data-id="LUX"]').evaluate(marker => marker.style.getPropertyValue('--nso-record-fill')), '#698c70', 'Small-location dots use the same date colour scale as polygons');
+  await setYear(page, 2024);
+  assert.equal(await page.locator('.nso-marker[data-id="MAC"].is-new-record').count(), 0);
+  assert.equal(await page.locator('.members-stat strong').textContent(), '171');
+  const allExpected = entries.filter(item => item.wosmMembership.year !== null && item.wosmMembership.year <= 2024).map(item => item.id).sort();
+  const allMapped = await page.evaluate(() => [...new Set([...document.querySelectorAll('.map-country.is-selectable, .nso-marker')].map(node => node.dataset.nsoId || node.dataset.id))].sort());
+  assert.deepEqual(allMapped, allExpected, 'All 171 dated directory entries must be represented by geometry or a small-location marker');
+  assert.match(await page.locator('.reported-stat').textContent(), /175.*10 August.*176/i);
+  assert.equal(await page.locator('.map-country[data-nso-id="CRI"].is-selectable').count(), 0, 'A blank primary year stays uncoloured');
+  const australia = await page.locator('.map-country[data-nso-id="AUS"]').evaluateAll(parts => parts.map(part => ({ area: part.getBBox().width * part.getBBox().height, active: part.classList.contains('is-selectable'), fill: part.style.fill, role: part.getAttribute('role') })));
+  assert.equal(australia.length, 2, 'Australia and its outlying feature share one map ID');
+  assert.ok(australia.every(part => part.active && part.fill), 'Every feature sharing an ID must be coloured');
+  assert.ok(australia.some(part => part.area > 10000 && part.active), 'Australia’s mainland must be coloured, not only a tiny island');
+  assert.equal(australia.filter(part => part.role === 'button').length, 1, 'Split features do not duplicate keyboard controls');
+  await page.locator('#reported-year-select').focus();
+  await page.locator('#reported-year-select').selectOption('2018');
+  assert.equal(await page.locator('#year-range').inputValue(), '2018');
+  assert.equal(await page.locator('.reported-stat strong').textContent(), '169');
+  assert.equal(await page.evaluate(() => document.activeElement.id), 'reported-year-select');
+  await page.locator('#reported-year-select').selectOption('2025');
+  assert.equal(await page.locator('#year-range').inputValue(), '2025');
+  assert.equal(await page.locator('.reported-stat strong').textContent(), '176');
+  assert.equal(await page.locator('.members-stat strong').textContent(), '171', 'Reported total and directory accumulation must stay distinct');
+  assert.match(await page.locator('.member-year-list').textContent(), /No selected directory dates/i);
+});
+
+test('reported-year selector stays usable and focused in the narrow mobile drawer', async t => {
+  const { page } = await pageFor(t, { viewport: { width: 320, height: 568 }, reducedMotion: 'reduce' });
+  for (const lang of ['en', 'zh']) {
+    await visit(page, `?lang=${lang}&mode=members&year=2024`);
+    await page.locator('#mobile-story').click();
+    const select = page.locator('#reported-year-select');
+    await select.scrollIntoViewIfNeeded(); await select.focus();
+    for (const [year, expected] of [['2018', '169'], ['2025', '176']]) {
+      await select.selectOption(year);
+      assert.equal(await page.locator('#year-range').inputValue(), year);
+      assert.equal(await page.locator('.reported-stat strong').textContent(), expected);
+      assert.ok(await page.locator('.reported-stat a').count(), `${lang} ${year}: source is available`);
+      const bounds = await page.evaluate(() => {
+        const rect = selector => { const r = document.querySelector(selector).getBoundingClientRect(); return { top: r.top, bottom: r.bottom }; };
+        return { focus: document.activeElement.id, select: rect('#reported-year-select'), panel: rect('#story-panel'), timeline: rect('.timeline') };
+      });
+      assert.equal(bounds.focus, 'reported-year-select', `${lang} ${year}: selection should preserve keyboard focus`);
+      assert.ok(bounds.select.top >= bounds.panel.top && bounds.select.bottom <= bounds.panel.bottom && bounds.select.bottom < bounds.timeline.top, `${lang} ${year}: selector remains in view ${JSON.stringify(bounds)}`);
+    }
+  }
+});
+
+test('jamborees have a separate chronological route, cancellation, controls and share state', async t => {
+  const { page } = await pageFor(t);
+  await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { value: { writeText: async text => { window.copiedLink = text; } } }));
+  await visit(page, '?lang=en&mode=jamborees&year=1920');
+  assert.equal(await page.locator('.jamboree-marker').count(), 1);
+  assert.equal(await page.locator('.stop-marker').count(), 0);
+  assert.match(await page.locator('#card-content h2').textContent(), /Jamboree 1/i);
+  await page.locator('#next-button').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1924');
+  assert.equal(await page.locator('.jamboree-marker').count(), 2);
+  assert.equal(await page.locator('.jamboree-route').count(), 1);
+  assert.match(await page.locator('.event-route-note').textContent(), /not an actual travel route/i);
+  await page.locator('.timeline-cancel').focus(); await page.keyboard.press('Enter');
+  assert.equal(await page.locator('#year-range').inputValue(), '1979');
+  assert.equal(await page.evaluate(() => document.activeElement.classList.contains('timeline-cancel')), true);
+  assert.match(await page.locator('#card-content h2').textContent(), /cancelled/i);
+  assert.equal(await page.locator('.jamboree-marker.cancelled.selected').count(), 1);
+  assert.equal(await page.locator('.jamboree-route').count(), 13, 'The cancelled site is not included in the sequence of held events');
+  await page.locator('#previous-button').click(); assert.equal(await page.locator('#year-range').inputValue(), '1975');
+  await page.locator('#next-button').click(); assert.equal(await page.locator('#year-range').inputValue(), '1979');
+  await page.locator('#next-button').click(); assert.equal(await page.locator('#year-range').inputValue(), '1983');
+  await page.locator('#share-button').click();
+  const shared = await page.evaluate(() => window.copiedLink), params = new URL(shared).searchParams;
+  assert.equal(params.get('mode'), 'jamborees'); assert.equal(params.get('jamboree'), 'jamboree-15');
+  await page.goto(shared, { waitUntil: 'networkidle' });
+  assert.match(await page.locator('#card-content h2').textContent(), /Jamboree 15/i);
+  await setYear(page, new Date().getFullYear());
+  if (new Date().getFullYear() < 2027) {
+    assert.equal(await page.locator('.jamboree-marker').count(), 26);
+    assert.equal(await page.locator('.jamboree-marker[data-id="jamboree-26"]').count(), 0);
+  }
+  await page.locator('.jamboree-marker[data-id="jamboree-10"]').dispatchEvent('click');
+  assert.equal(await page.locator('#year-range').inputValue(), '1959');
+  await visit(page, '?lang=en&year=1920&jamboree=jamboree-1979-cancelled&jamborees=0');
+  assert.equal(await page.locator('#year-range').inputValue(), '1979');
+  assert.equal(await page.locator('[data-mode="jamborees"]').getAttribute('aria-pressed'), 'true');
+});
+
+test('mode switching preserves the journey and playback advances through actual records', async t => {
+  const { page } = await pageFor(t);
+  await visit(page, '?lang=en&year=1907&stop=brownsea');
+  await page.locator('#zoom-in').click();
+  const journeyView = await page.locator('#world-map > g').getAttribute('transform');
+  await page.locator('[data-mode="members"]').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1922');
+  await setYear(page, 1950);
+  await page.locator('[data-mode="jamborees"]').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1920');
+  await page.locator('#next-button').click();
+  await page.locator('[data-mode="population"]').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '2025');
+  await page.locator('[data-mode="journey"]').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1907');
+  assert.match(await page.locator('#card-content h2').textContent(), /one camp/i);
+  assert.equal(await page.locator('#world-map > g').getAttribute('transform'), journeyView);
+  await page.locator('[data-mode="members"]').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1950');
+  await setYear(page, 1922); await page.locator('#play-button').click();
+  assert.match(await page.locator('#play-button').getAttribute('aria-label'), /pause/i);
+  await page.waitForFunction(() => Number(document.querySelector('#year-range').value) > 1922, null, { timeout: 6000 });
+  const year = Number(await page.locator('#year-range').inputValue());
+  const entries = JSON.parse(await readFile(path.join(root, 'data/nso.json'), 'utf8'));
+  assert.ok(entries.some(entry => entry.wosmMembership.year === year));
+  await page.locator('#play-button').click();
+  for (const [previous, reportedYear, expectedTotal] of [[2017, 2018, '169'], [2024, 2025, '176']]) {
+    await setYear(page, previous); await page.locator('#play-button').click();
+    await page.waitForFunction(year => Number(document.querySelector('#year-range').value) === year, reportedYear, { timeout: 6000 });
+    await page.locator('#play-button').click();
+    assert.equal(await page.locator('.reported-stat strong').textContent(), expectedTotal, 'Playback visits source-total-only years');
+    assert.ok(await page.locator('.reported-stat a').count(), 'The reported figure retains its source links during playback');
+  }
+  await page.locator('[data-mode="population"]').click();
+  await setYear(page, 2025); await page.locator('#play-button').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1907', 'Playing at the end restarts at the first reported year');
+  await page.waitForFunction(() => Number(document.querySelector('#year-range').value) > 1907, null, { timeout: 6000 });
+  assert.equal(await page.locator('#year-range').inputValue(), '1922');
+  await page.locator('#play-button').click();
+  await page.locator('[data-mode="jamborees"]').click();
+  assert.equal(await page.locator('#year-range').inputValue(), '1924', 'Each chronicle retains its own position while the page remains open');
+});
+
+test('all four views fit desktop, tablet and narrow mobile widths in both languages', async t => {
+  const { page } = await pageFor(t);
+  for (const [width, height] of [[320, 568], [390, 844], [768, 1024], [920, 768], [980, 768], [1024, 768], [1440, 900]]) {
+    await page.setViewportSize({ width, height });
+    for (const lang of ['en', 'zh']) {
+      await visit(page, `?lang=${lang}&year=1907&stop=brownsea`);
+      for (const mode of ['journey', 'members', 'jamborees', 'population']) {
+        if (mode !== 'journey') await page.locator(`[data-mode="${mode}"]`).click();
+        const size = await page.evaluate(() => {
+          const nav = document.querySelector('.primary-nav').getBoundingClientRect();
+          return { document: document.documentElement.scrollWidth, viewport: innerWidth, header: document.querySelector('#share-button').getBoundingClientRect().right,
+            nav: [...document.querySelectorAll('.mode-button')].map(button => { const r = button.getBoundingClientRect(); return { left: r.left, right: r.right }; }), navLeft: nav.left, navRight: nav.right };
+        });
+        assert.equal(size.document, width, `${width} ${lang} ${mode}: ${JSON.stringify(size)}`);
+        assert.ok(size.header <= width + 1, `${width} ${lang}: header overflow ${JSON.stringify(size)}`);
+        if (width <= 900) assert.ok(size.nav.every(button => button.left >= size.navLeft - 1 && button.right <= size.navRight + 1), `${width} ${lang}: all mode buttons must be visible ${JSON.stringify(size)}`);
+        if (width === 320 && mode === 'members') {
+          const rects = await page.evaluate(() => {
+            const bounds = selector => { const r = document.querySelector(selector).getBoundingClientRect(); return { top: r.top, bottom: r.bottom, left: r.left, right: r.right }; };
+            return { tools: bounds('.map-track-tools'), zoom: bounds('.map-controls') };
+          });
+          assert.ok(rects.tools.bottom <= rects.zoom.top, `${lang}: map controls should not overlap ${JSON.stringify(rects)}`);
+        }
+      }
+    }
+  }
 });
 
 test('without JavaScript the page shows a clear bilingual fallback rather than dead controls', async t => {

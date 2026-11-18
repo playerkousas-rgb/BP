@@ -13,6 +13,7 @@ const required = ['README.md', 'Readme', 'LICENSE', 'CREDITS.md', '.gitignore', 
 for (const name of required) check(existsSync(file(name)), `Missing required file: ${name}`);
 if (errors.length) { errors.forEach(error => console.error(`FAIL ${error}`)); process.exit(1); }
 const version = 'v1.2';
+const storeGateSrc = '/store_gate_v1.0.js'; // Shared gate version is independent of the atlas.
 const sync = spawnSync(process.execPath, [file('scripts/sync-html.mjs'), '--check'], { encoding: 'utf8' });
 check(sync.status === 0, `HTML deployment copies differ from their sources: ${(sync.stderr || sync.error?.message || '').trim()}`);
 for (const name of ['bp-atlas_v1.2.html', 'credits_v1.2.html', 'index.html', 'credits.html']) {
@@ -21,12 +22,13 @@ for (const name of ['bp-atlas_v1.2.html', 'credits_v1.2.html', 'index.html', 'cr
   check(html.includes('<meta name="copyright" content="© SCOUT SYSTEM">'), `${name}: copyright meta missing`);
   check(html.includes(`COPYRIGHT SCOUT SYSTEM · B-P Atlas ${version}`), `${name}: visible copyright/version missing`);
   check(new RegExp(`<title>[^<]*${version.replace('.', '\\.')}`).test(html), `${name}: title version missing`);
-  for (const match of html.matchAll(/\bv\d+\.\d+(?:\.\d+)?\b/g)) check(match[0] === version, `${name}: stale or inconsistent version ${match[0]}`);
+  for (const match of html.replace(`src="${storeGateSrc}"`, '').matchAll(/\bv\d+\.\d+(?:\.\d+)?\b/g)) check(match[0] === version, `${name}: stale or inconsistent version ${match[0]}`);
   check(!/<(?:script|link)\b[^>]+(?:src|href)=["']https?:\/\//i.test(html), `${name}: remote script or stylesheet`);
   for (const match of html.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) {
     const ref = match[1];
     if (/^(?:#|https?:|mailto:|tel:|data:)/i.test(ref)) continue;
-    check(existsSync(path.resolve(root, ref.split(/[?#]/)[0])), `${name}: missing local reference ${ref}`);
+    const local = ref.split(/[?#]/)[0].replace(/^\//, ''); // Resolve origin-root paths within the publish directory.
+    check(existsSync(path.resolve(root, local)), `${name}: missing local reference ${ref}`);
   }
 }
 check(read('js/state.js').includes(`APP_VERSION = '${version}'`), 'Runtime APP_VERSION mismatch');
@@ -58,7 +60,7 @@ const csp = headers.find(header => header.key.toLowerCase() === 'content-securit
 check(csp.includes("script-src 'self'") && csp.includes("object-src 'none'"), 'Expected restrictive Content-Security-Policy missing');
 check(read('.gitignore').includes('.env*'), '.gitignore must exclude .env*');
 for (const entry of ['.env*', 'tests/', 'scripts/', 'docs/']) check(read('.vercelignore').includes(entry), `.vercelignore must exclude ${entry}`);
-const initialAssets = ['index.html', 'css/style.css', 'js/app.js', 'js/state.js', 'js/chronicles.js', 'js/chart.js', 'js/timeline.js', 'js/journey.js', 'js/map.js', 'js/card.js', 'js/i18n.js', 'js/translations.js', 'js/data-translations.js', 'vendor/geography.min.js', 'data/world.json', 'data/journey.json', 'data/nso.json', 'data/jamborees.json', 'data/membership.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'];
+const initialAssets = ['index.html', storeGateSrc.slice(1), 'js/store-gate-init.js', 'css/style.css', 'js/app.js', 'js/state.js', 'js/chronicles.js', 'js/chart.js', 'js/timeline.js', 'js/journey.js', 'js/map.js', 'js/card.js', 'js/i18n.js', 'js/translations.js', 'js/data-translations.js', 'vendor/geography.min.js', 'data/world.json', 'data/journey.json', 'data/nso.json', 'data/jamborees.json', 'data/membership.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'];
 let bytes = 0;
 for (const asset of initialAssets) {
   check(existsSync(file(asset)), `Missing runtime asset: ${asset}`);

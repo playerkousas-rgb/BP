@@ -26,6 +26,8 @@ const messages = {
   about: ['關於資料', 'About the data'],
   share: ['分享目前畫面', 'Share this view'],
   shareShort: ['分享', 'Share'],
+  storeSupport: ['讚好／收藏', 'Like / Save'],
+  storeSupportAria: ['讚好／收藏：前往 SCOUT APP STORE（開新分頁）', 'Like / Save on SCOUT APP STORE (opens in a new tab)'],
   introKicker: ['一段穿越時空的旅程', 'A JOURNEY THROUGH TIME'],
   headline: ['從一個人的足跡，到一個世界的故事。', 'One life. A world of stories.'],
   subtitle: ['沿著地圖與時間，探索貝登堡與世界童軍運動。', 'Follow the map and discover the story of Baden-Powell and Scouting.'],

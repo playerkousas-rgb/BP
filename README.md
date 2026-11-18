@@ -72,9 +72,15 @@ Set `CHROMIUM_EXECUTABLE=/path/to/chromium` to use an existing Chromium. In cons
 
 ## Vercel
 
-此版本的 Vercel 設定是 **Other / 靜態根目錄**：`vercel.json` 明確跳過 install 及 build，沒有 output `dist`、環境變數、Supabase 或 API key。將 repo 匯入 Vercel 後，確認 Framework Preset 是 Other，Output Directory 使用根目錄，Build／Install Command 留空。`.vercelignore` 排除測試、維護腳本和版本原稿；`index.html`、`credits.html`、`css/`、`js/`、`data/`、`vendor/`、`icons/` 必須保留。
+此版本的 Vercel 設定是 **Other / 靜態根目錄**：`vercel.json` 明確跳過 install 及 build，沒有 output `dist`、環境變數、Supabase 或 API key。將 repo 匯入 Vercel 後，確認 Framework Preset 是 Other，Output Directory 使用根目錄，Build／Install Command 留空。`.vercelignore` 排除測試、維護腳本和版本原稿；`index.html`、`store_gate_v1.0.js`、`credits.html`、`css/`、`js/`、`data/`、`vendor/`、`icons/` 必須保留。
 
-這是對共享範本「build 至 dist」的明確例外，因為產品規格要求無建置。尚未指定正式網域，故沒有寫死 `og:url` 或絕對 `og:image`；定域後可使用已準備的 `icons/og-image.png`。資料與授權核實前不要當作正式成品公開發佈。
+這是對共享範本「build 至 dist」的明確例外，因為產品規格要求無建置。此變更不修改 `og:url` 或 `og:image`。資料與授權核實前不要當作正式成品公開發佈。
+
+### APP STORE 準入 / Entry gate
+
+- `appKey: 'bp'`、`mode: 'entry-gate'`、`portalIds: ['appstore']`、`silentPortalIds: ['library']`、`allowStandalone: true`、`autoRedirectSeconds: 0`。入口只掛在互動地圖；來源及授權頁維持公開。`store_gate_v1.0.js` 按真理倉原檔收錄；`js/store-gate-init.js` 在 `<head>` 同步啟動，不放寬原有 CSP。
+- 首次使用請先從 SCOUT APP STORE 開啟 BP，入到地圖後再用瀏覽器選單「加入主畫面」。未獲放行的新分頁直開舊書籤或分享網址會見入口卡，不會自動跳走；分享網址格式不變。圖書館連結需保留 Referrer 才可直接進入。
+- 頂欄的「讚好／收藏」透過閘門 helper 開啟主站詳情（SG18 slug `bp`，按 `bp-nine-beryl.vercel.app` 對照 [`20261116-app-slug-seed.sql`](https://github.com/playerkousas-rgb/website/blob/main/migrations/20261116-app-slug-seed.sql#L22)）。`supportNudge` 關閉；不直接連接主站資料庫、不加統計請求或後端驗票。此閘門只是前端入口引導，不是登入或資料保護。
 
 ## 授權及致謝 / Rights and credits
 

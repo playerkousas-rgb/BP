@@ -12,10 +12,15 @@ import { SUPPORTED_LANGUAGES, t as translate } from '../js/i18n.js';
 import { enhanceLocalizedData } from '../js/data-translations.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const appStore = 'https://scoutappstore.vercel.app/';
+const library = 'https://scout-circulars.vercel.app/';
 const contentTypes = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.webmanifest': 'application/manifest+json', '.ico': 'image/x-icon', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8' };
 let server, origin;
 
 before(async () => {
+  // Exercise the real script policy; a missing or CSP-blocked head hook would silently bypass the gate.
+  const config = JSON.parse(await readFile(path.join(root, 'vercel.json'), 'utf8'));
+  const headers = Object.fromEntries(config.headers.find(rule => rule.source === '/(.*)').headers.map(({ key, value }) => [key, value]));
   server = createServer(async (req, res) => {
     try {
       let pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -23,7 +28,7 @@ before(async () => {
       const file = path.resolve(root, `.${pathname}`);
       if (!file.startsWith(`${root}${path.sep}`)) { res.writeHead(403).end(); return; }
       const body = await readFile(file);
-      res.writeHead(200, { 'Content-Type': contentTypes[path.extname(file)] || 'application/octet-stream', 'Content-Length': body.length }); res.end(body);
+      res.writeHead(200, { ...headers, 'Content-Type': contentTypes[path.extname(file)] || 'application/octet-stream', 'Content-Length': body.length }); res.end(body);
     } catch { res.writeHead(404).end(); }
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -42,8 +47,139 @@ async function pageFor(t, options = {}) {
   t.after(() => assert.deepEqual(errors, [], 'Unexpected browser JavaScript errors'));
   return { page, context };
 }
-const visit = (page, query = '') => page.goto(`${origin}${query}`, { waitUntil: 'networkidle' });
+const visit = (page, query = '', referer = appStore) => page.goto(`${origin}${query}`, { waitUntil: 'networkidle', referer });
 const setYear = (page, year) => page.locator('#year-range').evaluate((input, value) => { input.value = value; input.dispatchEvent(new Event('input', { bubbles: true })); }, String(year));
+
+// Observe the real init decision in the isolated browser without editing the template.
+const recordGateDecision = page => page.addInitScript(() => {
+  Object.defineProperty(window, 'ScoutStoreGate', {
+    configurable: true,
+    set(gate) {
+      const init = window.initStoreGate;
+      window.initStoreGate = (...args) => {
+        const decision = init(...args);
+        window.testGate = { ...decision, readyState: document.readyState };
+        return decision;
+      };
+      Object.defineProperty(window, 'ScoutStoreGate', { value: gate });
+    }
+  });
+});
+
+test('entry gate admits APP STORE and library Referrers and preserves the tab on reload', async t => {
+  for (const [portalId, referer] of [['appstore', appStore], ['library', library]]) {
+    await t.test(portalId, async t => {
+      const { page } = await pageFor(t);
+      await recordGateDecision(page);
+      await visit(page, '', referer);
+      assert.equal(await page.locator('#scoutStoreGate, #scoutSupportNudge').count(), 0);
+      assert.ok(await page.locator('.map-country').count());
+      const { matchedPortalId, reason, readyState } = await page.evaluate(() => window.testGate);
+      assert.deepEqual({ matchedPortalId, reason, readyState }, { matchedPortalId: portalId, reason: 'referrer-whitelist', readyState: 'loading' });
+      await page.reload({ waitUntil: 'networkidle' });
+      assert.equal(await page.evaluate(() => window.testGate.reason), 'session-pass');
+      assert.equal(await page.locator('#atlas').isVisible(), true);
+    });
+  }
+});
+
+test('fresh direct URL shows one APP STORE action, no countdown and no atlas content', async t => {
+  const { page } = await pageFor(t, { viewport: { width: 360, height: 800 }, locale: 'zh-HK' });
+  for (const [search, width, title, action] of [
+    ['', 360, '需經由 SCOUT APP STORE 開啟', '前往 APP STORE'],
+    ['?lang=en', 430, 'Open via SCOUT APP STORE', 'Go to APP STORE']
+  ]) {
+    await page.setViewportSize({ width, height: 800 });
+    const url = `${origin}${search}`;
+    const response = await page.goto(url, { waitUntil: 'networkidle' });
+    assert.equal(response.status(), 200);
+    const dialog = page.getByRole('dialog', { name: title, exact: true });
+    assert.equal(await dialog.isVisible(), true);
+    assert.equal(await dialog.getByRole('link').count(), 1);
+    const link = dialog.getByRole('link', { name: action, exact: true });
+    assert.equal(await link.getAttribute('href'), appStore);
+    assert.equal(await link.getAttribute('target'), '_top');
+    assert.match(await dialog.locator('.sg-sub').textContent(), /加入主畫面|Add to Home Screen/);
+    assert.equal(await page.locator('#atlas').isVisible(), false);
+    assert.equal(await page.locator('#storeSupportTop').isVisible(), false);
+    assert.equal(await page.locator('.map-country').count(), 0);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), width);
+    assert.equal(page.url(), url);
+  }
+});
+
+test('entry gate does not admit other registered portals unless configured', async t => {
+  const { page } = await pageFor(t);
+  await page.goto(origin);
+  const sources = await page.evaluate(() => ['member', 'district', 'gemini'].map(id => ScoutStoreGate.getPortal(id).url));
+  for (const referer of sources) {
+    await visit(page, '', referer);
+    assert.equal(await page.locator('#scoutStoreGate').isVisible(), true);
+    assert.equal(await page.evaluate(() => sessionStorage.getItem('bp.store_pass')), null);
+  }
+});
+
+test('standalone display mode admits a fresh simulated home-screen launch', async t => {
+  const { page } = await pageFor(t);
+  await recordGateDecision(page);
+  await page.addInitScript(() => {
+    const matchMedia = window.matchMedia.bind(window);
+    window.matchMedia = query => query === '(display-mode: standalone)' ? { matches: true } : matchMedia(query);
+  });
+  await page.goto(origin, { waitUntil: 'networkidle' });
+  assert.equal(await page.evaluate(() => window.testGate.reason), 'standalone-pwa');
+  assert.equal(await page.locator('#scoutStoreGate, #scoutSupportNudge').count(), 0);
+  assert.equal(await page.locator('#atlas').isVisible(), true);
+});
+
+test('SG18 localized link fits mobile, opens the exact store deep link in a new tab, and hides for print', async t => {
+  const { page, context } = await pageFor(t, { viewport: { width: 360, height: 800 }, hasTouch: true });
+  await visit(page, '?lang=zh');
+  const support = page.locator('#storeSupportTop');
+  assert.equal(await support.getAttribute('target'), '_blank');
+  assert.equal(await support.getAttribute('rel'), 'noopener');
+  for (const width of [360, 430]) {
+    await page.setViewportSize({ width, height: 800 });
+    for (const [lang, label] of [['zh', '讚好／收藏'], ['en', 'Like / Save']]) {
+      await page.locator('#language-select').selectOption(lang);
+      const text = support.locator('span');
+      assert.equal(await text.isVisible(), true);
+      assert.equal(await text.textContent(), label);
+      assert.equal(await support.getAttribute('aria-label'), translate('storeSupportAria', lang));
+      assert.equal(await support.getAttribute('title'), translate('storeSupportAria', lang));
+      const box = await support.boundingBox();
+      assert.ok(box.width >= 40 && box.height >= 40 && box.x >= 0 && box.x + box.width <= width, JSON.stringify(box));
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), width);
+    }
+  }
+  await page.locator('#share-button').focus();
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.activeElement.id), 'storeSupportTop');
+  assert.ok(await support.evaluate(el => el.matches(':focus-visible')));
+
+  // Stub the destination: this proves navigation, not the live APP STORE data or card.
+  const deepLink = `${appStore}?app=bp`;
+  assert.equal(await support.getAttribute('href'), deepLink);
+  await context.route(deepLink, route => route.fulfill({ contentType: 'text/html', body: '<title>Simulated APP STORE</title>' }));
+  const [tab] = await Promise.all([context.waitForEvent('page'), support.click()]);
+  await tab.waitForURL(deepLink);
+  assert.equal(await tab.evaluate(() => window.opener === null), true);
+  await tab.close();
+
+  await page.emulateMedia({ media: 'print' });
+  assert.equal(await support.isVisible(), false);
+  assert.equal(await support.evaluate(el => getComputedStyle(el).display), 'none');
+});
+
+test('SG18 fails safe with no visible or clickable link if the gate asset fails to load', async t => {
+  const { page } = await pageFor(t);
+  await page.route('**/store_gate_v1.0.js', route => route.abort());
+  await visit(page);
+  const support = page.locator('#storeSupportTop');
+  assert.equal(await support.isVisible(), false);
+  assert.equal(await support.getAttribute('href'), null);
+  assert.equal(await support.evaluate(el => getComputedStyle(el).display), 'none');
+});
 
 // One browser per test also supports constrained single-process/headless environments.
 test('journey, camera, keyboard focus and sharing stay in sync', async t => {
@@ -975,7 +1111,8 @@ test('browser preference selection supports ordered fallbacks and multilingual r
 test('nine-language header, navigation and chart fit mobile and compact desktop widths', async t => {
   const { page } = await pageFor(t, { reducedMotion: 'reduce' });
   await visit(page, '?lang=en&mode=journey&year=1907');
-  for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 }, { width: 1024, height: 768 }]) {
+  for (const width of [320, 390, 441, 901, 1024, 1201]) {
+    const viewport = { width, height: width === 320 ? 568 : width <= 900 ? 844 : 768 };
     await page.setViewportSize(viewport);
     for (const lang of SUPPORTED_LANGUAGES) {
       await page.locator('#language-select').selectOption(lang);
@@ -983,13 +1120,14 @@ test('nine-language header, navigation and chart fit mobile and compact desktop 
         await page.locator(`[data-mode="${mode}"]`).click();
         const layout = await page.evaluate(() => {
           const bounds = el => { const rect = el.getBoundingClientRect(); return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom }; };
-          return { document: document.documentElement.scrollWidth, viewport: innerWidth, brand: bounds(document.querySelector('.brand')), nav: bounds(document.querySelector('.primary-nav')), buttons: [...document.querySelectorAll('.mode-button')].map(bounds), actions: bounds(document.querySelector('.header-actions')) };
+          return { document: document.documentElement.scrollWidth, viewport: innerWidth, brand: bounds(document.querySelector('.brand')), nav: bounds(document.querySelector('.primary-nav')), buttons: [...document.querySelectorAll('.mode-button')].map(bounds), actions: bounds(document.querySelector('.header-actions')), support: bounds(document.querySelector('.support-btn')) };
         });
         assert.equal(layout.document, viewport.width, `${lang} ${mode} ${viewport.width}: ${JSON.stringify(layout)}`);
         assert.ok(layout.actions.right <= viewport.width + 1 && layout.actions.left >= 0, `${lang} header: ${JSON.stringify(layout)}`);
+        assert.ok(layout.support.right <= layout.actions.right + 1 && layout.brand.right <= layout.actions.left + 1, `${lang} ${width}px header actions: ${JSON.stringify(layout)}`);
         if (viewport.width > 900) assert.ok(layout.brand.right <= layout.nav.left && layout.nav.right <= layout.actions.left + 1, `${lang} desktop header: ${JSON.stringify(layout)}`);
         for (const [i, button] of layout.buttons.entries()) {
-          assert.ok(button.left >= layout.nav.left - 1 && button.right <= layout.nav.right + 1, `${lang} navigation button`);
+          assert.ok(button.left >= layout.nav.left - 1 && button.right <= layout.nav.right + 1, `${lang} navigation at ${viewport.width}px: ${JSON.stringify(layout)}`);
           if (i) assert.ok(button.left >= layout.buttons[i - 1].right - 1, `${lang} navigation overlap`);
         }
       }

@@ -28,6 +28,8 @@ export const extraMessages = {
   about: ['データについて', '자료 정보', 'À propos des données', 'Sobre los datos', 'Tentang data', 'Sobre os dados', 'डेटा के बारे में'],
   share: ['現在の画面を共有', '현재 화면 공유', 'Partager cette vue', 'Compartir esta vista', 'Bagikan tampilan ini', 'Compartilhar esta visualização', 'यह दृश्य साझा करें'],
   shareShort: ['共有', '공유', 'Partager', 'Compartir', 'Bagikan', 'Compartilhar', 'साझा करें'],
+  storeSupport: ['いいね／保存', '좋아요 / 저장', 'J’aime / Favoris', 'Me gusta / Guardar', 'Suka / Simpan', 'Curtir / Salvar', 'पसंद / सहेजें'],
+  storeSupportAria: ['いいね／保存：SCOUT APP STORE で開く（新しいタブ）', '좋아요 / 저장: SCOUT APP STORE에서 열기(새 탭)', 'J’aime / Favoris sur SCOUT APP STORE (nouvel onglet)', 'Me gusta / Guardar en SCOUT APP STORE (se abre en otra pestaña)', 'Suka / Simpan di SCOUT APP STORE (terbuka di tab baru)', 'Curtir / Salvar na SCOUT APP STORE (abre em nova aba)', 'पसंद / सहेजें: SCOUT APP STORE में खोलें (नया टैब)'],
   introKicker: ['時を超える旅', '시간을 가로지르는 여정', 'UN VOYAGE DANS LE TEMPS', 'UN VIAJE EN EL TIEMPO', 'PERJALANAN MELINTASI WAKTU', 'UMA VIAGEM NO TEMPO', 'समय की यात्रा'],
   headline: ['一人の生涯から、世界の物語へ。', '한 사람의 삶에서 세계의 이야기로.', 'Une vie. Un monde d’histoires.', 'Una vida. Un mundo de historias.', 'Satu kehidupan. Kisah seluruh dunia.', 'Uma vida. Um mundo de histórias.', 'एक जीवन। दुनिया भर की कहानियाँ।'],
   subtitle: ['地図をたどり、ベーデン＝パウエルとスカウト運動の物語を探りましょう。', '지도를 따라 베이든포월과 스카우트 운동의 이야기를 살펴보세요.', 'Suivez la carte et découvrez Baden-Powell et le scoutisme.', 'Sigue el mapa y descubre a Baden-Powell y el escultismo.', 'Ikuti peta untuk mengenal Baden-Powell dan gerakan kepanduan.', 'Siga o mapa e conheça Baden-Powell e o escotismo.', 'मानचित्र पर बेडेन-पॉवेल और स्काउट आंदोलन की कहानी देखें।'],

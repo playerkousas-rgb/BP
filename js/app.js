@@ -10,7 +10,6 @@ import { renderCard } from './card.js';
 
 const params = new URLSearchParams(location.search);
 const initialLang = getInitialLanguage(params);
-applyLanguage(initialLang);
 const maxYear = currentYear();
 
 async function loadData() {
@@ -23,7 +22,15 @@ async function loadData() {
   return Object.fromEntries(entries);
 }
 
-try {
+// The head gate handles blocked visits without starting the atlas or loading its data.
+if (!document.documentElement.hasAttribute('data-store-gated')) try {
+  applyLanguage(initialLang);
+  const supportLink = document.getElementById('storeSupportTop');
+  const storeGate = globalThis.ScoutStoreGate;
+  if (supportLink && typeof storeGate?.getAppStoreUrl === 'function') {
+    supportLink.href = storeGate.getAppStoreUrl('bp');
+    supportLink.hidden = false;
+  }
   const data = enhanceLocalizedData(await loadData());
   const state = readState(params, data, initialLang, maxYear);
   let playTimer = null, urlTimer = null, toastTimer = null, displayedCardKey = null, directoryLang = null;

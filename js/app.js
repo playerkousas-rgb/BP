@@ -1,7 +1,7 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 import { applyLanguage, getInitialLanguage, localize, localizationLanguage, localeFor, t } from './i18n.js';
 import { enhanceLocalizedData } from './data-translations.js';
-import { clamp, currentYear, defaultYearForMode, MIN_YEAR, readState, selectionAtYear, stateToSearch } from './state.js';
+import { clamp, currentYear, defaultYearForMode, HK_PAGE, MIN_YEAR, readState, selectionAtYear, stateToSearch } from './state.js';
 import { adjacentYear, locationRecordYear, locationsRecordedBy, recordedByYear, trackYears } from './chronicles.js';
 import { createMap } from './map.js';
 import { createTimeline } from './timeline.js';
@@ -22,8 +22,22 @@ async function loadData() {
   return Object.fromEntries(entries);
 }
 
-// The head gate handles blocked visits without starting the atlas or loading its data.
-if (!document.documentElement.hasAttribute('data-store-gated')) try {
+// Old links may still carry ?mode=hongkong (or ?mode=hk); the Hong Kong view is
+// its own page, so those arrive there with the language and year preserved.
+const HK_VIEW_MODES = ['hongkong', 'hk'];
+function hkPageUrl() {
+  const target = new URL(HK_PAGE, location.href);
+  const requested = params.get('lang') || initialLang;
+  if (requested) target.searchParams.set('lang', requested);
+  const year = params.get('year');
+  if (year && /^\d{4}$/.test(year)) target.searchParams.set('year', year);
+  return `${target.pathname}${target.search}`;
+}
+if (HK_VIEW_MODES.includes(params.get('mode'))) {
+  applyLanguage(initialLang);
+  location.replace(hkPageUrl());
+} else if (!document.documentElement.hasAttribute('data-store-gated')) try {
+  // The head gate handles blocked visits without starting the atlas or loading its data.
   applyLanguage(initialLang);
   const supportLink = document.getElementById('storeSupportTop');
   const storeGate = globalThis.ScoutStoreGate;
@@ -89,6 +103,8 @@ if (!document.documentElement.hasAttribute('data-store-gated')) try {
       link.setAttribute('href', `credits.html?lang=${lang}${url.hash}`);
     });
     document.querySelectorAll('.mode-button').forEach(button => {
+      // The Hong Kong entry is a link to its own page, not a mode of this one.
+      if (!button.dataset.mode) { button.classList.remove('is-active'); return; }
       const active = button.dataset.mode === mode || (button.dataset.mode === 'members' && mode === 'spread');
       button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active));
     });
@@ -247,7 +263,7 @@ if (!document.documentElement.hasAttribute('data-store-gated')) try {
     const delay = state.mode === 'members' || state.mode === 'spread' ? 700 : state.mode === 'population' ? 1500 : 2200;
     playTimer = setInterval(() => step(1, true), delay);
   }
-  document.querySelectorAll('.mode-button').forEach(button => button.addEventListener('click', () => switchMode(button.dataset.mode)));
+  document.querySelectorAll('.mode-button[data-mode]').forEach(button => button.addEventListener('click', () => switchMode(button.dataset.mode)));
   document.querySelector('#basis-button').addEventListener('click', () => switchMode(state.mode === 'members' ? 'spread' : 'members', { keepYear: true }));
   document.querySelector('#language-select').addEventListener('change', event => { state.lang = event.target.value; render(); });
   window.addEventListener('resize', () => { if (state.mode === 'population') chart.render(state); });

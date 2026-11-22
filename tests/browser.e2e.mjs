@@ -9,9 +9,14 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 import { SUPPORTED_LANGUAGES, t as translate } from '../js/i18n.js';
+import { hkMessages } from '../js/hk-i18n.js';
+import { hkMessages as hkTranslations } from '../js/translations-hk.js';
 import { enhanceLocalizedData } from '../js/data-translations.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+// The Hong Kong page merges its own dictionary at runtime, so the tests read it directly.
+const hkTitle = Object.fromEntries([['zh', hkMessages.hkTitle[0]], ['en', hkMessages.hkTitle[1]],
+  ...['ja', 'ko', 'fr', 'es', 'id', 'pt', 'hi'].map((lang, index) => [lang, hkTranslations.hkTitle[index]])]);
 const appStore = 'https://scoutappstore.vercel.app/';
 const library = 'https://scout-circulars.vercel.app/';
 const contentTypes = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.webmanifest': 'application/manifest+json', '.ico': 'image/x-icon', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8' };
@@ -1161,4 +1166,108 @@ test('multilingual selectors and source fallbacks remain accessible with keyboar
   assert.equal(await page.locator('html').getAttribute('lang'), 'pt');
   assert.equal(await page.locator('#source-list a').first().getAttribute('lang'), 'en');
   await audit('Portuguese mobile sources');
+});
+
+test('Hong Kong history page loads, drills into every section and shares its state', async t => {
+  const { page } = await pageFor(t);
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText: async text => { window.copiedLink = text; } } });
+  });
+  const audit = async label => {
+    const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+    assert.deepEqual(result.violations.map(item => `${item.id}: ${item.nodes.map(node => node.target.join(' ')).join(', ')}`), [], label);
+  };
+  await visit(page, 'hong-kong.html?lang=en');
+  assert.equal(await page.locator('html').getAttribute('lang'), 'en');
+  assert.equal(await page.locator('#hk-title').textContent(), hkTitle.en);
+  assert.equal(await page.locator('#hk-map .hk-area').count(), 18, '18 Council outlines');
+  assert.equal(await page.locator('#hk-map .hk-region-label').count(), 5, 'five Scout regions with a land area');
+  assert.equal(await page.locator('#hk-map .hk-jamboree').count(), 13, 'thirteen jamboree sites, including Zhuhai');
+  assert.equal(await page.locator('#hk-rail-list .hk-rail-region').count(), 6, 'six Scout regions in the rail');
+  assert.match(await page.locator('#hk-figures').textContent(), /Council/i);
+  await audit('Hong Kong map');
+
+  // The map card explains a region when its rail entry is chosen.
+  await page.locator('#hk-rail-list .hk-rail-region').first().click();
+  assert.match(await page.locator('#hk-section-map #hk-panel .hk-card h2').textContent(), /Island/);
+  assert.match(new URL(page.url()).search, /sel=region%3Aisland/);
+  // A jamboree tent opens its own card and moves the year band.
+  await page.locator('#hk-map [data-jamboree="hk-jam-1961"] .hk-jamboree-tent').click({ force: true });
+  assert.equal(await page.locator('#hk-year-range').inputValue(), '1961');
+  assert.equal(await page.locator('#hk-year-label').textContent(), '1961');
+
+  // Regions and districts: six tiles holding 44 Scout districts.
+  await page.locator('#hk-tabs [data-hk-tab="regions"]').click();
+  assert.equal(await page.locator('#hk-section-regions .hk-region-tile').count(), 6);
+  assert.equal(await page.locator('#hk-section-regions .hk-district-chips li').count(), 44);
+  assert.match(await page.locator('#hk-section-regions .hk-region-tile').first().textContent(), /Silver Jubilee|Island/);
+  await audit('Hong Kong regions');
+
+  // Boundary changes: the sourced timeline of redrawings.
+  await page.locator('#hk-tabs [data-hk-tab="boundaries"]').click();
+  assert.equal(await page.locator('#hk-section-boundaries .hk-boundary-row').count(), 17);
+  await page.locator('#hk-section-boundaries [data-hk-select="change:2000"]').click();
+  assert.match(await page.locator('#hk-section-boundaries .hk-card h2').textContent(), /2000/);
+  await audit('Hong Kong boundaries');
+
+  // Jamborees: thirteen editions, the 2024 one outside Hong Kong says so.
+  await page.locator('#hk-tabs [data-hk-tab="jamborees"]').click();
+  assert.equal(await page.locator('#hk-jamboree-body tr').count(), 13);
+  await page.locator('#hk-jamboree-body [data-hk-select="jamboree:hk-jam-2024"]').click();
+  assert.match(await page.locator('#hk-section-jamborees .hk-card').textContent(), /outside Hong Kong/i);
+  await audit('Hong Kong jamborees');
+
+  // Office-holders and milestones.
+  await page.locator('#hk-tabs [data-hk-tab="leaders"]').click();
+  assert.equal(await page.locator('#hk-leaders-list .hk-person').count(), 19);
+  assert.match(await page.locator('#hk-section-leaders .hk-office-note').textContent(), /Governor/);
+  await page.locator('#hk-tabs [data-hk-tab="chiefs"]').click();
+  assert.equal(await page.locator('#hk-chiefs-list .hk-person').count(), 18);
+  await page.locator('#hk-tabs [data-hk-tab="timeline"]').click();
+  assert.ok(await page.locator('#hk-timeline-list .hk-timeline-item').count() >= 30);
+  await audit('Hong Kong milestones');
+
+  // The share link round-trips, including a tab, year and selection.
+  await page.locator('#hk-tabs [data-hk-tab="map"]').click();
+  await page.locator('#hk-share').click();
+  await page.waitForFunction(() => document.querySelector('#toast').classList.contains('is-visible'));
+  const shared = new URL(await page.evaluate(() => window.copiedLink));
+  assert.equal(shared.pathname.endsWith('hong-kong.html'), true);
+  assert.equal(shared.searchParams.get('hk'), 'map');
+  // The 2024 jamboree was chosen last, so the year band and selection travel too.
+  // (Selecting a jamboree moves the year, and the tab switch keeps that year.)
+  assert.equal(shared.searchParams.get('year'), '2024');
+  await visit(page, `hong-kong.html?${shared.searchParams.toString()}`);
+  assert.equal(await page.locator('#hk-year-range').inputValue(), '2024');
+
+  // Language switching translates the page chrome and keeps history text bilingual.
+  await page.locator('#language-select').selectOption('ja');
+  assert.equal(await page.locator('#hk-title').textContent(), hkTitle.ja);
+  assert.equal(await page.locator('#hk-tabs [data-hk-tab="regions"]').textContent(), '地域と区');
+  await audit('Hong Kong Japanese');
+
+  // Campaign links from the atlas arrive here with their language and year.
+  await visit(page, '?lang=en&mode=hongkong&year=1968');
+  assert.match(page.url(), /hong-kong\.html\?(?=.*lang=en)(?=.*year=1968)/);
+  assert.equal(await page.locator('#hk-year-label').textContent(), '1968');
+});
+
+test('Hong Kong page fits narrow screens and has a no-JavaScript fallback', async t => {
+  const { page } = await pageFor(t, { viewport: { width: 320, height: 568 } });
+  await visit(page, 'hong-kong.html?lang=zh');
+  const bounds = await page.evaluate(() => ({
+    width: document.documentElement.scrollWidth, viewport: innerWidth,
+    map: document.querySelector('#hk-map').getBoundingClientRect().height,
+  }));
+  assert.equal(bounds.width, bounds.viewport, JSON.stringify(bounds));
+  assert.ok(bounds.map > 100, 'map should keep a usable height');
+  await page.locator('#hk-tabs [data-hk-tab="regions"]').click();
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
+  await page.locator('#hk-tabs [data-hk-tab="jamborees"]').click();
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
+  const { page: bare } = await pageFor(t, { javaScriptEnabled: false });
+  await visit(bare, 'hong-kong.html');
+  assert.equal(await bare.locator('#noscript-error').isVisible(), true);
+  assert.match(await bare.locator('#noscript-error').textContent(), /needs JavaScript/i);
+  assert.equal(await bare.locator('#hk-tabs').isVisible(), false);
 });

@@ -1,4 +1,4 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 // In-memory display translations only: the sourced JSON remains unchanged.
 // Order: Japanese, Korean, French, Spanish, Indonesian, Portuguese, Hindi.
 import { extraLanguages } from './translations.js';

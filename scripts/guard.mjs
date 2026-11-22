@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 // Static-project guard: deliberately does not require a build, dist/ or environment variables.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -9,14 +9,14 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const file = name => path.join(root, name), read = name => readFileSync(file(name), 'utf8');
 const errors = [];
 const check = (ok, message) => { if (!ok) errors.push(message); };
-const required = ['README.md', 'Readme', 'LICENSE', 'CREDITS.md', '.gitignore', '.vercelignore', '.env.example', '.github/workflows/check.yml', 'vercel.json', 'package.json', 'package-lock.json', 'index.html', 'credits.html', 'bp-atlas_v1.2.html', 'credits_v1.2.html', 'css/style.css', 'css/credits.css', 'js/state.js', 'js/chronicles.js', 'js/translations.js', 'js/data-translations.js', 'data/world.json', 'data/sources.json', 'vendor/geography.min.js', 'vendor/LICENSES.txt', 'docs/RESEARCH.md', 'docs/DESIGN_REVIEW.md', 'docs/CONSISTENCY_AUDIT.md', 'docs/NSO_DATA.md', 'docs/RELEASE_CHECKLIST.md'];
+const required = ['README.md', 'Readme', 'LICENSE', 'CREDITS.md', '.gitignore', '.vercelignore', '.env.example', '.github/workflows/check.yml', 'vercel.json', 'package.json', 'package-lock.json', 'index.html', 'credits.html', 'hong-kong.html', 'bp-atlas_v1.3.html', 'credits_v1.3.html', 'hong-kong_v1.3.html', 'css/style.css', 'css/credits.css', 'css/hk.css', 'js/state.js', 'js/hk.js', 'js/hk-map.js', 'js/hk-card.js', 'js/hk-view.js', 'js/hk-i18n.js', 'js/translations-hk.js', 'js/chronicles.js', 'js/translations.js', 'js/data-translations.js', 'data/world.json', 'data/sources.json', 'data/hk.json', 'data/hk-areas.json', 'vendor/geography.min.js', 'vendor/LICENSES.txt', 'docs/RESEARCH.md', 'docs/DESIGN_REVIEW.md', 'docs/CONSISTENCY_AUDIT.md', 'docs/NSO_DATA.md', 'docs/RELEASE_CHECKLIST.md'];
 for (const name of required) check(existsSync(file(name)), `Missing required file: ${name}`);
 if (errors.length) { errors.forEach(error => console.error(`FAIL ${error}`)); process.exit(1); }
-const version = 'v1.2';
+const version = 'v1.3';
 const storeGateSrc = '/store_gate_v1.0.js'; // Shared gate version is independent of the atlas.
 const sync = spawnSync(process.execPath, [file('scripts/sync-html.mjs'), '--check'], { encoding: 'utf8' });
 check(sync.status === 0, `HTML deployment copies differ from their sources: ${(sync.stderr || sync.error?.message || '').trim()}`);
-for (const name of ['bp-atlas_v1.2.html', 'credits_v1.2.html', 'index.html', 'credits.html']) {
+for (const name of ['bp-atlas_v1.3.html', 'credits_v1.3.html', 'hong-kong_v1.3.html', 'index.html', 'credits.html', 'hong-kong.html']) {
   const html = read(name);
   check(html.includes(`<meta name="app-version" content="${version}">`), `${name}: app-version missing`);
   check(html.includes('<meta name="copyright" content="© SCOUT SYSTEM">'), `${name}: copyright meta missing`);
@@ -44,8 +44,8 @@ for (const dir of ['js', 'css']) for (const name of readdirSync(file(dir))) {
 }
 // Catch missing static translation keys without assuming anything about runtime
 // language selection; dynamic keys still require browser coverage.
-const dictionary = new Set([...read('js/i18n.js').matchAll(/^\s{2}(\w+):\s*\[/gm)].map(match => match[1]));
-for (const name of ['bp-atlas_v1.2.html', 'credits_v1.2.html']) {
+const dictionary = new Set([...['js/i18n.js', 'js/hk-i18n.js'].flatMap(name => [...read(name).matchAll(/^\s{2}(\w+):\s*\[/gm)].map(match => match[1]))]);
+for (const name of ['bp-atlas_v1.3.html', 'credits_v1.3.html', 'hong-kong_v1.3.html']) {
   for (const match of read(name).matchAll(/\bdata-i18n(?:-aria|-title)?=["']([^"']+)["']/g)) check(dictionary.has(match[1]), `${name}: missing translation key ${match[1]}`);
 }
 for (const name of readdirSync(file('js')).filter(name => name.endsWith('.js'))) {
@@ -60,13 +60,33 @@ const csp = headers.find(header => header.key.toLowerCase() === 'content-securit
 check(csp.includes("script-src 'self'") && csp.includes("object-src 'none'"), 'Expected restrictive Content-Security-Policy missing');
 check(read('.gitignore').includes('.env*'), '.gitignore must exclude .env*');
 for (const entry of ['.env*', 'tests/', 'scripts/', 'docs/']) check(read('.vercelignore').includes(entry), `.vercelignore must exclude ${entry}`);
-const initialAssets = ['index.html', storeGateSrc.slice(1), 'js/store-gate-init.js', 'css/style.css', 'js/app.js', 'js/state.js', 'js/chronicles.js', 'js/chart.js', 'js/timeline.js', 'js/journey.js', 'js/map.js', 'js/card.js', 'js/i18n.js', 'js/translations.js', 'js/data-translations.js', 'vendor/geography.min.js', 'data/world.json', 'data/journey.json', 'data/nso.json', 'data/jamborees.json', 'data/membership.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'];
-let bytes = 0;
-for (const asset of initialAssets) {
-  check(existsSync(file(asset)), `Missing runtime asset: ${asset}`);
-  if (existsSync(file(asset))) bytes += statSync(file(asset)).size;
+// Versioned HTML is maintenance input; the deployment copies are what ships.
+for (const entry of ['bp-atlas_v*.html', 'credits_v*.html', 'hong-kong_v*.html']) check(read('.vercelignore').includes(entry), `.vercelignore must exclude ${entry}`);
+// Per-page first-load budgets: the atlas and the Hong Kong history page are
+// separate entry points, so neither may inherit the other's weight.
+const pageBudgets = {
+  'index.html': {
+    limit: 1_000_000,
+    // The atlas renders its own chrome from data-i18n attributes and js/i18n.js.
+    // The Hong Kong page's strings (js/hk-i18n.js, js/translations-hk.js) are
+    // merged only there, so they are not part of this budget.
+    assets: ['index.html', storeGateSrc.slice(1), 'js/store-gate-init.js', 'css/style.css', 'js/app.js', 'js/state.js', 'js/chronicles.js', 'js/chart.js', 'js/timeline.js', 'js/journey.js', 'js/map.js', 'js/card.js', 'js/i18n.js', 'js/translations.js', 'js/data-translations.js', 'vendor/geography.min.js', 'data/world.json', 'data/journey.json', 'data/nso.json', 'data/jamborees.json', 'data/membership.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'],
+  },
+  'hong-kong.html': {
+    limit: 1_000_000,
+    assets: ['hong-kong.html', storeGateSrc.slice(1), 'js/store-gate-init.js', 'css/style.css', 'css/hk.css', 'js/hk.js', 'js/hk-view.js', 'js/hk-map.js', 'js/hk-card.js', 'js/i18n.js', 'js/hk-i18n.js', 'js/translations.js', 'js/translations-hk.js', 'js/data-translations.js', 'js/state.js', 'data/hk.json', 'data/hk-areas.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'],
+  },
+};
+const budgets = [];
+for (const [page, { limit, assets }] of Object.entries(pageBudgets)) {
+  let pageBytes = 0;
+  for (const asset of assets) {
+    check(existsSync(file(asset)), `Missing runtime asset: ${asset}`);
+    if (existsSync(file(asset))) pageBytes += statSync(file(asset)).size;
+  }
+  check(pageBytes < limit, `First-load asset budget for ${page} exceeds ${(limit / 1_000_000).toFixed(1)} MB (${pageBytes} bytes)`);
+  budgets.push(`${page} ${pageBytes.toLocaleString('en')}`);
 }
-check(bytes < 1_000_000, `First-load asset budget exceeds 1 MB (${bytes} bytes)`);
 const excluded = new Set(['.git', 'node_modules', '.screenshots', '.vercel', 'coverage', 'dist', 'test-results', 'playwright-report']);
 const secretPatterns = [/AIza[\w-]{35}/, /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/, /gh[pousr]_[A-Za-z0-9]{30,}/];
 function scan(dir) {
@@ -87,5 +107,5 @@ function scan(dir) {
 }
 scan(root);
 if (errors.length) { errors.forEach(error => console.error(`FAIL ${error}`)); process.exitCode = 1; }
-else console.log(`PASS static guard: versions, local references, deployment copies, Vercel, secrets and ${bytes.toLocaleString('en')} byte initial asset budget.`);
+else console.log(`PASS static guard: versions, local references, deployment copies, Vercel, secrets and first-load budgets (${budgets.join('; ')}).`);
 console.log('NOTICE: This guard cannot validate historical accuracy, source relevance, selected project licence, or public deployment.');

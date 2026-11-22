@@ -1,4 +1,4 @@
-/* B-P Atlas v1.2 · © SCOUT SYSTEM */
+/* B-P Atlas v1.3 · © SCOUT SYSTEM */
 :root{color-scheme:light;--paper:#f7f5ed;--sheet:#fffdf5;--ink:#303e36;--muted:#788278;--line:#dcded1;--forest:#345c4b;--forest-dark:#28483c;--moss:#778e77;--rust:#bd6948;--gold:#bb9a55;--water:#dce9e2;--land:#e8e8d7;--land-line:#aebead;--cream:#eee8d8;--serif:Georgia,"Noto Serif TC","Songti TC","PMingLiU",serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}button,input{font:inherit}button{color:inherit}button:focus-visible,a:focus-visible,input:focus-visible,svg:focus-visible,[role=button]:focus-visible{outline:3px solid #c4825e;outline-offset:3px}button{cursor:pointer}a{color:inherit}svg.icon{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}.icon-defs{position:absolute;width:0;height:0;overflow:hidden}.skip-link{position:fixed;top:-60px;left:12px;background:var(--forest);color:white;padding:10px;z-index:99}.skip-link:focus{top:12px}
@@ -101,7 +101,7 @@ html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--in
 @media print{.directory-button{display:none}}
 @media(max-width:380px){.directory-button .icon{display:none}.directory-dialog{padding:16px}.directory-dialog .dialog-heading h2{font-size:19px}.directory-intro{font-size:11.5px;line-height:1.5;margin:10px 0 12px}}
 
-/* v1.2: separate chronicles and a standalone, source-point population view. */
+/* v1.3: separate chronicles and a standalone, source-point population view. */
 .header-inner{gap:clamp(16px,2.6vw,48px)}
 .primary-nav{gap:clamp(12px,1.8vw,28px)}
 .side-column{grid-template-rows:minmax(0,1fr)}

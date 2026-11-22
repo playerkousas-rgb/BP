@@ -1,0 +1,314 @@
+/* B-P Atlas v1.3 · © SCOUT SYSTEM */
+.hk-page{background:var(--paper)}
+.hk-wrap{max-width:1650px;margin:0 auto;padding:26px 4.3% 40px}
+.hk-page .primary-nav{gap:clamp(12px,1.7vw,26px)}
+.hk-back{display:inline-block;font-size:11px;color:#5f7164;text-decoration:none;padding:2px 0;border-bottom:1px solid transparent}
+.hk-back:hover{border-bottom-color:#b9c8ba;color:var(--forest)}
+.hk-intro{padding:18px 2px 20px;max-width:960px}
+.hk-intro .intro-overline{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.hk-intro .tiny-rule{width:26px;height:1px;background:#c3b79b;display:inline-block}
+.hk-intro h1{font-family:var(--serif);font-size:clamp(26px,3.4vw,40px);line-height:1.22;letter-spacing:.02em;margin:0}
+.hk-lead{font-family:var(--serif);font-size:15px;line-height:1.78;color:#5f7065;margin:12px 0 0;max-width:760px}
+.hk-figures{font-size:11px;line-height:1.6;color:#5c6f61;margin:10px 0 0;border-left:2px solid #d8e0d5;padding-left:9px}
+.hk-year-band{border:1px solid #dbe2d7;background:#fbfaf2;border-radius:4px;padding:13px 16px 11px;margin-bottom:16px}
+.hk-year-heading-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.hk-year-band h2{font-family:var(--serif);font-size:13px;letter-spacing:.11em;margin:0;color:#43594a}
+.hk-year-hint{font-size:10px;color:#5c6f61}
+.hk-year-controls{display:flex;align-items:center;gap:14px;margin-top:9px;flex-wrap:wrap}
+.hk-year-value{font-size:11px;color:#556a5c;white-space:nowrap}
+.hk-year-value strong{font-family:var(--serif);font-size:19px;color:var(--forest);margin-left:5px}
+#hk-year-range{--progress:0%;flex:1;min-width:180px;display:block;height:16px;margin:0;appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer}
+#hk-year-range::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(to right,#6d8f74 0 var(--progress),#d5ddd2 var(--progress) 100%)}
+#hk-year-range::-moz-range-track{height:3px;border-radius:3px;background:#d5ddd2}
+#hk-year-range::-moz-range-progress{height:3px;background:#6d8f74}
+#hk-year-range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:#fffdf5;border:4px solid var(--forest);margin-top:-6px;box-shadow:0 0 0 3px #fbfaf2}
+#hk-year-range::-moz-range-thumb{width:8px;height:8px;border-radius:50%;background:#fffdf5;border:4px solid var(--forest);box-shadow:0 0 0 3px #fbfaf2}
+.hk-year-all,.hk-year-clear{border:1px solid #c9d5c8;background:#fffdf5;color:#5f7164;border-radius:3px;font-size:11px;font-weight:600;padding:6px 10px;white-space:nowrap}
+.hk-year-all[aria-pressed=true]{background:var(--forest);border-color:var(--forest);color:#fffdf5}
+.hk-year-clear{border-color:#d8c9b8;color:#8a6650}
+.hk-year-quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:9px;border-top:1px dashed #e3e7dc}
+.hk-year-quick button{border:1px solid #dce2d7;background:#fffdf5;color:#556a5c;border-radius:2px;font-family:var(--serif);font-size:11px;padding:4px 9px;letter-spacing:.04em}
+.hk-year-quick button:hover{border-color:#b5c7b7;color:var(--forest)}
+.hk-year-quick button.is-active{background:#eef4eb;border-color:#8fae94;color:var(--forest);font-weight:700}
+.hk-tabs{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid #d9dfd4;scrollbar-width:none;position:relative}
+.hk-tabs::-webkit-scrollbar{display:none}
+.hk-tabs [role=tab]{position:relative;border:0;background:none;padding:11px 14px 10px;font-size:12px;font-weight:600;color:#556a5c;white-space:nowrap;border-radius:3px 3px 0 0}
+.hk-tabs [role=tab]:hover{color:var(--forest);background:#f2f4ec}
+.hk-tabs [role=tab][aria-selected=true]{color:var(--forest)}
+.hk-tabs [role=tab][aria-selected=true]:after{content:"";position:absolute;left:8px;right:8px;bottom:-1px;height:2px;background:var(--forest)}
+.hk-tabs [role=tab]:focus-visible{outline-offset:-3px}
+/* Scrolling tab strips get a fade so the cut-off item reads as "more", not broken. */
+.hk-tabs-wrap{position:relative}
+.hk-tabs-wrap:before,.hk-tabs-wrap:after{content:"";position:absolute;top:0;bottom:1px;width:22px;pointer-events:none;opacity:0;transition:opacity .15s}
+.hk-tabs-wrap:before{left:0;background:linear-gradient(270deg,rgba(247,245,237,0),rgba(247,245,237,.96) 70%)}
+.hk-tabs-wrap:after{right:0;background:linear-gradient(90deg,rgba(247,245,237,0),rgba(247,245,237,.96) 70%)}
+.hk-tabs-wrap.can-scroll-left:before,.hk-tabs-wrap.can-scroll-right:after{opacity:1}
+.hk-stage,.hk-layout,.hk-people,.hk-timeline{margin-top:18px}
+.hk-layout{display:grid;grid-template-columns:minmax(0,1fr) 355px;gap:22px;align-items:start}
+.hk-main-column{min-width:0}
+.hk-column-intro{font-size:11px;line-height:1.7;color:#5d6e62;margin:0 0 14px;max-width:760px}
+.hk-panel{position:sticky;top:16px;min-width:0}
+.hk-panel:empty{display:none}
+.hk-muted{color:#5c6f61}
+.hk-map-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:9px}
+.hk-map-heading{display:flex;align-items:center;gap:9px}
+.hk-map-heading .icon{width:22px;height:22px;color:var(--forest)}
+.hk-map-heading strong{display:block;font-family:var(--serif);font-size:14px;letter-spacing:.03em}
+.hk-map-heading span{display:block;font-size:9.5px;color:#5c6f61;margin-top:2px}
+.hk-map-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hk-share,.hk-legend-toggle{display:inline-flex;align-items:center;gap:6px;border:1px solid #c9d5c8;background:#fffdf5;color:#5f7164;border-radius:3px;font-size:11px;font-weight:600;padding:7px 10px}
+.hk-share .icon{width:14px;height:14px}
+.hk-legend-toggle[aria-expanded=true]{background:#eef4eb;border-color:#8fae94;color:var(--forest)}
+.hk-zoom-group{display:flex;border:1px solid #c9d5c8;border-radius:3px;overflow:hidden;background:#fffdf5}
+.hk-zoom-group button{border:0;background:none;width:34px;height:32px;display:grid;place-items:center;color:#5f7164}
+.hk-zoom-group button+button{border-left:1px solid #dde3da}
+.hk-zoom-group button:hover{background:#eef4eb;color:var(--forest)}
+.hk-zoom-group .icon{width:15px;height:15px}
+.hk-map-frame{position:relative;border:1px solid #d7dfd2;border-radius:4px;background:linear-gradient(180deg,#eef3ea,#e6efe6 70%,#dfeae1);overflow:hidden}
+.hk-map{display:block;width:100%;height:auto;touch-action:none;cursor:grab;background:transparent}
+.hk-map.is-dragging{cursor:grabbing}
+.hk-map text{pointer-events:none;font-family:var(--sans);user-select:none}
+.hk-map .hk-area{fill:var(--region-fill,#e0e8d7);stroke:#b9c8b4;stroke-width:.7;cursor:pointer;transition:fill .16s}
+.hk-map .hk-area.is-region{stroke:#7f9d80;stroke-width:1}
+.hk-map .hk-area.is-area{fill:#9dc19d;stroke:#4e7a5c;stroke-width:1.8}
+.hk-map .hk-area.is-muted{fill:#eaede1;stroke:#dee3d6}
+.hk-map .hk-area:focus-visible{outline:none;stroke:#b0673f;stroke-width:2}
+.hk-map .hk-area-label{font-family:var(--sans);font-size:calc(8px*var(--hk-label-scale,1));letter-spacing:.04em;fill:#6e8477;text-anchor:middle;paint-order:stroke;stroke:#eef4ea;stroke-width:calc(2.2px*var(--hk-label-scale,1));opacity:0;transition:opacity .18s;pointer-events:none}
+.hk-map .hk-area-label.is-visible{opacity:.9}
+.hk-map .hk-area-label.is-area{fill:#8a4b26;font-weight:700;opacity:1}
+.hk-map .hk-area-label.is-muted{opacity:.25}
+.hk-map .hk-region-label{font-family:var(--serif);font-size:calc(12px*var(--hk-region-scale,1));letter-spacing:.16em;fill:#4d6852;text-anchor:middle;paint-order:stroke;stroke:#f3f6ee;stroke-width:calc(2.6px*var(--hk-region-scale,1));opacity:.85}
+.hk-map .hk-region-label.is-selected{fill:#2f4d3c;opacity:1}
+.hk-map .hk-region-label.is-muted{opacity:.34}
+.hk-map .hk-hq{cursor:pointer}
+.hk-map .hk-hq-square{fill:#2f4d3c;stroke:#f6f8f0;stroke-width:1.2}
+.hk-map .hk-hq-label{font-family:var(--serif);font-size:calc(8.5px*var(--hk-label-scale,1));letter-spacing:.05em;fill:#3d5844;paint-order:stroke;stroke:#eef4ea;stroke-width:calc(2.4px*var(--hk-label-scale,1))}
+.hk-map .hk-hq.is-selected .hk-hq-square{fill:#b0673f}
+.hk-map .hk-jamboree{cursor:pointer}
+.hk-map .hk-jamboree-tent{fill:#fdfbf1;stroke:#a8703f;stroke-width:1.1}
+.hk-map .hk-jamboree-label{font-family:var(--serif);font-size:8.5px;fill:#8a4b26;text-anchor:middle;font-weight:700;paint-order:stroke;stroke:#f6f8f0;stroke-width:2.4px}
+.hk-map .hk-jamboree.is-selected .hk-jamboree-tent{fill:#b0673f;stroke:#8a4b26}
+.hk-map .hk-jamboree.is-selected .hk-jamboree-label{fill:#8a4b26;font-weight:700}
+.hk-map .hk-jamboree.is-future{opacity:.32}
+.hk-map-compass{position:absolute;left:10px;bottom:46px;width:46px;height:46px;pointer-events:none;opacity:.7}
+.hk-map-compass svg{width:100%;height:100%;fill:none;stroke:#7b9482;stroke-width:1;stroke-linecap:round}
+.hk-map-compass text{font:600 8px var(--sans);fill:#7b9482;stroke:none}
+.hk-map-note{position:absolute;left:0;right:0;bottom:0;margin:0;padding:7px 11px;font-size:9.5px;line-height:1.5;color:#556a5c;background:linear-gradient(180deg,#f8faf3f2,#f4f7edf7);border-top:1px solid #e2e8dd}
+.hk-legend-panel{position:absolute;right:10px;top:10px;width:min(240px,calc(100% - 20px));background:#fffdf5f2;border:1px solid #d2dccd;border-radius:3px;padding:11px 12px;box-shadow:0 6px 20px #2f4d3c1a;z-index:3}
+.hk-legend-panel strong{display:block;font-family:var(--serif);font-size:11px;letter-spacing:.09em;color:#42594a;margin-bottom:7px}
+.hk-legend-panel ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.hk-legend-panel li{display:flex;align-items:center;gap:7px;font-size:10.5px;color:#4f6555;line-height:1.4}
+.hk-legend-panel p{margin:9px 0 0;padding-top:8px;border-top:1px dashed #dde4d8;font-size:9.5px;line-height:1.55;color:#5c6f61}
+.hk-key{flex:none;width:16px;height:11px;display:inline-block}
+.hk-key-area{background:linear-gradient(90deg,#cbdcd6 0 33%,#e2dcb8 33% 66%,#ece1c2 66%);border:1px solid #b9c8b4;border-radius:1px}
+.hk-key-region{background:none;border:0;font-family:var(--serif);font-size:10px;letter-spacing:.08em;color:#4d6852;line-height:11px}
+.hk-key-region:before{content:"Aa"}
+.hk-key-hq{width:9px;height:9px;background:#2f4d3c;margin:0 3px}
+.hk-key-tent{width:13px;height:11px;background:#fdfbf1;border:1px solid #a8703f;border-radius:1px}
+.hk-stage-lower{display:grid;grid-template-columns:minmax(0,1fr) 355px;gap:22px;margin-top:14px;align-items:start}
+.hk-rail{border:1px solid #e0e5da;border-radius:4px;background:#fbfaf3;padding:12px 13px}
+.hk-rail-heading{font-family:var(--serif);font-size:11px;letter-spacing:.12em;color:#5b7361;margin:0 0 8px}
+.hk-rail-list{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+.hk-rail-list>li{display:block}
+.hk-rail-list>li.hk-rail-note-item{display:block}
+.hk-rail-region{width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:10px;border:0;background:none;border-radius:2px;padding:6px 8px;text-align:left;color:#4f6555}
+.hk-rail-region:hover{background:#eef4ea}
+.hk-rail-region.is-selected{background:#e4eede;box-shadow:inset 2px 0 0 var(--forest)}
+.hk-rail-region strong{font-family:var(--serif);font-size:12px;font-weight:600}
+.hk-rail-region span{font-size:10px;color:#556a5c;white-space:nowrap}
+.hk-rail-note{font-size:10px;line-height:1.6;color:#5c6f61;margin:9px 0 0;padding-top:8px;border-top:1px dashed #e2e7dc}
+.hk-card{border:1px solid #dae1d5;border-radius:4px;background:var(--sheet);padding:17px 18px 15px;box-shadow:0 2px 10px #2f4d3c0a}
+.hk-card .card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-index{font-size:9px;letter-spacing:.13em;font-weight:700;color:#556a5c}
+.card-phase{font-size:9px;letter-spacing:.04em;padding:2px 6px;border:1px solid #d8e0d3;border-radius:2px;background:#f4f7ee;color:#4f6555;white-space:nowrap}
+.card-year{font-family:var(--serif);font-size:31px;line-height:1;color:var(--forest);margin-top:10px;letter-spacing:.01em}
+.card-year-range{font-family:var(--serif);font-size:22px;line-height:1.1;color:var(--forest);display:inline;margin-left:2px}
+.hk-card h2{font-family:var(--serif);font-size:18px;line-height:1.42;margin:6px 0 0;letter-spacing:.01em}
+.hk-card .card-body{font-size:12.5px;line-height:1.8;color:#63746a;margin:9px 0 0}
+.hk-card .card-place{display:flex;align-items:center;gap:6px;font-size:11px;color:#556a5c;margin-top:5px}
+.place-dot{width:5px;height:5px;border-radius:50%;background:#b0673f;flex:none}
+.hk-card .card-note{font-size:10.5px;line-height:1.7;color:#5d6e62;margin:10px 0 0;padding-top:9px;border-top:1px dashed #e4e8de}
+.hk-card .hk-hq-note{color:#5d6e62}
+.hk-card .card-spacer{min-height:0}
+.hk-card .card-footer{margin-top:12px;padding-top:10px;border-top:1px solid #edf0e7}
+.hk-card .draft-line{font-size:9.5px;line-height:1.6;color:#5c6f61;letter-spacing:.01em}
+.hk-overview .hk-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#e7ebe1;border:1px solid #e7ebe1;border-radius:3px;margin:13px 0 0;overflow:hidden}
+.hk-stat{background:#fbfaf3;padding:9px 10px}
+.hk-stat strong{display:block;font-family:var(--serif);font-size:19px;color:var(--forest);line-height:1.1}
+.hk-stat span{display:block;font-size:9.5px;color:#556a5c;margin-top:3px}
+.hk-meta{margin-top:11px}
+.hk-meta .panel-kicker{margin-bottom:4px}
+.hk-facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 12px;margin:11px 0 0;font-size:11.5px}
+.hk-facts dt{color:#5c6f61;font-size:10px;letter-spacing:.05em;padding-top:1px}
+.hk-facts dd{margin:0;color:#4f6555;line-height:1.6}
+.hk-district-list,.hk-member-list,.hk-change-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px}
+.hk-district-list li{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:#54695b;padding-bottom:4px;border-bottom:1px dotted #e6eae0}
+.hk-district-list li span:last-child{color:#5c6f61;font-size:10.5px;white-space:nowrap}
+.hk-member-list li{font-size:11.5px;color:#54695b;line-height:1.6}
+.hk-member-button{border:0;background:none;padding:2px 0;text-align:left;font-size:11.5px;color:#4a6b57;border-bottom:1px solid #c9d8c9}
+.hk-member-button:hover{color:#8a4b26;border-bottom-color:#c8a083}
+.hk-change-list li{font-size:11px;line-height:1.6;color:#63746a}
+.hk-change-list time{font-family:var(--serif);color:var(--forest);margin-right:6px}
+.hk-source-links,.source-links{display:flex;flex-wrap:wrap;gap:4px 9px;margin-top:8px}
+.hk-source-links a,.source-links a{font-size:10px;color:#556a5c;text-decoration:none;border-bottom:1px dotted #c4d0c2}
+.hk-source-links a:hover,.source-links a:hover{color:var(--forest);border-bottom-color:var(--forest)}
+.hk-panel-kicker{font-size:9.5px;letter-spacing:.13em;font-weight:700;color:#7b6045;margin:0 0 5px}
+.hk-region-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:12px}
+.hk-region-tile{border:1px solid #dfe4d9;border-radius:4px;background:var(--sheet);padding:13px 14px 12px;display:flex;flex-direction:column;gap:6px}
+.hk-region-tile.is-selected{border-color:#8fae94;box-shadow:inset 0 0 0 1px #8fae94}
+.hk-region-title{border:0;background:none;padding:0;text-align:left;font-family:var(--serif);font-size:16px;color:var(--forest);line-height:1.35}
+.hk-region-title span{display:block;font-size:10px;letter-spacing:.06em;color:#5c6f61;font-family:var(--sans);margin-top:2px}
+.hk-region-tile .hk-region-founded-label{font-size:9.5px;letter-spacing:.05em;color:#7b6045}
+.hk-region-hq{font-size:10.5px;line-height:1.6;color:#5d6e62;margin:0}
+.hk-region-tile p{font-size:11px;line-height:1.7;color:#4f6555;margin:0}
+.hk-region-tile .hk-source-links{margin-top:auto;padding-top:7px;border-top:1px dashed #e7eae1}
+.hk-district-chips{display:flex;flex-wrap:wrap;gap:4px;margin:0;padding:0;list-style:none}
+.hk-district-chips li{border:1px solid #dde4d8;background:#f7f8f1;border-radius:2px;font-size:10px;color:#61776a;padding:3px 6px;line-height:1.3}
+.hk-boundary-list{list-style:none;margin:0;padding:0;position:relative}
+.hk-boundary-list:before{content:"";position:absolute;left:52px;top:6px;bottom:6px;width:1px;background:#dde4d8}
+.hk-boundary-row{position:relative;padding:0 0 4px}
+.hk-boundary-body{display:block}
+.hk-boundary-sources{padding:0 0 6px 58px}
+.hk-boundary-entry{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;width:100%;border:0;background:none;text-align:left;padding:9px 6px 10px 0;border-radius:3px}
+.hk-boundary-entry:hover{background:#f5f7ee}
+.hk-boundary-entry.is-selected{background:#eef4ea;box-shadow:inset 2px 0 0 var(--forest)}
+.hk-boundary-year{font-family:var(--serif);font-size:14px;color:var(--forest);position:relative;padding-left:14px;line-height:1.4}
+.hk-boundary-year:before{content:"";position:absolute;left:0;top:6px;width:7px;height:7px;border-radius:50%;background:#fffdf5;border:2px solid #9db89b}
+.hk-boundary-entry.is-selected .hk-boundary-year:before{background:#b0673f;border-color:#b0673f}
+.hk-boundary-copy{display:block;font-size:11.5px;line-height:1.7;color:#63746a}
+.hk-boundary-copy strong{display:block;font-family:var(--serif);font-size:12.5px;font-weight:600;color:#3f5748;margin-bottom:2px}
+.hk-table-wrap{overflow-x:auto;border:1px solid #e0e5da;border-radius:4px;background:var(--sheet)}
+.hk-jamboree-table{width:100%;border-collapse:collapse;font-size:11.5px;min-width:640px}
+.hk-jamboree-table th,.hk-jamboree-table td{text-align:left;padding:9px 11px;border-bottom:1px solid #ecefe6;vertical-align:top}
+.hk-jamboree-table thead th{font-size:9.5px;letter-spacing:.09em;font-weight:700;color:#5d6e62;background:#f8f8f0;border-bottom:1px solid #dfe4d8;white-space:nowrap}
+.hk-jamboree-table tbody tr:hover{background:#f7f8f0}
+.hk-jamboree-table tbody tr.is-selected{background:#eef4ea}
+.hk-jamboree-table tbody tr:last-child td{border-bottom:0}
+.hk-jamboree-link{border:0;background:none;padding:0;text-align:left;font-family:var(--serif);font-size:12.5px;line-height:1.45;color:var(--forest);border-bottom:1px solid #cddccd}
+.hk-jamboree-link:hover{color:#8a4b26;border-bottom-color:#c8a083}
+.hk-jamboree-number{display:inline-block;font-family:var(--sans);font-size:9px;letter-spacing:.08em;color:#7b6045;margin-right:6px;vertical-align:1px}
+.hk-jamboree-year{font-family:var(--serif);color:#54695b;white-space:nowrap}
+.hk-jamboree-count{white-space:nowrap;color:#54695b;font-variant-numeric:tabular-nums}
+.hk-jamboree-note{color:#5d6e62;font-size:10.5px;line-height:1.6;min-width:150px}
+.hk-people-head,.hk-timeline .hk-people-head{border-bottom:1px solid #dfe4d9;padding-bottom:11px;margin-bottom:14px}
+.hk-office-title{font-family:var(--serif);font-size:20px;margin:0;color:var(--forest)}
+.hk-office-note{font-size:11px;line-height:1.7;color:#5d6e62;margin:6px 0 0;max-width:760px}
+.hk-people-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:10px;counter-reset:person}
+.hk-person{border:1px solid #e2e7dc;border-radius:4px;background:var(--sheet);padding:12px 13px 11px;display:flex;flex-direction:column;gap:4px}
+.hk-person.is-current{border-color:#a9bfa6;background:#fbfcf4}
+.hk-person-number{font-size:9px;letter-spacing:.12em;color:#556a5c;font-weight:700}
+.hk-person strong{font-family:var(--serif);font-size:14.5px;line-height:1.4;color:#35493c}
+.hk-person-years{font-family:var(--serif);font-size:11.5px;color:#5d6e62}
+.hk-person-office{font-size:10px;color:#5c6f61;line-height:1.55;margin-top:2px}
+.hk-person .hk-source-links{margin-top:auto;padding-top:7px}
+.hk-timeline-list{list-style:none;margin:0;padding:0;position:relative}
+.hk-timeline-list:before{content:"";position:absolute;left:47px;top:4px;bottom:4px;width:1px;background:#dde4d8}
+.hk-timeline-item{position:relative}
+.hk-timeline-card{display:grid;grid-template-columns:40px minmax(0,1fr);gap:16px;width:100%;border:0;background:none;text-align:left;padding:9px 8px 10px 0;border-radius:3px}
+.hk-timeline-card:hover{background:#f5f7ee}
+.hk-timeline-card.is-selected,.hk-timeline-item.is-selected .hk-timeline-card{background:#eef4ea}
+.hk-timeline-year{font-family:var(--serif);font-size:13.5px;color:var(--forest);position:relative;padding-left:14px;line-height:1.4}
+.hk-timeline-year:before{content:"";position:absolute;left:0;top:5px;width:7px;height:7px;border-radius:50%;background:#fffdf5;border:2px solid #9db89b}
+.hk-timeline-card.is-selected .hk-timeline-year:before{background:#b0673f;border-color:#b0673f}
+.hk-timeline-copy strong{display:block;font-family:var(--serif);font-size:12.5px;font-weight:600;color:#3f5748;margin-bottom:2px;line-height:1.5}
+.hk-timeline-copy span{display:block;font-size:11px;line-height:1.7;color:#4f6555}
+.hk-timeline-copy .hk-source-links{margin-top:5px}
+.hk-timeline-entry{display:block;width:100%;text-align:left;border:0;background:none;padding:0}
+.hk-page .site-footer{margin-top:26px;border-top:1px solid #e5e8df;padding:14px 2px 0}
+.hk-page .toast{bottom:26px}
+.hk-page .load-error{border-radius:3px;font-size:12px}
+@media(max-width:1100px){
+.hk-stage-lower{grid-template-columns:minmax(0,1fr)}
+.hk-stage-lower .hk-panel{position:static}
+.hk-layout{grid-template-columns:minmax(0,1fr) 320px;gap:18px}
+}
+@media(max-width:900px){
+.hk-wrap{padding:16px 12px 28px}
+.hk-page{--hk-header-h:103px}
+.hk-map-frame{border-radius:3px}
+.hk-intro{padding:12px 2px 14px}
+.hk-intro h1{font-size:22px}
+.hk-lead{font-size:13px;line-height:1.72}
+.hk-year-band{padding:11px 12px 10px}
+.hk-year-value strong{font-size:17px}
+#hk-year-range{min-width:140px}
+.hk-year-quick{gap:5px}
+.hk-year-quick button{font-size:10.5px;padding:4px 7px}
+.hk-tabs [role=tab]{font-size:11.5px;padding:10px 11px 9px}
+.hk-layout{display:block}
+.hk-main-column{margin-bottom:14px}
+.hk-panel{position:static}
+.hk-region-board{grid-template-columns:1fr}
+.hk-stage{margin-top:12px}
+.hk-map-toolbar{gap:8px}
+.hk-map-heading strong{font-size:13px}
+.hk-map-heading span{font-size:9px}
+.hk-zoom-group button{width:31px;height:30px}
+.hk-share,.hk-legend-toggle{font-size:10.5px;padding:6px 8px}
+.hk-map-compass{display:none}
+.hk-map-note{font-size:9px;padding:6px 9px}
+.hk-legend-panel{left:8px;right:8px;top:8px;width:auto}
+.hk-rail{padding:10px 11px}
+.hk-rail-region{padding:6px 6px}
+.hk-rail-region strong{font-size:11.5px}
+.hk-card{padding:14px 14px 12px}
+.hk-card h2{font-size:16.5px}
+.card-year{font-size:27px}
+.hk-card .card-body{font-size:12px;line-height:1.75}
+.hk-facts{font-size:11px}
+.hk-jamboree-table{min-width:0;font-size:11px}
+.hk-jamboree-table th,.hk-jamboree-table td{padding:8px 8px}
+.hk-jamboree-table thead th{font-size:9px}
+.hk-jamboree-table col.hk-col-theme,.hk-jamboree-table th:nth-child(4),.hk-jamboree-table td:nth-child(4){display:none}
+.hk-jamboree-note{font-size:10px;min-width:0}
+.hk-people-list{grid-template-columns:1fr}
+.hk-person{padding:11px 12px 10px}
+.hk-boundary-entry,.hk-timeline-card{grid-template-columns:38px minmax(0,1fr);gap:12px}
+.hk-boundary-list:before,.hk-timeline-list:before{left:45px}
+.hk-office-title{font-size:18px}
+.hk-page .site-footer{font-size:9px;line-height:1.55}
+.hk-page .toast{bottom:20px;white-space:normal;max-width:calc(100% - 32px)}
+}
+@media(max-width:520px){
+.hk-year-controls{gap:9px}
+.hk-year-all,.hk-year-clear{font-size:10px;padding:5px 8px}
+.hk-tabs [role=tab]{padding:9px 9px 8px;font-size:11px}
+.hk-map-heading .icon{display:none}
+.hk-card .hk-stats{grid-template-columns:1fr}
+.hk-facts{grid-template-columns:1fr;gap:1px}
+.hk-facts dt{font-size:9.5px;letter-spacing:.04em;margin-top:6px}
+.hk-jamboree-table th:nth-child(3),.hk-jamboree-table td:nth-child(3){display:none}
+}
+@media(prefers-reduced-motion:reduce){
+.hk-map .hk-area{transition:none}
+.hk-page{scroll-behavior:auto}
+}
+/* ── header: five entries on narrow screens ─────────────────────────── */
+/* css/style.css makes the four atlas modes share the strip equally. With the
+   Hong Kong entry the labels no longer fit at 320–390 px, so the strip scrolls
+   horizontally instead of squeezing every word onto three lines. */
+@media(max-width:900px){
+  .primary-nav{gap:4px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth}
+  .primary-nav::-webkit-scrollbar{display:none}
+  .primary-nav .mode-button{flex:0 0 auto;padding:0 7px;white-space:nowrap;font-size:11.5px;line-height:1.2}
+  .primary-nav .mode-button .icon{width:14px;height:14px}
+  .primary-nav .mode-button:first-child{padding-left:0}
+  .primary-nav .mode-button:last-child{padding-right:4px}
+}
+@media(max-width:700px){
+  /* A phone-sized map: headquarters names would sit on top of the region
+     labels, and each one is spelled out in the rail and cards below, so the
+     squares stay and the words go. */
+  .hk-map .hk-hq-label{display:none}
+  .hk-map .hk-hq-square{opacity:.75}
+}
+@media(max-width:560px){
+  .primary-nav .mode-button{font-size:11px;padding:0 6px;gap:5px}
+  .primary-nav .mode-button .icon{width:13px;height:13px}
+}
+
+@media(max-width:900px){
+  /* Hint that the mode strip scrolls: a soft fade over its right edge. */
+  .site-header:after{content:"";position:absolute;right:0;top:61px;width:26px;height:42px;pointer-events:none;background:linear-gradient(90deg,rgba(255,253,246,0),rgba(255,253,246,.96) 70%)}
+  .hk-page .site-header{position:relative}
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 // Structural validation only: passing this script does NOT verify historical claims.
 import { readFileSync, statSync } from 'node:fs';
 import { feature, geoArea } from '../vendor/geography.min.js';
@@ -27,6 +27,12 @@ function contentSources(item, label) {
   check(Array.isArray(item.sources) && item.sources.length > 0, `${label}: missing sources`);
   for (const id of item.sources || []) check(ids.has(id), `${label}: unknown source ${id}`);
   check(typeof item.draft === 'boolean', `${label}: missing draft status`);
+}
+// Hong Kong records are all research drafts, declared once in data/hk.json
+// about.draft, so each record only has to cite its own sources.
+function hkSources(item, label) {
+  check(Array.isArray(item.sources) && item.sources.length > 0, `${label}: missing sources`);
+  for (const id of item.sources || []) check(ids.has(id) && sourceById.has(id), `${label}: unknown source ${id}`);
 }
 const world = read('world');
 check(world.type === 'Topology' && world.objects?.countries?.geometries?.length >= 200, 'world: invalid or incomplete topology');
@@ -137,6 +143,84 @@ membership.forEach((row, index) => {
   if (row.kind === 'estimated-reach') check(row.precision === 'approx' && Number.isFinite(row.members), `${label}: estimated reach needs an approximate member value`);
   contentSources(row, label);
 });
+
+// ── Hong Kong Scout history (hong-kong.html) ──────────────────────────────
+// Structural checks only: these do not verify that the cited pages say what the
+// entries claim, nor that the Council outlines are cartographically accurate.
+const hk = read('hk');
+const hkAreas = read('hk-areas');
+const regionIds = new Set(hk.regions.map(region => region.id));
+check(hk.regions.length === 6 && regionIds.size === 6, 'hk: expected 6 regions including Silver Jubilee');
+for (const region of hk.regions) {
+  const label = `hk region ${region.id}`;
+  check(year(region.founded) && bilingual(region.name) && bilingual(region.short), `${label}: invalid name or founding year`);
+  for (const field of ['foundedText', 'hq', 'insight']) check(bilingual(region[field]), `${label}: missing ${field} translation`);
+  check(Array.isArray(region.districts) && region.districts.length > 0 && region.districts.every(bilingual), `${label}: invalid district list`);
+  hkSources(region, label);
+}
+const scoutDistricts = hk.regions.reduce((sum, region) => sum + region.districts.length, 0);
+check(scoutDistricts === 44, `hk: expected 44 Scout districts, got ${scoutDistricts}`);
+unique(hk.areas, 'code', 'hk areas');
+check(hk.areas.length === hkAreas.features.length, 'hk: area records and Council features differ in number');
+for (const area of hk.areas) {
+  const label = `hk area ${area.code}`;
+  check(/^[A-Z]{1,3}$/.test(area.code) && regionIds.has(area.region), `${label}: invalid code or region`);
+  check(bilingual(area.zone) && bilingual(area.insight), `${label}: missing zone or insight translation`);
+  check(hkAreas.features.some(feature => feature.id === area.code), `${label}: no matching Council feature`);
+  hkSources(area, label);
+}
+check(hkAreas.type === 'FeatureCollection' && hkAreas.features.length === 18, 'hk-areas: expected 18 Council features');
+for (const feature of hkAreas.features) {
+  const geometry = feature.geometry;
+  check(geometry && ['Polygon', 'MultiPolygon'].includes(geometry.type), `hk-areas ${feature.id}: invalid geometry type`);
+  const rings = geometry?.type === 'Polygon' ? geometry.coordinates : geometry?.type === 'MultiPolygon' ? geometry.coordinates.flat() : [];
+  check(rings.length > 0 && rings.every(ring => ring.length >= 4 && ring.every(([lon, lat]) => coords(lon, lat))), `hk-areas ${feature.id}: invalid ring`);
+  check(Array.isArray(feature.properties?.label) && coords(...(feature.properties.label || [])), `hk-areas ${feature.id}: missing label anchor`);
+  check(feature.properties?.code === feature.id, `hk-areas ${feature.id}: code mismatch`);
+}
+check(statSync(new URL('../data/hk-areas.json', import.meta.url)).size <= 120 * 1024, 'hk-areas: exceeds 120 KiB');
+unique(hk.boundaryChanges, 'year', 'hk boundary changes');
+for (const change of hk.boundaryChanges) {
+  const label = `hk boundary change ${change.year}`;
+  check(year(change.year) && Array.isArray(change.changes) && change.changes.length > 0 && change.changes.every(bilingual), `${label}: invalid entry`);
+  hkSources(change, label);
+}
+unique(hk.jamborees, 'n', 'hk jamborees');
+unique(hk.jamborees, 'id', 'hk jamborees');
+const hkEditions = hk.jamborees.map(event => event.n).sort((a, b) => a - b);
+check(hk.jamborees.length === 13 && hkEditions.every((n, index) => n === index + 1), 'hk jamborees: expected editions 1–13');
+for (const event of hk.jamborees) {
+  const label = `hk jamboree ${event.id}`;
+  check(year(event.year) && year(event.yearEnd) && event.yearEnd >= event.year, `${label}: invalid years`);
+  check(bilingual(event.name) && bilingual(event.place) && bilingual(event.dates) && bilingual(event.note), `${label}: missing translation`);
+  check(event.theme === null || bilingual(event.theme), `${label}: invalid theme`);
+  check(event.coordinate === null || coords(...event.coordinate), `${label}: invalid coordinate`);
+  check(event.area === null ? event.place : regionIds.has(hk.areas.find(area => area.code === event.area)?.region), `${label}: area code does not resolve to a region`);
+  check(event.participants === null || (Number.isInteger(event.participants) && event.participants > 0), `${label}: invalid participants`);
+  hkSources(event, label);
+}
+for (const [field, rows] of [['leaders', hk.leaders], ['chiefs', hk.chiefs]]) {
+  unique(rows, 'n', `hk ${field}`);
+  rows.forEach((row, index) => {
+    const label = `hk ${field} ${row.n}`;
+    check(row.n === index + 1 && bilingual(row.name), `${label}: invalid order or name`);
+    check(year(row.from) && (row.to === null || (year(row.to) && row.to >= row.from)), `${label}: invalid term`);
+    if (row.to !== null) check(!rows[index + 1] || rows[index + 1].from >= row.from, `${label}: terms out of order`);
+    check(row.to === null ? index === rows.length - 1 : true, `${label}: an open term must be the latest`);
+    if (field === 'leaders') check(['governor', 'chief-executive'].includes(row.office), `${label}: invalid office`);
+  });
+  check(bilingual(hk.offices[field === 'leaders' ? 'leader' : 'chief'].title), `hk ${field}: missing office title`);
+  check(bilingual(hk.offices[field === 'leaders' ? 'leader' : 'chief'].note), `hk ${field}: missing office note`);
+}
+unique(hk.timeline, 'year', 'hk timeline');
+for (const entry of hk.timeline) {
+  const label = `hk milestone ${entry.year}`;
+  check(year(entry.year) && bilingual(entry.title) && bilingual(entry.body), `${label}: invalid entry`);
+  hkSources(entry, label);
+}
+check(year(hk.about.founded), 'hk: invalid founding year');
+for (const field of ['foundedNote', 'boundaryNote', 'zonesNote', 'draft']) check(bilingual(hk.about[field]), `hk about: missing ${field}`);
+
 if (errors.length) { for (const error of errors) console.error(`FAIL ${error}`); process.exitCode = 1; }
-else console.log(`PASS: ${journey.length} stops, ${nso.length} directory entries (${nso.filter(item => item.scoutingStart !== null).length} provisionally plotted, ${nso.filter(item => item.wosmMembership?.year != null).length} with primary WOSM directory/news years), ${jamborees.length} jamborees/cancellation, ${membership.length} statistical rows, ${sources.length} sources; world map under 300 KiB and correctly wound.`);
+else console.log(`PASS: ${journey.length} stops, ${nso.length} directory entries (${nso.filter(item => item.scoutingStart !== null).length} provisionally plotted, ${nso.filter(item => item.wosmMembership?.year != null).length} with primary WOSM directory/news years), ${jamborees.length} jamborees/cancellation, ${membership.length} statistical rows, ${sources.length} sources; world map under 300 KiB and correctly wound; Hong Kong ${hk.regions.length} regions / ${scoutDistricts} Scout districts / ${hk.areas.length} Council outlines / ${hk.jamborees.length} jamborees.`);
 console.log('NOTICE: Structure is valid; historical accuracy, coverage, source relevance, licences and release readiness require human verification.');

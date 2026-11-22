@@ -1,4 +1,4 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 import { applyLanguage, getInitialLanguage, localize, localizationLanguage, localeFor, t } from './i18n.js';
 import { enhanceLocalizedData } from './data-translations.js';
 import { formatValue } from './chart.js';
@@ -21,7 +21,7 @@ function number(value, precision) {
 }
 function render() {
   applyLanguage(lang);
-  document.title = `${t('creditsTitle', lang)} · B-P Atlas v1.2 · © SCOUT SYSTEM`;
+  document.title = `${t('creditsTitle', lang)} · B-P Atlas v1.3 · © SCOUT SYSTEM`;
   document.querySelector('#back-link').href = `index.html?lang=${lang}`;
   document.querySelector('.brand').href = `index.html?lang=${lang}`;
   const status = document.querySelector('#sources-status');

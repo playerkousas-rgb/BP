@@ -2086,5 +2086,133 @@
       "en": "Scouts of Namibia: 2004 newsletter quoting WOSM accreditation and membership recommendation"
     },
     "url": "https://www.geocities.ws/scoutsnamibia/Newsletter_Nov_2004.html"
+  },
+  {
+    "id": "hk-regions",
+    "title": {
+      "zh": "香港童軍總會：地域及區",
+      "en": "Scout Association of Hong Kong: Regions and Districts"
+    },
+    "url": "https://www.scout.org.hk/tc/scout-units/regions-districts/index.html"
+  },
+  {
+    "id": "hk-wiki",
+    "title": {
+      "zh": "維基百科：香港童軍總會",
+      "en": "Wikipedia: Scout Association of Hong Kong"
+    },
+    "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%AB%A5%E8%BB%8D%E7%B8%BD%E6%9C%83"
+  },
+  {
+    "id": "hk-wiki-history",
+    "title": {
+      "zh": "維基百科：香港童軍總會歷史",
+      "en": "Wikipedia: History of the Scout Association of Hong Kong"
+    },
+    "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%AB%A5%E8%BB%8D%E7%B8%BD%E6%9C%83%E6%AD%B7%E5%8F%B2"
+  },
+  {
+    "id": "hk-ntr-overview",
+    "title": {
+      "zh": "新界地域：概覽（地域沿革）",
+      "en": "New Territories Region: Overview"
+    },
+    "url": "https://www.scout-ntr.org.hk/mainweb/big5/about/overview.php"
+  },
+  {
+    "id": "hk-ntr-history",
+    "title": {
+      "zh": "新界地域：地域大事紀要",
+      "en": "New Territories Region: Regional chronology"
+    },
+    "url": "https://www.scout-ntr.org.hk/mainweb/big5/about/history.php"
+  },
+  {
+    "id": "hk-tps-history",
+    "title": {
+      "zh": "大埔南區：本區歷史與區界",
+      "en": "Tai Po South District: History and boundaries"
+    },
+    "url": "http://www.tps.org.hk/intro/index"
+  },
+  {
+    "id": "hk-stn-history",
+    "title": {
+      "zh": "沙田北區：本區歷史",
+      "en": "Sha Tin North District: District history"
+    },
+    "url": "http://www.stnscout.org/history.php"
+  },
+  {
+    "id": "hk-yle-timetable",
+    "title": {
+      "zh": "元朗東區：大事年表",
+      "en": "Yuen Long East District: Chronology"
+    },
+    "url": "https://yle.scout-ntr.org.hk/042_timetable.html"
+  },
+  {
+    "id": "hk-hkir-history",
+    "title": {
+      "zh": "港島地域：香港童軍大露營（歷屆列表）",
+      "en": "Island Region: Hong Kong jamborees list"
+    },
+    "url": "https://www.hkirscout.org.hk/tc/about_us/RC/past_speech/index_id_659.html"
+  },
+  {
+    "id": "hk-stheadline-jam",
+    "title": {
+      "zh": "星島日報：香港童軍大露營歷史",
+      "en": "Sing Tao Daily: History of Hong Kong Scout jamborees"
+    },
+    "url": "https://www.stheadline.com/article/3421347/"
+  },
+  {
+    "id": "hk-stheadline-2024",
+    "title": {
+      "zh": "星島日報：港童軍總會珠海大露營 推動國際文化交流",
+      "en": "Sing Tao Daily: Zhuhai jamboree report"
+    },
+    "url": "https://www.stheadline.com/article/3413776/"
+  },
+  {
+    "id": "hk-tkww-2024",
+    "title": {
+      "zh": "大公文匯網：香港童軍大露營首次內地舉行",
+      "en": "Ta Kung Wen Wei: First jamboree on the mainland"
+    },
+    "url": "https://www.tkww.hk/a/202412/25/AP676b9cd8e4b0f8a56f7e4279.html"
+  },
+  {
+    "id": "hk-ce-2016",
+    "title": {
+      "zh": "香港政府新聞公報：行政長官出席香港童軍 105 周年紀念大露營開幕禮致辭",
+      "en": "HKSAR press release: CE's speech at the 105th anniversary jamboree"
+    },
+    "url": "https://www.info.gov.hk/gia/general/201612/24/P2016122400456p.htm"
+  },
+  {
+    "id": "hk-nkc-100",
+    "title": {
+      "zh": "北葵涌區：香港童軍一百周年大露營",
+      "en": "North Kwai Chung District: Centenary jamboree"
+    },
+    "url": "https://www.nkcscout.org/albums/view/1"
+  },
+  {
+    "id": "hk-scout-cub-2016",
+    "title": {
+      "zh": "香港童軍總會：105 周年紀念大露營幼童軍百周年活動通告",
+      "en": "Scout Association of Hong Kong: 105th jamboree Cub centenary circular"
+    },
+    "url": "https://www.scout.org.hk/article_attach/26482/circular02_c.pdf"
+  },
+  {
+    "id": "hk-council-areas",
+    "title": {
+      "zh": "HKMap 十八區界線（Paul Chu，MIT）",
+      "en": "HKMap 18 District Council boundaries (Paul Chu, MIT)"
+    },
+    "url": "https://github.com/Paulkit/HKMap"
   }
 ]

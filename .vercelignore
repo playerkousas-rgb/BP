@@ -14,6 +14,7 @@ package-lock.json
 .env*
 bp-atlas_v*.html
 credits_v*.html
+hong-kong_v*.html
 *.bak
 *.tmp
 *.old

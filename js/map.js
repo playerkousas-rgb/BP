@@ -1,4 +1,4 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 import { feature, geoEqualEarth, geoGraticule, geoInterpolate, geoPath } from '../vendor/geography.min.js';
 import { localize, localeFor, t } from './i18n.js';
 import { clamp } from './state.js';

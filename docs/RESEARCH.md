@@ -1,6 +1,6 @@
 # 設計參考 / Comparative research
 
-B-P Atlas v1.2 · © SCOUT SYSTEM · Reviewed 2026-11-10
+B-P Atlas v1.3 · © SCOUT SYSTEM · Reviewed 2026-11-22
 
 只研究公開介紹和互動概念，沒有複製以下網站的程式、地圖資料或視覺素材。以下是適合本規格的取捨，不代表功能或資料已得到歷史驗證。
 

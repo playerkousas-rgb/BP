@@ -1,4 +1,4 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 import { localize, localizationLanguage, localeFor, t } from './i18n.js';
 import { locationRecordYear, locationsRecordedBy } from './chronicles.js';
 import { organizationsAtYear, formatValue } from './chart.js';

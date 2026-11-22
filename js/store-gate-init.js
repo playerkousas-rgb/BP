@@ -1,4 +1,4 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 // Run synchronously after the upstream gate; keep script-src 'self' intact.
 if (typeof initStoreGate === 'function') {
   const requestedLang = new URLSearchParams(location.search).get('lang') || navigator.language || 'zh';

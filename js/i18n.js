@@ -1,6 +1,10 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 import { extraLanguages, extraMessages } from './translations.js';
-const messages = {
+
+// The Hong Kong history page keeps its strings in js/hk-i18n.js and
+// js/translations-hk.js. They are merged in with mergeHkMessages() by that page
+// only, so the atlas's first load does not download a page it never shows.
+let messages = {
   skip: ['跳到主要內容', 'Skip to main content'],
   brandZh: ['貝登堡行跡', 'Baden-Powell'],
   languageLabel: ['語言', 'Language'],
@@ -220,13 +224,23 @@ const messages = {
   creditsWikipedia: ['成員年份及部分歷史線索改編自維基百科貢獻者的文章；我們分開起步、組織成立和入會欄位，並按 WOSM 等資料修正及標示衝突。改編部分適用 CC BY-SA 4.0；原文章及作者見下列版本歷史。地區名稱部分使用 Unicode CLDR／ICU 的本地化名稱。', 'Membership years and some historical leads are adapted from articles by Wikipedia contributors. We separated local beginnings, organisation founding and accession, and corrected or flagged conflicts using WOSM and other sources. Adapted material is under CC BY-SA 4.0; see the linked article histories for contributors. Some place names use Unicode CLDR / ICU localisations.'],
   creditsNotices: ['第三方授權聲明', 'Third-party licence notices'],
   creditsUnofficial: ['本站並非世界童軍組織或任何童軍總會的官方作品。', 'This is an unofficial project, not affiliated with WOSM or any Scout association.'],
+
   oceanPacific: ['太平洋', 'PACIFIC OCEAN'],
   oceanAtlantic: ['大西洋', 'ATLANTIC OCEAN'],
   oceanIndian: ['印度洋', 'INDIAN OCEAN'],
 };
 
 export const SUPPORTED_LANGUAGES = Object.freeze(['zh', 'en', ...extraLanguages]);
-export const messageKeys = Object.freeze(Object.keys(messages));
+// The dictionary is extended at runtime by mergeHkMessages(), so this array is
+// rebuilt rather than frozen.
+export let messageKeys = Object.freeze(Object.keys(messages));
+
+export function mergeHkMessages(base, extra) {
+  messages = { ...messages, ...base };
+  Object.assign(extraMessages, extra);
+  messageKeys = Object.freeze(Object.keys(messages));
+  return messageKeys.length;
+}
 
 // URL/share links win; otherwise try the browser's ordered language preferences.
 // Storage is used only when the browser reports no language, matching the
@@ -279,7 +293,8 @@ export function applyLanguage(lang) {
   lang = normalizeLanguage(lang) || 'zh';
   document.documentElement.dataset.lang = lang;
   document.documentElement.lang = localeFor(lang);
-  document.title = `${t('brandZh', lang)} · B-P Atlas v1.2 · © SCOUT SYSTEM`;
+  const titleKey = document.documentElement.dataset.titleKey || 'brandZh';
+  document.title = `${t(titleKey, lang)} · B-P Atlas v1.3 · © SCOUT SYSTEM`;
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = t(el.dataset.i18n, lang);
     // If a future interface key is untranslated, identify its English fallback.

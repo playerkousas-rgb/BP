@@ -1,11 +1,15 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 import { stopAtYear } from './journey.js';
 import { locationRecordYear } from './chronicles.js';
 export const MIN_YEAR = 1857;
-export const APP_VERSION = 'v1.2';
+export const APP_VERSION = 'v1.3';
 export const currentYear = () => Math.max(MIN_YEAR, new Date().getFullYear());
 export const clamp = (n, low, high) => Math.max(low, Math.min(high, n));
-export const MODES = ['journey', 'members', 'spread', 'jamborees', 'population'];
+// 'hongkong' is a full page of its own (hong-kong.html), not an atlas mode; it
+// is listed so that old ?mode=hongkong links survive readState() and get
+// redirected by js/app.js before any atlas data is loaded.
+export const MODES = ['journey', 'members', 'spread', 'jamborees', 'population', 'hongkong'];
+export const HK_PAGE = 'hong-kong.html';
 
 export function parseView(value) {
   if (!value) return { k: 1, x: 0, y: 0 };

@@ -1,4 +1,4 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 import { localize, localizationLanguage, localeFor, t } from './i18n.js';
 import { clamp, MIN_YEAR } from './state.js';
 const NS = 'http://www.w3.org/2000/svg';

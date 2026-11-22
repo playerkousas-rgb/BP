@@ -1,6 +1,6 @@
 # 資料來源及致謝 / Sources & credits
 
-B-P Atlas v1.2 · © SCOUT SYSTEM · Research draft / 研究草稿
+B-P Atlas v1.3 · © SCOUT SYSTEM · Research draft / 研究草稿
 
 ## 重要限制 / Important limitations
 
@@ -16,6 +16,16 @@ The separate **historical map** provisionally plots 37 locations with sources de
 - The input is [`world-atlas` 2.0.2 countries-50m](https://github.com/topojson/world-atlas); see [`scripts/build_world.sh`](scripts/build_world.sh) for simplification and [`scripts/rewind_world.mjs`](scripts/rewind_world.mjs) for winding corrections. The mapshaper simplification reported unrepaired intersections; further topology review is required.
 - Runtime geography is locally bundled from [`d3-geo` 3.1.2](https://github.com/d3/d3-geo) and [`topojson-client` 3.1.0](https://github.com/topojson/topojson-client), with their dependencies `d3-array` 3.2.5 and `internmap` 2.0.3. Complete third-party notices, including the GeographicLib notice, are in [`vendor/LICENSES.txt`](vendor/LICENSES.txt).
 - All UI icons and line illustrations were created for this prototype. No Scout emblems, association logos, historical photos or B-P drawings are included.
+
+## 香港童軍歷史 / Hong Kong Scout history
+
+[`hong-kong.html`](hong-kong.html) is a separate, page-level research draft. It draws on the association's own regional websites, Chinese Wikipedia, Hong Kong government press releases and newspaper reports; every region, district list, boundary change, jamboree and office-holder entry in [`data/hk.json`](data/hk.json) carries source ids that resolve in [`data/sources.json`](data/sources.json).
+
+- **Council outlines are not Scout boundaries.** The coloured shapes in [`data/hk-areas.json`](data/hk-areas.json) are the 18 District Council areas, simplified to four decimal places from [Paulkit/HKMap](https://github.com/Paulkit/HKMap) (MIT, © 2018 Paul Chu; full notice in [`vendor/LICENSES.txt`](vendor/LICENSES.txt)). The association's 44 Scout districts are not published as open geodata and do not match these shapes. The map uses the shapes for orientation, colours them by Scout region and says so in the legend, the intro and each card.
+- **Region labels and headquarters markers are approximate.** They are hand-placed positions, not surveyed points.
+- **Jamboree figures conflict.** Where sources give different attendance for the same jamboree (for example 1957, 1986, 1999, 2001, 2006 and 2016) the card and table keep the differences instead of averaging them. The 1975 Tai Po Lam Tsuen and 1982 Tai Tam entries are flagged as needing verification in their notes.
+- **Office-holders follow terms of office.** The Chief Scout is the Governor before 1997 and the Chief Executive afterwards; the years are those of the office-holder, not a Scout appointment record. Chinese/English name pairs are transliterations that still need checking.
+- **Draft status.** Districts without a specific source are listed by name only, with no invented history. The page carries a research-draft badge and every card closes with a draft line.
 
 ## Membership figures
 

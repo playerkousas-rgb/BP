@@ -1,4 +1,4 @@
-// B-P Atlas v1.2 · © SCOUT SYSTEM
+// B-P Atlas v1.3 · © SCOUT SYSTEM
 // Interface translations in the order ja, ko, fr, es, id, pt, hi.
 // Historical source texts are maintained separately and may fall back to English.
 export const extraLanguages = ['ja', 'ko', 'fr', 'es', 'id', 'pt', 'hi'];

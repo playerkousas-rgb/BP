@@ -11,9 +11,12 @@ import { adjacentYear, locationRecordYear, locationsRecordedBy, recordedByYear, 
 import { stopAtYear, adjacentStop } from '../js/journey.js';
 import { formatValue, membershipAtYear, organizationsAtYear } from '../js/chart.js';
 import { greatCircleKm } from '../js/map.js';
-import { getInitialLanguage, localizationLanguage, localize, messageKeys, normalizeLanguage, SUPPORTED_LANGUAGES, t } from '../js/i18n.js';
+import { getInitialLanguage, localizationLanguage, localize, messageKeys, mergeHkMessages, normalizeLanguage, SUPPORTED_LANGUAGES, t } from '../js/i18n.js';
 import { extraLanguages, extraMessages } from '../js/translations.js';
+import { hkMessages } from '../js/hk-i18n.js';
+import { hkMessages as hkTranslations } from '../js/translations-hk.js';
 import { enhanceLocalizedData } from '../js/data-translations.js';
+import { hkStateToSearch, readHkState } from '../js/hk-view.js';
 const read = name => JSON.parse(readFileSync(new URL(`../data/${name}.json`, import.meta.url), 'utf8'));
 const data = { journey: read('journey'), nso: read('nso'), jamborees: read('jamborees'), membership: read('membership') };
 
@@ -307,6 +310,31 @@ test('explicit language wins; without it the browser language takes precedence o
 });
 
 
+test('Hong Kong page strings cover all nine interface languages and every placeholder', () => {
+  const placeholders = text => [...text.matchAll(/\{(\w+)\}/g)].map(match => match[1]).sort();
+  const baseKeys = Object.keys(hkMessages);
+  assert.ok(baseKeys.length > 70, 'expected the full Hong Kong page dictionary');
+  assert.deepEqual(new Set(baseKeys), new Set(Object.keys(hkTranslations)), 'base and translated keys must match');
+  for (const key of baseKeys) {
+    const [zh, en] = hkMessages[key];
+    assert.ok(typeof zh === 'string' && zh.trim() && typeof en === 'string' && en.trim(), `${key}: missing zh/en`);
+    assert.deepEqual(placeholders(zh), placeholders(en), `${key}: zh/en placeholders`);
+    const strings = hkTranslations[key];
+    assert.ok(Array.isArray(strings) && strings.length === extraLanguages.length, `${key}: expected ${extraLanguages.length} translations`);
+    for (const [index, lang] of extraLanguages.entries()) {
+      assert.ok(typeof strings[index] === 'string' && strings[index].trim(), `${key}: ${lang}`);
+      assert.deepEqual(placeholders(strings[index]), placeholders(en), `${key}: ${lang} placeholders`);
+    }
+  }
+  // The world atlas must not ship the page dictionary on first load.
+  assert.equal(messageKeys.includes('hkTitle'), false, 'Hong Kong strings leaked into the atlas dictionary');
+  mergeHkMessages(hkMessages, hkTranslations);
+  assert.equal(t('hkTitle', 'en'), 'Hong Kong Scout history');
+  assert.equal(t('hkTitle', 'ja'), '香港スカウト史');
+  assert.equal(t('hkDistrictCount', 'fr', { count: 7 }), '7 districts');
+  assert.ok(messageKeys.includes('hkTitle'), 'merged dictionary should expose the Hong Kong keys');
+});
+
 test('all interface messages and substitution tokens exist in the seven additional languages', () => {
   assert.deepEqual(SUPPORTED_LANGUAGES, ['zh', 'en', 'ja', 'ko', 'fr', 'es', 'id', 'pt', 'hi']);
   assert.deepEqual(new Set(Object.keys(extraMessages)), new Set(messageKeys));
@@ -378,5 +406,50 @@ test('language selection respects URL, ordered browser preferences, fallback and
   } finally {
     if (nav) Object.defineProperty(globalThis, 'navigator', nav); else delete globalThis.navigator;
     if (storage) Object.defineProperty(globalThis, 'localStorage', storage); else delete globalThis.localStorage;
+  }
+});
+
+test('Hong Kong state round-trips through the share URL', () => {
+  const params = new URLSearchParams('lang=en&hk=jamborees&year=2016&sel=jamboree:hk-jam-2016');
+  const state = readHkState(params);
+  assert.deepEqual(state, { tab: 'jamborees', year: 2016, selected: { kind: 'jamboree', id: 'hk-jam-2016' } });
+  const search = hkStateToSearch({ ...state, lang: 'en' }, 'en');
+  const roundTrip = readHkState(new URLSearchParams(search));
+  assert.equal(roundTrip.tab, 'jamborees');
+  assert.equal(roundTrip.year, 2016);
+  assert.deepEqual(roundTrip.selected, { kind: 'jamboree', id: 'hk-jam-2016' });
+
+  // Unknown tabs, out-of-range years and selections that the tab cannot show are dropped.
+  const hostile = readHkState(new URLSearchParams('hk=nowhere&year=1200&sel=area:CW'));
+  assert.deepEqual(hostile, { tab: 'map', year: 1909, selected: { kind: 'area', id: 'CW' } });
+  const mismatched = readHkState(new URLSearchParams('hk=leaders&sel=jamboree:hk-jam-2016'));
+  assert.equal(mismatched.selected, null);
+  assert.equal(readHkState(new URLSearchParams('hk=boundaries&sel=change:1968')).selected.id, 1968);
+  assert.match(hkStateToSearch({ tab: 'map', year: null, selected: null }, 'zh'), /^lang=zh&hk=map$/);
+});
+
+test('Hong Kong Council outlines and Scout regions agree on coverage', () => {
+  const hk = read('hk');
+  const areas = read('hk-areas');
+  assert.equal(areas.features.length, 18);
+  assert.equal(hk.areas.length, 18);
+  const codes = new Set(areas.features.map(feature => feature.id));
+  for (const area of hk.areas) assert.ok(codes.has(area.code), area.code);
+  // 44 Scout districts: five regions plus the directly administered Silver Jubilee District.
+  const total = hk.regions.reduce((sum, region) => sum + region.districts.length, 0);
+  assert.equal(total, 44);
+  assert.ok(hk.regions.some(region => region.id === 'silverjubilee' && region.districts.length === 1));
+  // Jamboree 13 is in Zhuhai and deliberately has no Council area.
+  const zhuhai = hk.jamborees.find(event => event.id === 'hk-jam-2024');
+  assert.equal(zhuhai.area, null);
+  assert.equal(hk.jamborees.filter(event => event.area === null).length, 1);
+  // Only inside Hong Kong should a camp be plotted.
+  for (const event of hk.jamborees) assert.ok(event.coordinate, event.id);
+  // Every jamboree area code must resolve to a Scout region.
+  const regionIds = new Set(hk.regions.map(region => region.id));
+  for (const event of hk.jamborees) {
+    if (event.area === null) continue;
+    const area = hk.areas.find(item => item.code === event.area);
+    assert.ok(area && regionIds.has(area.region), `${event.id}: ${event.area}`);
   }
 });

@@ -2214,5 +2214,149 @@
       "en": "HKMap 18 District Council boundaries (Paul Chu, MIT)"
     },
     "url": "https://github.com/Paulkit/HKMap"
+  },
+  {
+    "id": "hk-hkw-districts",
+    "title": {
+      "zh": "港島地域：屬下各區及旅團",
+      "en": "Island Region: Districts and groups"
+    },
+    "url": "https://www.hkirscout.org.hk/tc/districts_groups/index.html"
+  },
+  {
+    "id": "hk-wanchai-history",
+    "title": {
+      "zh": "灣仔區：關於區會",
+      "en": "Wan Chai District: About the district"
+    },
+    "url": "https://wanchaiscout.org.hk/index.php?Itemid=1205&id=133&lang=zh-tw&option=com_content&view=article"
+  },
+  {
+    "id": "hk-chaiwan-history",
+    "title": {
+      "zh": "柴灣區：本區簡介",
+      "en": "Chai Wan District: District introduction"
+    },
+    "url": "https://chaiwanscout.org.hk/v3/"
+  },
+  {
+    "id": "hk-kr-1971-1980",
+    "title": {
+      "zh": "九龍地域：地域歷史 1971–1980",
+      "en": "Kowloon Region: Regional history 1971–1980"
+    },
+    "url": "https://krscout.org/%E5%9C%B0%E5%9F%9F%E6%AD%B7%E5%8F%B2-1971-1980/"
+  },
+  {
+    "id": "hk-kr-1981-1990",
+    "title": {
+      "zh": "九龍地域：地域歷史 1981–1990",
+      "en": "Kowloon Region: Regional history 1981–1990"
+    },
+    "url": "https://krscout.org/%E5%9C%B0%E5%9F%9F%E6%AD%B7%E5%8F%B2-1981-1990/"
+  },
+  {
+    "id": "hk-kr-districts",
+    "title": {
+      "zh": "九龍地域：區及旅團",
+      "en": "Kowloon Region: Districts and troops"
+    },
+    "url": "https://krscout.org/%E5%8D%80%E5%8F%8A%E6%97%85%E5%9C%98"
+  },
+  {
+    "id": "hk-kr-mongkok",
+    "title": {
+      "zh": "旺角區：區會起源",
+      "en": "Mong Kok District: Origins"
+    },
+    "url": "https://krscout.org/mongkok"
+  },
+  {
+    "id": "hk-kr-sspe",
+    "title": {
+      "zh": "深水埗東區：本區簡介",
+      "en": "Sham Shui Po East District: Introduction"
+    },
+    "url": "https://krscout.org/sspe/"
+  },
+  {
+    "id": "hk-kr-sspw",
+    "title": {
+      "zh": "深水埗西區：本區簡介",
+      "en": "Sham Shui Po West District: Introduction"
+    },
+    "url": "https://krscout.org/sspw/"
+  },
+  {
+    "id": "hk-kr-klncity",
+    "title": {
+      "zh": "九龍城區：本區簡介",
+      "en": "Kowloon City District: Introduction"
+    },
+    "url": "https://krscout.org/klncity/"
+  },
+  {
+    "id": "hk-smd-boundary",
+    "title": {
+      "zh": "深旺區：區界範圍",
+      "en": "Sham Mong District: Boundary"
+    },
+    "url": "https://group.scout.org.hk/smd/home/"
+  },
+  {
+    "id": "hk-lym-history",
+    "title": {
+      "zh": "鯉魚門區：關於本區",
+      "en": "Lei Yue Mun District: About the district"
+    },
+    "url": "https://www.hkscout-lym.org/"
+  },
+  {
+    "id": "hk-nkc-boundary",
+    "title": {
+      "zh": "北葵涌區：區界位置（香港童軍月刊 2006 年 10 月）",
+      "en": "North Kwai Chung District: Boundary (HK Scouting monthly, Oct 2006)"
+    },
+    "url": "https://www.scout.org.hk/article_attach/7113/hks27012.pdf"
+  },
+  {
+    "id": "hk-skc-history",
+    "title": {
+      "zh": "南葵涌區：區會歷史",
+      "en": "South Kwai Chung District: District history"
+    },
+    "url": "https://skc.scout-ntr.org.hk/pdf/2013Circular/SKC_history_45th.htm"
+  },
+  {
+    "id": "hk-ylw-history",
+    "title": {
+      "zh": "元朗西區：區會的發展",
+      "en": "Yuen Long West District: Development"
+    },
+    "url": "https://www.ylw-scout.org.hk/%E9%97%9C%E6%96%BC%E6%88%91%E5%80%91/"
+  },
+  {
+    "id": "hk-stw-history",
+    "title": {
+      "zh": "沙田西區：沙田區童軍發展史",
+      "en": "Sha Tin West District: District history"
+    },
+    "url": "https://www.stwscout.org/wp/%E6%B2%99%E7%94%B0%E5%8D%80%E7%AB%A5%E8%BB%8D%E7%99%BC%E5%B1%95%E5%8F%B2/"
+  },
+  {
+    "id": "hk-ste-history",
+    "title": {
+      "zh": "沙田東區：沙田區童軍發展史",
+      "en": "Sha Tin East District: District history"
+    },
+    "url": "https://www.stescout.org/website/info.html"
+  },
+  {
+    "id": "hk-stn-boundary",
+    "title": {
+      "zh": "沙田北區：本區區界",
+      "en": "Sha Tin North District: Boundary"
+    },
+    "url": "http://www.stnscout.org/district-boundary.php"
   }
 ]

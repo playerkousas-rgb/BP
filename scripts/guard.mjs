@@ -9,7 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const file = name => path.join(root, name), read = name => readFileSync(file(name), 'utf8');
 const errors = [];
 const check = (ok, message) => { if (!ok) errors.push(message); };
-const required = ['README.md', 'Readme', 'LICENSE', 'CREDITS.md', '.gitignore', '.vercelignore', '.env.example', '.github/workflows/check.yml', 'vercel.json', 'package.json', 'package-lock.json', 'index.html', 'credits.html', 'hong-kong.html', 'bp-atlas_v1.3.html', 'credits_v1.3.html', 'hong-kong_v1.3.html', 'css/style.css', 'css/credits.css', 'css/hk.css', 'js/state.js', 'js/hk.js', 'js/hk-map.js', 'js/hk-card.js', 'js/hk-view.js', 'js/hk-i18n.js', 'js/translations-hk.js', 'js/chronicles.js', 'js/translations.js', 'js/data-translations.js', 'data/world.json', 'data/sources.json', 'data/hk.json', 'data/hk-areas.json', 'vendor/geography.min.js', 'vendor/LICENSES.txt', 'docs/RESEARCH.md', 'docs/DESIGN_REVIEW.md', 'docs/CONSISTENCY_AUDIT.md', 'docs/NSO_DATA.md', 'docs/RELEASE_CHECKLIST.md'];
+const required = ['README.md', 'Readme', 'LICENSE', 'CREDITS.md', '.gitignore', '.vercelignore', '.env.example', '.github/workflows/check.yml', 'vercel.json', 'package.json', 'package-lock.json', 'index.html', 'credits.html', 'hong-kong.html', 'bp-atlas_v1.3.html', 'credits_v1.3.html', 'hong-kong_v1.3.html', 'css/style.css', 'css/credits.css', 'css/hk.css', 'js/state.js', 'js/hk.js', 'js/hk-map.js', 'js/hk-card.js', 'js/hk-view.js', 'js/hk-i18n.js', 'js/translations-hk.js', 'js/chronicles.js', 'js/translations.js', 'js/data-translations.js', 'data/world.json', 'data/sources.json', 'data/hk.json', 'data/hk-areas.json', 'data/hk-districts.json', 'vendor/geography.min.js', 'vendor/LICENSES.txt', 'docs/RESEARCH.md', 'docs/DESIGN_REVIEW.md', 'docs/CONSISTENCY_AUDIT.md', 'docs/NSO_DATA.md', 'docs/RELEASE_CHECKLIST.md'];
 for (const name of required) check(existsSync(file(name)), `Missing required file: ${name}`);
 if (errors.length) { errors.forEach(error => console.error(`FAIL ${error}`)); process.exit(1); }
 const version = 'v1.3';
@@ -74,7 +74,7 @@ const pageBudgets = {
   },
   'hong-kong.html': {
     limit: 1_000_000,
-    assets: ['hong-kong.html', storeGateSrc.slice(1), 'js/store-gate-init.js', 'css/style.css', 'css/hk.css', 'js/hk.js', 'js/hk-view.js', 'js/hk-map.js', 'js/hk-card.js', 'js/i18n.js', 'js/hk-i18n.js', 'js/translations.js', 'js/translations-hk.js', 'js/data-translations.js', 'js/state.js', 'data/hk.json', 'data/hk-areas.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'],
+    assets: ['hong-kong.html', storeGateSrc.slice(1), 'js/store-gate-init.js', 'css/style.css', 'css/hk.css', 'js/hk.js', 'js/hk-view.js', 'js/hk-map.js', 'js/hk-card.js', 'js/i18n.js', 'js/hk-i18n.js', 'js/translations.js', 'js/translations-hk.js', 'js/data-translations.js', 'js/state.js', 'data/hk.json', 'data/hk-districts.json', 'data/hk-areas.json', 'data/sources.json', 'manifest.webmanifest', 'icons/favicon.ico'],
   },
 };
 const budgets = [];

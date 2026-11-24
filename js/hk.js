@@ -16,7 +16,7 @@ const initialLang = getInitialLanguage(params);
 const maxYear = currentYear();
 
 async function loadData() {
-  const names = ['hk', 'hk-areas', 'sources'];
+  const names = ['hk', 'hk-districts', 'sources'];
   const entries = await Promise.all(names.map(async name => {
     const response = await fetch(`data/${name}.json`);
     if (!response.ok) throw new Error(`Could not load ${name}`);
@@ -39,7 +39,7 @@ if (!document.documentElement.hasAttribute('data-store-gated')) try {
   const sources = enhanceLocalizedData({ sources: loaded.sources }).sources;
   await startHkView({
     params,
-    data: { hk: loaded.hk, hkAreas: loaded['hk-areas'], sources },
+    data: { hk: loaded.hk, hkDistricts: loaded['hk-districts'], sources },
   });
 } catch (error) {
   console.error('Hong Kong view could not be loaded:', error);

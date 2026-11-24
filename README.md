@@ -8,7 +8,7 @@ This is an unofficial, mobile-first atlas of Baden-Powell and World Scouting. It
 
 ## 現況與限制 / Status
 
-- **香港童軍歷史是獨立頁面**：`hong-kong.html` 以年份帶同步更新地圖、地域目錄、區劃演變、大露營表和童軍大事；地圖的色塊是十八區區議會界線（只作定位，不是童軍區界），地域名稱與總部標記只是大約位置。地圖與年份以外的兩個分頁（歷任總領袖、歷任總監）各有名單。香港頁的分頁和年份可分享：`hong-kong.html?lang=en&hk=map&year=1968&sel=region:island`。此頁為研究草稿，總會及地域資料仍待核實，詳見 [CREDITS.md](CREDITS.md#香港童軍歷史--hong-kong-scout-history)。
+- **香港童軍歷史是獨立頁面**：`hong-kong.html` 以年份帶同步更新地圖、地域目錄、區劃演變、大露營表和童軍大事；地圖的色塊是童軍區，但界線為示意界線（以十八區區議會輪廓為底稿，按各區公開文字描述以直線切割重繪），不是官方區界，地域名稱與總部標記只是大約位置。地圖與年份以外的兩個分頁（歷任總領袖、歷任總監）各有名單。香港頁的分頁和年份可分享：`hong-kong.html?lang=en&hk=map&year=1968&sel=region:island`。此頁為研究草稿，總會及地域資料仍待核實，詳見 [CREDITS.md](CREDITS.md#香港童軍歷史--hong-kong-scout-history)。
 - **四個獨立主題**：保留 B-P 的地圖、逐站故事和播放；成員版圖按年份探索現行名錄；世界大露營有自己的逐站時序和地點；人口演變有獨立柱狀圖、年份選單、播放和逐年來源。切換主題時保留本次頁面內各主題的年份和鏡頭；分享網址只保存目前主題。
 - 20 個 B-P 行跡、26 屆世界大露營及 1979 年取消紀錄；2027 年資料已收錄，但只會在時間軸到達該年後顯示。大露營虛線只是按**已舉行**地點順序連接，不是實際旅行路線；取消的 1979 年以獨立標記表示。
 - **成員版圖是名錄日期累積示意，不是歷年真實會員總數或歷史疆界**：在所選年以前，現時名錄中有 `wosmMembership.year` 的所在地着色，日期越早顏色越深；未知不着色。名錄中的 171 個年份可能涉及前身或重加入，未能表示停會或連續會籍。右側另列來源在特定年份報告的組織／國家數，兩者口徑不同、不能直接比較：例如 1922 年地圖累積 19 個現況名錄年份，歷史來源則記載 31；2024 年累積 171，而 8 月 10 日來源報 175、同年後來增至 176。可以從來源統計年份選單跳轉，播放會經過名錄及統計有記錄的年份。
@@ -67,7 +67,7 @@ Set `CHROMIUM_EXECUTABLE=/path/to/chromium` to use an existing Chromium. In cons
 
 ## 編輯及版本 / Editing and versioning
 
-- **版本紀錄**：2026-11-10 由 v1.1 升至 v1.3，人口圓點改成柱狀圖並擴充至九種介面語言；v1.3 另加入獨立的香港童軍歷史頁（`hong-kong_v1.3.html`／`hong-kong.html`）、`data/hk.json`、`data/hk-areas.json`、`js/hk-*.js` 與 `css/hk.css`，香港頁字串另置於 `js/hk-i18n.js` 和 `js/translations-hk.js`，只由該頁載入，令世界地圖首頁維持在 1 MB 以內。v1.1 的四主題版本保留於 Git 的 `300e2f1`，v1.0 保留於 `e11f419`。
+- **版本紀錄**：2026-11-10 由 v1.1 升至 v1.3，人口圓點改成柱狀圖並擴充至九種介面語言；v1.3 另加入獨立的香港童軍歷史頁（`hong-kong_v1.3.html`／`hong-kong.html`）、`data/hk.json`、`data/hk-districts.json`（童軍區示意界線，由 `scripts/build_hk_districts.mjs` 產生）、`data/hk-areas.json`（僅作切割底稿）、`js/hk-*.js` 與 `css/hk.css`，香港頁字串另置於 `js/hk-i18n.js` 和 `js/translations-hk.js`，只由該頁載入，令世界地圖首頁維持在 1 MB 以內。v1.1 的四主題版本保留於 Git 的 `300e2f1`，v1.0 保留於 `e11f419`。
 - `bp-atlas_v1.3.html`、`credits_v1.3.html` 和 `hong-kong_v1.3.html` 是版本化 HTML 原稿；`index.html`、`credits.html` 和 `hong-kong.html` 是部署用固定檔名拷貝。修改原稿後執行 `node scripts/sync-html.mjs`；`node scripts/sync-html.mjs --check` 檢查同步。網站部署本身不執行此步驟。
 - `js/`、`css/` 與 `data/` 保留原規格的穩定檔名，作為共享 V1 命名規則的項目特定例外；每個自家 JS／CSS 有版號註記，版本由 `js/state.js`、HTML meta/title/footer 和 `package.json` 對照。升版時同步版本化 HTML、程式常數、頁面文字、部署拷貝、測試及紀錄（見 [設計審視](docs/DESIGN_REVIEW.md#版本及規則例外)及[一致性審計](docs/CONSISTENCY_AUDIT.md)）。
 - 出處主檔是 `data/sources.json`；`data/nso.json` 的 `wosmMembership` 標明年份、依據和欄位專屬來源，並保留舊的 `membershipYears`／`membershipSources`；`scoutingStartSources`、`organisationFoundedSources` 分別支持早期團體和現行組織成立欄位。在早期團體視圖中 `scoutingStart: null` 不上色；在成員版圖中只按 `wosmMembership.year` 着色，不以早期團體或舊存檔補值；`startLead` 和 `wikiFoundingLead` 只是待核實線索。不同會籍年份可能包括前身和再認可，也可能有未解矛盾，不等於連續會籍。資料方法及衝突見 [`docs/NSO_DATA.md`](docs/NSO_DATA.md)。網站來源頁另按 `data/membership.json` 列統計出處和各序列的精度。

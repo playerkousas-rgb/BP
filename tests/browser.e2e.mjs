@@ -1180,11 +1180,14 @@ test('Hong Kong history page loads, drills into every section and shares its sta
   await visit(page, 'hong-kong.html?lang=en');
   assert.equal(await page.locator('html').getAttribute('lang'), 'en');
   assert.equal(await page.locator('#hk-title').textContent(), hkTitle.en);
-  assert.equal(await page.locator('#hk-map .hk-area').count(), 18, '18 Council outlines');
+  assert.equal(await page.locator('#hk-map .hk-area').count(), 43, '43 Scout districts');
   assert.equal(await page.locator('#hk-map .hk-region-label').count(), 5, 'five Scout regions with a land area');
   assert.equal(await page.locator('#hk-map .hk-jamboree').count(), 13, 'thirteen jamboree sites, including Zhuhai');
   assert.equal(await page.locator('#hk-rail-list .hk-rail-region').count(), 6, 'six Scout regions in the rail');
-  assert.match(await page.locator('#hk-figures').textContent(), /Council/i);
+  assert.match(await page.locator('#hk-figures').textContent(), /Scout districts/i);
+  // The schematic note and the year-scoped district count are visible.
+  assert.match(await page.locator('#hk-map-note').textContent(), /43 Scout districts/);
+  assert.equal(await page.locator('#hk-evolution-list .hk-evolution-item').count(), 17, 'seventeen boundary records in the timeline');
   await audit('Hong Kong map');
 
   // The map card explains a region when its rail entry is chosen.

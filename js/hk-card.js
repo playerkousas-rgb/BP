@@ -12,6 +12,14 @@ function sourceIndex() {
   return cachedSources;
 }
 export function setHkSources(sources) { cachedSources = new Map(sources.map(source => [source.id, source])); }
+// The district layer lives in its own file (data/hk-districts.json); the cards
+// read it through this cache so every panel still takes (state, hk).
+let cachedDistricts = null;
+export function setHkDistricts(districts) { cachedDistricts = districts; }
+function districtIndex() {
+  if (!cachedDistricts) return new Map();
+  return new Map(cachedDistricts.districts.map(district => [district.id, district]));
+}
 globalThis.__bpSources = globalThis.__bpSources || [];
 
 function element(tag, className, text) {
@@ -90,6 +98,7 @@ function overview(state, hk) {
   };
   stats.append(
     stat(hk.regions.length, t('hkStatRegions', lang)),
+    // 43 plotted districts plus Silver Jubilee, which has no territory.
     stat(hk.regions.reduce((sum, region) => sum + region.districts.length, 0), t('hkStatDistricts', lang)),
     stat(hk.boundaryChanges.length, t('hkStatChanges', lang)),
     stat(hk.jamborees.length, t('hkStatJamborees', lang)),
@@ -105,7 +114,7 @@ function overview(state, hk) {
     item.append(button); members.append(item);
   }
   wrap.append(members);
-  wrap.append(element('p', 'card-note', t('hkBoundaryNote', lang)));
+  wrap.append(element('p', 'card-note', t('hkSchematicNote', lang)));
   const foot = element('div', 'card-footer');
   foot.append(sourceBlock(['hk-regions', 'hk-wiki', 'hk-council-areas'], lang, 'overview'));
   wrap.append(foot);
@@ -127,39 +136,55 @@ function regionCard(region, state, hk) {
   wrap.append(hq);
   wrap.append(element('h3', 'hk-subheading', t('hkDistricts', lang)));
   const list = element('ul', 'hk-district-list');
+  const districts = districtIndex();
   for (const district of region.districts) {
+    // Region lists use the English display names; the district layer keeps the
+    // same name under the same id, so match on either language.
+    const record = [...districts.values()].find(item => item.region === region.id
+      && (item.name.en === district.en || item.name.zh === district.zh));
     const item = element('li');
-    item.append(localizedElement('span', '', district, lang));
+    if (record) {
+      const button = element('button', 'hk-district-button');
+      button.type = 'button';
+      button.dataset.hkSelect = `district:${record.id}`;
+      button.append(localizedElement('span', '', record.name, lang));
+      if (record.formed) button.append(element('span', 'hk-district-year', String(record.formed)));
+      item.append(button);
+    } else {
+      item.append(localizedElement('span', '', district, lang));
+    }
     item.dataset.district = localize(district, 'en');
     list.append(item);
   }
   wrap.append(list);
   wrap.append(element('p', 'card-note', localize(region.insight, lang)));
-  wrap.append(element('p', 'card-note', t('hkBoundaryNote', lang)));
+  wrap.append(element('p', 'card-note', t('hkSchematicNote', lang)));
   footer(wrap, region, lang, `region:${region.id}`);
   return wrap;
 }
 
-function areaCard(area, hk, state) {
+function districtCard(district, hk, state) {
   const lang = state.lang;
-  const region = hk.regions.find(item => item.id === area.region);
-  const wrap = element('div', 'hk-card hk-area-card');
-  wrap.append(heading(t('hkCouncilTag', lang), t('hkDraftTag', lang)));
-  wrap.append(localizedElement('h2', '', area.zone, lang));
+  const region = hk.regions.find(item => item.id === district.region);
+  const wrap = element('div', 'hk-card hk-district-card');
+  wrap.append(heading(t('hkDistrictTag', lang), t('hkDraftTag', lang)));
+  wrap.append(localizedElement('h2', '', district.name, lang));
   const facts = element('dl', 'hk-facts');
   const fact = (term, value) => {
-    facts.append(element('dt', '', `${term}：`), localizedElement('dd', '', value, lang));
+    facts.append(element('dt', '', `${term}：`));
+    // Bilingual names go through localizedElement(); years and areas are plain
+    // strings, which localize() would otherwise flatten to nothing.
+    if (value && typeof value === 'object') facts.append(localizedElement('dd', '', value, lang));
+    else facts.append(element('dd', '', String(value)));
   };
+  fact(t('hkFormedLabel', lang), String(district.formed));
   if (region) fact(t('hkRegionLabel', lang), region.name);
+  fact(t('hkDistrictArea', lang), `${district.area.toFixed(1)} km²`);
   wrap.append(facts);
-  if (region) {
-    const districts = region.districts.map(item => localize(item, lang)).join('、');
-    wrap.append(element('p', 'card-note', `${t('hkDistricts', lang)}：${districts}`));
-  }
-  wrap.append(element('p', 'card-body', localize(area.insight, lang)));
-  wrap.append(element('p', 'card-note', t('hkZonesNote', lang)));
+  wrap.append(element('p', 'card-body', localize(district.note, lang)));
+  wrap.append(element('p', 'card-note', t('hkSchematicNote', lang)));
   const foot = element('div', 'card-footer');
-  foot.append(sourceBlock(area.sources, lang, `area:${area.code}`));
+  foot.append(sourceBlock(district.sources, lang, `district:${district.id}`));
   wrap.append(foot);
   wrap.append(element('div', 'draft-line', t('hkDraftCard', lang)));
   return wrap;
@@ -281,9 +306,9 @@ export function renderHkCard(panel, state, hk) {
   else if (selected.kind === 'region') {
     const region = hk.regions.find(item => item.id === selected.id);
     if (region) panel.append(regionCard(region, state, hk));
-  } else if (selected.kind === 'area') {
-    const area = hk.areas.find(item => item.code === selected.id);
-    if (area) panel.append(areaCard(area, hk, state));
+  } else if (selected.kind === 'district') {
+    const district = districtIndex().get(selected.id);
+    if (district) panel.append(districtCard(district, hk, state));
   } else if (selected.kind === 'jamboree') {
     const event = hk.jamborees.find(item => item.id === selected.id);
     if (event) panel.append(jamboreeCard(event, hk, state));

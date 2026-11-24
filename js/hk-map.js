@@ -1,10 +1,17 @@
 // B-P Atlas v1.3 · © SCOUT SYSTEM
-// Hong Kong Scout-history map: 18 Council outlines (orientation only), Scout
+// Hong Kong Scout-history map: the 44 Scout districts (43 on the ground plus the
+// language-defined Silver Jubilee District, which has no territory), Scout
 // region labels, region headquarters and jamboree sites.
 //
 // Deliberately independent of js/map.js: this view allows deeper zoom, adds
-// keyboard panning and reports focus to the page. Council shapes are NOT
-// Scout district boundaries; see data/hk.json about.boundaryNote.
+// keyboard panning and reports focus to the page.
+//
+// The district outlines are SCHEMATIC. Scout district boundaries are not
+// published as geodata, so data/hk-districts.json was built by cutting the 18
+// District Council outlines along the rivers, roads and ridgelines named in
+// each district's published history; see scripts/build_hk_districts.mjs. They
+// show where a district sits and how the map was redrawn, never an official
+// boundary. See data/hk.json about.boundaryNote.
 import { localize, localizationLanguage } from './i18n.js';
 import { clamp } from './state.js';
 
@@ -25,6 +32,17 @@ const REGION_FILL = {
   island: '#cbdcd6', kowloon: '#e2dcb8', ekowloon: '#d6e2c1',
   newterritories: '#ece1c2', ntheast: '#e2e8cc', silverjubilee: '#e2e6dc',
 };
+// How far apart two district labels must stay, in base-map units. Labels are
+// counter-scaled so they keep a constant screen size, so the gap shrinks as the
+// reader zooms in and more names become legible.
+const LABEL_GAP = 34;
+// A district must cover at least this many square screen units before its name
+// is worth a label; below it the name would sit on top of the shape it names.
+const MIN_LABELLED_AREA = 900;
+// Square screen units per square kilometre at the base scale, derived from the
+// projection so a district's `area` can be compared with what is on screen.
+const UNITS_PER_DEG = HK_WIDTH / (LON1 - LON0);
+const SCREEN_PER_KM2 = (UNITS_PER_DEG * UNITS_PER_DEG) / 11322;
 // Regional headquarters. Kowloon and East Kowloon share the Hong Kong Scout
 // Centre, so one combined marker stands for that building and opens Kowloon.
 const HQ = {
@@ -68,7 +86,7 @@ function setLang(node, value) {
   else node.removeAttribute('lang');
 }
 
-export function createHkMap(areas, hk, callbacks = {}) {
+export function createHkMap(districtsData, hk, callbacks = {}) {
   const svg = document.querySelector('#hk-map');
   const root = document.createElementNS(NS, 'g');
   svg.replaceChildren(root);
@@ -77,38 +95,52 @@ export function createHkMap(areas, hk, callbacks = {}) {
   const markers = document.createElementNS(NS, 'g');
   root.append(shapes, labels, markers);
 
+  // Districts and the historical districts/regions they descend from live in
+  // one lookup: before a district existed its territory belonged to its parent.
+  const byId = new Map();
+  for (const rootEntry of districtsData.roots || []) byId.set(rootEntry.id, rootEntry);
+  for (const district of districtsData.districts) byId.set(district.id, district);
+
+  function resolve(district, year) {
+    if (year == null) return district;
+    let current = district;
+    const seen = new Set();
+    while (current && current.formed > year) {
+      if (!current.parent || seen.has(current.id)) return null;
+      seen.add(current.id);
+      current = byId.get(current.parent);
+    }
+    return current && current.formed <= year ? current : null;
+  }
+
   const shapesByCode = new Map();
-  // Council-area names appear only once the reader has zoomed in past 2x, so
-  // the default view stays a clean region map.
   const areaLabels = new Map();
-  const SHOW_AREA_LABELS_AT = 2.1;
-  for (const feature of areas.features) {
-    const area = hk.areas.find(item => item.code === feature.id);
+  for (const district of districtsData.districts) {
     const outline = document.createElementNS(NS, 'path');
-    outline.setAttribute('d', areaPath(feature.geometry));
-    outline.setAttribute('class', 'hk-area');
-    outline.dataset.code = feature.id;
-    if (area?.region) outline.dataset.region = area.region;
-    outline.style.setProperty('--region-fill', REGION_FILL[area?.region] || '#e4e4d6');
+    outline.setAttribute('d', areaPath(district.geometry));
+    outline.setAttribute('class', 'hk-area hk-district');
+    outline.dataset.code = district.id;
+    outline.dataset.region = district.region;
+    outline.style.setProperty('--region-fill', REGION_FILL[district.region] || '#e4e4d6');
     const title = document.createElementNS(NS, 'title');
     outline.append(title);
     shapes.append(outline);
-    shapesByCode.set(feature.id, outline);
-    if (feature.properties?.label) {
-      const text = document.createElementNS(NS, 'text');
-      text.setAttribute('class', 'hk-area-label');
-      text.setAttribute('text-anchor', 'middle');
-      text.dataset.code = feature.id;
-      labels.append(text);
-      areaLabels.set(feature.id, { node: text, lonlat: feature.properties.label });
-    }
+    shapesByCode.set(district.id, outline);
+
+    const text = document.createElementNS(NS, 'text');
+    text.setAttribute('class', 'hk-area-label');
+    text.setAttribute('text-anchor', 'middle');
+    text.dataset.code = district.id;
+    labels.append(text);
+    text.dataset.lonlat = district.label.join(',');
+    areaLabels.set(district.id, { node: text, district, lonlat: district.label });
   }
 
   // Approximate label anchors, not boundaries: they are hand-placed to keep the
   // five names apart from each other and from the headquarters and tent markers.
   const regionPoints = {
-    island: [114.1580, 22.2420], kowloon: [114.1500, 22.3230], ekowloon: [114.2440, 22.3180],
-    newterritories: [114.0150, 22.3990], ntheast: [114.3050, 22.4870],
+    island: [114.1650, 22.2260], kowloon: [114.1520, 22.3060], ekowloon: [114.2820, 22.3000],
+    newterritories: [114.0120, 22.3980], ntheast: [114.3050, 22.4870],
   };
   const regionLabels = new Map();
   for (const [id, lonlat] of Object.entries(regionPoints)) {
@@ -186,20 +218,18 @@ export function createHkMap(areas, hk, callbacks = {}) {
   // names at five pixels; and the tents would shrink to specks. Marker symbols
   // grow a little more than the offsets that separate them, so the cluster near
   // Penny's Bay and Wan Tsai spreads instead of piling up.
-  let markerScale = 1, markerSpread = 1;
+  let markerSpread = 1;
   function syncLabelScale() {
     const rect = svg.getBoundingClientRect();
     const scale = Math.min(rect.width / HK_WIDTH, rect.height / HK_HEIGHT);
     if (!scale) return;
     const factor = 1 / scale;
     const label = clamp(factor, 1, 2.2);
-    markerScale = clamp(factor, 1, 2.4);
     markerSpread = clamp(factor, 1, 1.7);
     svg.style.setProperty('--hk-label-scale', label.toFixed(2));
-    // Region names are long; they grow less than the short district names so
-    // they do not run into the tent numbers on a phone.
+    // Region names are long; they grow less than the district names so they do
+    // not run into the tent numbers on a phone.
     svg.style.setProperty('--hk-region-scale', clamp(factor, 1, 1.9).toFixed(2));
-    svg.style.setProperty('--hk-marker-scale', markerScale.toFixed(2));
     applyTransform();
   }
   if (typeof ResizeObserver === 'function') new ResizeObserver(syncLabelScale).observe(svg);
@@ -213,10 +243,6 @@ export function createHkMap(areas, hk, callbacks = {}) {
       const [x, y] = projectHk(lonlat);
       node.setAttribute('transform', `translate(${x},${y}) scale(${inverse})`);
     }
-    // Visibility follows the zoom level, so it is updated with the transform.
-    for (const { node } of areaLabels.values()) {
-      node.classList.toggle('is-visible', focus.k >= SHOW_AREA_LABELS_AT);
-    }
     for (const entry of hqNodes.values()) {
       const [x, y] = projectHk(entry.lonlat);
       entry.node.setAttribute('transform', `translate(${x},${y}) scale(${inverse})`);
@@ -225,7 +251,7 @@ export function createHkMap(areas, hk, callbacks = {}) {
       const [x, y] = projectHk(entry.lonlat);
       const dx = entry.ox * (markerSpread - 1), dy = entry.oy * (markerSpread - 1);
       entry.node.setAttribute('transform', `translate(${x + dx},${y + dy}) scale(${inverse})`);
-      entry.inner.setAttribute('transform', `translate(${entry.ox},${entry.oy}) scale(${markerScale})`);
+      entry.inner.setAttribute('transform', `translate(${entry.ox},${entry.oy})`);
     }
   }
 
@@ -244,13 +270,29 @@ export function createHkMap(areas, hk, callbacks = {}) {
     nextK = clamp(nextK, 1, MAX_ZOOM);
     const base = { x: (point.x - focus.x) / focus.k, y: (point.y - focus.y) / focus.k };
     focus = clampFocus({ k: nextK, x: point.x - base.x * nextK, y: point.y - base.y * nextK });
-    applyTransform();
+    relayout();
     callbacks.onFocus?.({ ...focus });
   }
   function panBy(dx, dy) {
     focus = clampFocus({ ...focus, x: focus.x + dx, y: focus.y + dy });
-    applyTransform();
+    relayout();
     callbacks.onFocus?.({ ...focus });
+  }
+  // Zooming changes how many names fit, so the greedy placement is redone.
+  function relayout() {
+    if (!lastState) return;
+    const named = new Map();
+    for (const district of districtsData.districts) {
+      const owner = resolve(district, lastState.year);
+      if (!owner) continue;
+      const record = named.get(owner.id) || { owner, district, weight: 0, anchor: [0, 0] };
+      record.weight += district.area;
+      record.anchor[0] += district.label[0] * district.area;
+      record.anchor[1] += district.label[1] * district.area;
+      named.set(owner.id, record);
+    }
+    layoutLabels(named);
+    applyTransform();
   }
 
   svg.addEventListener('wheel', event => {
@@ -314,33 +356,100 @@ export function createHkMap(areas, hk, callbacks = {}) {
     if (target.dataset.jamboree) callbacks.onSelect?.({ kind: 'jamboree', id: target.dataset.jamboree });
     else if (target.dataset.hq) callbacks.onSelect?.({ kind: 'region', id: target.dataset.hq });
     else if (target.dataset.code) {
-      const area = hk.areas.find(item => item.code === target.dataset.code);
-      callbacks.onSelect?.({ kind: 'area', id: target.dataset.code, region: area?.region });
+      const district = byId.get(target.dataset.code);
+      callbacks.onSelect?.({ kind: 'district', id: target.dataset.code, region: district?.region });
+    }
+  }
+
+  let lastState = null;
+
+  // Every label starts hidden; only the districts that exist at this year can
+  // earn one back. Greedy decluttering: the largest districts claim their name
+  // first and a smaller neighbour keeps its label only if it clears the ones
+  // already placed. Without this the 43 names pile up into an unreadable band.
+  // Re-run on every zoom or pan so more names appear as the reader closes in.
+  function layoutLabels(named) {
+    const state = lastState || {};
+    const lang = state.lang || 'zh';
+    const activeRegion = state.selected?.region ?? (state.selected?.kind === 'region' ? state.selected.id : null);
+    const activeDistrict = state.selected?.kind === 'district' ? state.selected.id : null;
+    const focusDistrict = state.focusDistrict || null;
+    for (const [code, entry] of areaLabels) {
+      entry.node.classList.remove('is-visible');
+      entry.node.removeAttribute('data-lonlat');
+      const district = byId.get(code);
+      entry.node.classList.toggle('is-muted', Boolean(activeRegion) && district.region !== activeRegion);
+      entry.node.classList.toggle('is-area', code === activeDistrict || code === focusDistrict);
+    }
+    const placed = [];
+    const gap = LABEL_GAP / focus.k;
+    const scale = focus.k * focus.k;
+    const ordered = [...named.values()]
+      .filter(entry => (entry.owner.area ?? entry.weight) * SCREEN_PER_KM2 * scale >= MIN_LABELLED_AREA)
+      .sort((a, b) => (b.owner.area ?? b.weight) - (a.owner.area ?? a.weight));
+    for (const entry of ordered) {
+      // A district keeps its own anchor; a historical root has no territory of
+      // its own, so its name sits at the area-weighted middle of the districts
+      // that still belong to it.
+      const anchor = entry.owner.area
+        ? entry.owner.label
+        : [entry.anchor[0] / entry.weight, entry.anchor[1] / entry.weight];
+      const [x, y] = projectHk(anchor);
+      const clear = placed.every(point => Math.hypot(point[0] - x, point[1] - y) >= gap);
+      if (!clear) continue;
+      placed.push([x, y]);
+      const label = areaLabels.get(entry.district.id);
+      label.lonlat = anchor;
+      label.node.textContent = localize(entry.owner.name, lang);
+      setLang(label.node, entry.owner.name);
+      label.node.dataset.lonlat = anchor.join(',');
+      label.node.classList.add('is-visible');
     }
   }
 
   function render(state) {
+    lastState = state;
     const lang = state.lang || 'zh';
     const selected = state.selected;
     const activeRegion = selected?.region ?? (selected?.kind === 'region' ? selected.id : null);
-    const activeArea = selected?.kind === 'area' ? selected.id : null;
-    const focusArea = state.focusArea || null;
+    const activeDistrict = selected?.kind === 'district' ? selected.id : null;
+    const focusDistrict = state.focusDistrict || null;
+    const year = state.year;
+    // Which district name stands for each piece of the map at this year.
+    const ownerCache = new Map();
+    for (const district of districtsData.districts) ownerCache.set(district.id, resolve(district, year));
+    // A name is drawn once per owner; `weight` totals the area it covers, which
+    // is what decides whether the name is big enough to be worth a label.
+    // Roots (香港區 and the other pre-1958 districts) have no area of their own.
+    const named = new Map();
+
+    // Names are placed for the district that exists at this year; a district
+    // that has not been formed yet is drawn in its parent's colour with the
+    // internal boundary faded, so the map still reads as one territory.
     for (const [code, node] of shapesByCode) {
-      const area = hk.areas.find(item => item.code === code);
-      node.classList.toggle('is-region', Boolean(activeRegion) && area?.region === activeRegion);
-      node.classList.toggle('is-area', code === activeArea || code === focusArea);
-      node.classList.toggle('is-muted', Boolean(activeRegion) && area?.region !== activeRegion);
+      const district = byId.get(code);
+      const owner = ownerCache.get(code);
+      if (!owner) { node.style.display = 'none'; continue; }
+      node.style.display = '';
+      const isOwner = owner.id === code;
+      node.style.setProperty('--region-fill', REGION_FILL[owner.region] || '#e4e4d6');
+      node.classList.toggle('is-owner', isOwner);
+      node.classList.toggle('is-merged', !isOwner);
+      node.classList.toggle('is-new', year != null && district.formed === year);
+      node.classList.toggle('is-region', Boolean(activeRegion) && district.region === activeRegion);
+      node.classList.toggle('is-muted', Boolean(activeRegion) && district.region !== activeRegion);
+      node.classList.toggle('is-area', code === activeDistrict || code === focusDistrict);
       const title = node.querySelector('title');
-      const region = hk.regions.find(item => item.id === area?.region);
-      if (title) title.textContent = region ? localize(region.name, lang) : code;
+      if (title) title.textContent = localize(owner.name, lang);
+      const record = named.get(owner.id) || { owner, district, weight: 0, anchor: [0, 0] };
+      record.weight += district.area;
+      record.anchor[0] += district.label[0] * district.area;
+      record.anchor[1] += district.label[1] * district.area;
+      named.set(owner.id, record);
     }
-    for (const [code, entry] of areaLabels) {
-      const area = hk.areas.find(item => item.code === code);
-      entry.node.textContent = area ? localize(area.zone, lang) : code;
-      setLang(entry.node, area?.zone);
-      entry.node.classList.toggle('is-muted', Boolean(activeRegion) && area?.region !== activeRegion);
-      entry.node.classList.toggle('is-area', code === activeArea || code === focusArea);
-    }
+
+    layoutLabels(named);
+
     for (const [id, entry] of regionLabels) {
       const short = hk.regions.find(item => item.id === id)?.short || {};
       entry.node.textContent = localize(short, lang);
@@ -357,7 +466,7 @@ export function createHkMap(areas, hk, callbacks = {}) {
       const event = hk.jamborees.find(item => item.id === id);
       entry.text.textContent = String(event.n);
       entry.node.classList.toggle('is-selected', selected?.kind === 'jamboree' && selected.id === id);
-      entry.node.classList.toggle('is-future', Number.isFinite(state.year) && event.year > state.year);
+      entry.node.classList.toggle('is-future', Number.isFinite(year) && event.year > year);
     }
     applyTransform();
   }
@@ -366,7 +475,7 @@ export function createHkMap(areas, hk, callbacks = {}) {
     render,
     zoomIn: () => zoomAround(centrePoint(), focus.k * 1.4),
     zoomOut: () => zoomAround(centrePoint(), focus.k / 1.4),
-    reset() { focus = clampFocus({ ...HK_DEFAULT_VIEW }); applyTransform(); callbacks.onFocus?.({ ...focus }); },
+    reset() { focus = clampFocus({ ...HK_DEFAULT_VIEW }); relayout(); callbacks.onFocus?.({ ...focus }); },
     reveal(lonlat) {
       if (!lonlat) return;
       const [x, y] = projectHk(lonlat);

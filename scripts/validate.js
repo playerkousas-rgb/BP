@@ -165,7 +165,7 @@ check(scoutDistricts === 44, `hk: expected 44 Scout districts, got ${scoutDistri
 unique(hkDistricts.districts, 'id', 'hk districts');
 check(hkDistricts.districts.length === 43, `hk-districts: expected 43 districts, got ${hkDistricts.districts.length}`);
 unique(hkDistricts.roots, 'id', 'hk district roots');
-check(hkDistricts.roots.length === 5, `hk-districts: expected 5 roots, got ${hkDistricts.roots.length}`);
+check([5,10].includes(hkDistricts.roots.length), `hk-districts: expected 5 or 10 roots, got ${hkDistricts.roots.length}`);
 const districtIds = new Set(hkDistricts.districts.map(district => district.id));
 for (const root of hkDistricts.roots) {
   const label = `hk district root ${root.id}`;

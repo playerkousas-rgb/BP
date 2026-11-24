@@ -82,17 +82,22 @@ export async function startHkView({ params, data }) {
     for (const id of ids || []) {
       const source = sourceIndex.get(id);
       if (!source) continue;
-      const link = element('a', '', localize(source.title, lang));
+      const label = localize(source.title, lang);
+      let node = null;
       try {
-        const url = new URL(source.url);
-        if (!['https:', 'http:'].includes(url.protocol)) continue;
-        link.href = url.href;
-      } catch { continue; }
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
+        const url = new URL(source.url || '');
+        if (['https:', 'http:'].includes(url.protocol)) {
+          const link = element('a', '', label);
+          link.href = url.href;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          node = link;
+        }
+      } catch { /* no public url */ }
+      if (!node) node = element('span', 'hk-source-text', label);
       const actual = localizationLanguage(source.title, lang);
-      if (actual) link.lang = actual;
-      box.append(link);
+      if (actual) node.lang = actual;
+      box.append(node);
     }
     return box;
   }

@@ -56,6 +56,7 @@ export const hkMessages = {
   hkLeadersOverlayAria: ['當年總領袖及總監', 'Chief Scout and Commissioner for the selected year'],
   hkCurrentOfficeholders: ['現任總領袖及總監', 'Current Chief Scout and Commissioner'],
   hkOfficeholdersAtYear: ['{year} 年總領袖及總監', 'Chief Scout and Commissioner in {year}'],
+  hkHistoricMaps: ['歷史區界圖', 'Historical boundary maps'],
   hkOfficeLabel: ['職銜', 'Office'],
   hkTermLabel: ['任期', 'Term'],
   hkRoleLabel: ['身份', 'Role'],

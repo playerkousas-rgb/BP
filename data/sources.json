@@ -2373,5 +2373,24 @@
     "language": "zh-Hant",
     "accessed": "2026-11-24",
     "type": "official-history"
+  },
+  {
+    "id": "hkir-50th-anniversary-booklet",
+    "title": {
+      "zh": "《港島地域童軍50周年特刊》",
+      "en": "Hong Kong Island Region Scout 50th Anniversary Booklet"
+    },
+    "url": "https://www.scout.org.hk/tc/scouting/hk-scouts/hong-kong-island-region/index.html",
+    "publisher": {
+      "zh": "香港童軍總會港島地域",
+      "en": "Scout Association of Hong Kong, Hong Kong Island Region"
+    },
+    "language": "zh-Hant",
+    "accessed": "2026-11-24",
+    "type": "publication",
+    "notes": {
+      "zh": "來源為《港島地域童軍50周年特刊》。本頁所用1968、2018年區界圖由使用者提供作歷史參考；連結指向港島地域官方頁面。",
+      "en": "Source: Hong Kong Island Region Scout 50th Anniversary Booklet. The 1968 and 2018 boundary maps used here were provided by the user for historical reference; the link points to the official Island Region page."
+    }
   }
 ]

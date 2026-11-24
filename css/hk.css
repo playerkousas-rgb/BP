@@ -414,11 +414,11 @@
 .hk-left-person-body strong{display:block;font-size:12px;line-height:1.35;color:#3f5445}
 .hk-left-person-years{display:block;font-size:11px;color:#6b7d6e;line-height:1.3}
 /* Map overlay: current Chief Scout / Commissioner */
-.hk-leaders-overlay{position:absolute;top:10px;left:10px;z-index:5;width:min(220px,calc(100% - 20px));background:rgba(251,250,242,.28);border:1px solid rgba(215,223,209,.28);border-radius:4px;box-shadow:none;padding:6px 8px;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);pointer-events:auto}
-.hk-overlay-title{font-size:10px;color:#607463;letter-spacing:.04em;margin-bottom:4px;font-weight:600;text-shadow:0 1px 2px rgba(251,250,242,.8)}
-.hk-overlay-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.hk-overlay-person{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;min-width:0}
-.hk-overlay-photo{width:44px;height:56px;object-fit:cover;border-radius:2px;background:#e8ece3;border:1px solid rgba(221,228,216,.6)}
+.hk-leaders-overlay{position:absolute;top:10px;left:10px;z-index:5;width:min(280px,calc(100% - 20px));background:transparent;border:none;border-radius:0;box-shadow:none;padding:0;backdrop-filter:none;-webkit-backdrop-filter:none;pointer-events:auto}
+.hk-overlay-title{font-size:10px;color:#607463;letter-spacing:.04em;margin-bottom:4px;font-weight:600;text-shadow:0 1px 3px rgba(251,250,242,.95),0 0 6px rgba(251,250,242,.7)}
+.hk-overlay-grid{display:grid;gap:4px}
+.hk-overlay-person{display:grid;grid-template-columns:40px minmax(0,1fr);gap:6px;align-items:center}
+.hk-overlay-photo{width:40px;height:50px;object-fit:cover;border-radius:2px;background:#e8ece3;border:1px solid rgba(221,228,216,.6)}
 .hk-overlay-body{min-width:0}
 .hk-overlay-role{display:block;font-size:10px;color:#708274;line-height:1.2;letter-spacing:.03em;text-shadow:0 1px 2px rgba(251,250,242,.8)}
 .hk-overlay-name{display:block;font-size:12px;line-height:1.3;color:#344a39;margin:1px 0;text-shadow:0 1px 2px rgba(251,250,242,.8)}

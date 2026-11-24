@@ -79,7 +79,28 @@
       "sources": [
         "hk-regions",
         "hk-wiki",
-        "hk-wiki-history"
+        "hk-wiki-history",
+        "hkir-50th-anniversary-booklet"
+      ],
+      "historicMaps": [
+        {
+          "year": 1968,
+          "title": {
+            "zh": "一九六八年港島地域區界圖",
+            "en": "Hong Kong Island Region district boundaries, 1968"
+          },
+          "src": "images/hk/hkir-boundary-1968.jpg",
+          "source": "hkir-50th-anniversary-booklet"
+        },
+        {
+          "year": 2018,
+          "title": {
+            "zh": "二〇一八年港島地域區界圖",
+            "en": "Hong Kong Island Region district boundaries, 2018"
+          },
+          "src": "images/hk/hkir-boundary-2018.jpg",
+          "source": "hkir-50th-anniversary-booklet"
+        }
       ]
     },
     {

@@ -44,21 +44,32 @@ function sourceBlock(ids, lang, slot) {
   if (!ids?.length) return container;
   const index = sourceIndex();
   container.append(element('span', '', `${t('source', lang)}：`));
+  let hasLink = false;
   ids.forEach((id, position) => {
     const source = index.get(id); if (!source) return;
-    const link = element('a', '', String(position + 1));
+    const label = localize(source.title, lang);
+    let node = null;
     try {
-      const url = new URL(source.url);
-      if (!['https:', 'http:'].includes(url.protocol)) return;
-      link.href = url.href;
-    } catch { return; }
-    link.target = '_blank'; link.rel = 'noopener noreferrer';
-    link.dataset.sourceId = id; link.dataset.sourceSlot = slot;
-    link.title = localize(source.title, lang);
-    link.setAttribute('aria-label', `${t('source', lang)}: ${localize(source.title, lang)}`);
-    container.append(link);
+      const url = new URL(source.url || '');
+      if (['https:', 'http:'].includes(url.protocol)) {
+        const link = element('a', '', String(position + 1));
+        link.href = url.href;
+        link.target = '_blank'; link.rel = 'noopener noreferrer';
+        link.dataset.sourceId = id; link.dataset.sourceSlot = slot;
+        link.title = label;
+        link.setAttribute('aria-label', `${t('source', lang)}: ${label}`);
+        node = link;
+        hasLink = true;
+      }
+    } catch { /* no public url */ }
+    if (!node) {
+      node = element('span', 'source-text', String(position + 1));
+      node.title = label;
+      node.setAttribute('aria-label', `${t('source', lang)}: ${label}`);
+    }
+    container.append(node);
   });
-  container.append(icon('external'));
+  if (hasLink) container.append(icon('external'));
   return container;
 }
 function heading(top, tag) {
@@ -158,6 +169,25 @@ function regionCard(region, state, hk) {
   }
   wrap.append(list);
   wrap.append(element('p', 'card-note', localize(region.insight, lang)));
+  if (Array.isArray(region.historicMaps) && region.historicMaps.length) {
+    wrap.append(element('h3', 'hk-subheading', t('hkHistoricMaps', lang)));
+    const maps = element('div', 'hk-historic-maps');
+    for (const m of region.historicMaps) {
+      const fig = element('figure', 'hk-historic-map');
+      const img = element('img');
+      img.src = m.src;
+      img.alt = localize(m.title, lang);
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      fig.append(img);
+      const cap = element('figcaption');
+      cap.append(localizedElement('span', '', m.title, lang));
+      if (m.source) cap.append(sourceBlock([m.source], lang, `map:${region.id}:${m.year}`));
+      fig.append(cap);
+      maps.append(fig);
+    }
+    wrap.append(maps);
+  }
   wrap.append(element('p', 'card-note', t('hkSchematicNote', lang)));
   footer(wrap, region, lang, `region:${region.id}`);
   return wrap;

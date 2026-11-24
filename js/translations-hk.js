@@ -52,6 +52,7 @@ export const hkMessages = {
   hkLeadersOverlayAria: ['選択した年の総長と総監', '선택한 연도의 총재 및 총감', 'Chef scout et commissaire pour l’année sélectionnée', 'Jefe Scout y Comisionado del año seleccionado', 'Ketua Pramuka dan Komisaris untuk tahun terpilih', 'Chefe Escuteiro e Comissário do ano selecionado', 'चयनित वर्ष के मुख्य स्काउट और आयुक्त'],
   hkCurrentOfficeholders: ['現職の総長と総監', '현직 총재 및 총감', 'Chef scout et commissaire actuels', 'Jefe Scout y Comisionado actuales', 'Ketua Pramuka dan Komisaris saat ini', 'Chefe Escuteiro e Comissário atuais', 'वर्तमान मुख्य स्काउट और आयुक्त'],
   hkOfficeholdersAtYear: ['{year}年の総長と総監', '{year}년 총재 및 총감', 'Chef scout et commissaire en {year}', 'Jefe Scout y Comisionado en {year}', 'Ketua Pramuka dan Komisaris pada {year}', 'Chefe Escuteiro e Comissário em {year}', '{year} में मुख्य स्काउट और आयुक्त'],
+  hkHistoricMaps: ['歴史的な区域図', '역사적 경계 지도', 'Cartes historiques des limites', 'Mapas históricos de límites', 'Peta batas bersejarah', 'Mapas históricos de limites', 'ऐतिहासिक सीमा मानचित्र'],
   hkOfficeLabel: ['役職', '직함', 'Fonction', 'Cargo', 'Jabatan', 'Cargo', 'पद'],
   hkTermLabel: ['任期', '임기', 'Mandat', 'Mandato', 'Masa jabatan', 'Mandato', 'कार्यकाल'],
   hkRoleLabel: ['身分', '신분', 'Rôle', 'Rol', 'Peran', 'Função', 'भूमिका'],

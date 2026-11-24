@@ -1,12 +1,14 @@
 // B-P Atlas v1.3 · © SCOUT SYSTEM
 // Controls the standalone Hong Kong Scout-history page: one year band drives
 // the map, the region directory, the jamboree table and the milestone list
-// together, and one story card explains whatever is selected. All text comes
-// from data/hk.json, data/hk-areas.json and data/sources.json.
+// together, and one story card explains whatever is selected. The year band
+// drives the Scout district layer as well: a district that had not been formed
+// yet is drawn inside its predecessor. All text comes from data/hk.json,
+// data/hk-districts.json and data/sources.json.
 import { applyLanguage, getInitialLanguage, localize, localizationLanguage, localeFor, t } from './i18n.js';
 import { clamp } from './state.js';
 import { createHkMap } from './hk-map.js';
-import { renderHkCard, setHkSources } from './hk-card.js';
+import { renderHkCard, setHkSources, setHkDistricts } from './hk-card.js';
 
 const MIN_YEAR = 1909;
 const MAX_YEAR = Math.max(new Date().getFullYear(), 2026);
@@ -15,7 +17,7 @@ const TABS = ['map', 'regions', 'boundaries', 'jamborees', 'leaders', 'chiefs', 
 const FULL_WIDTH_TABS = new Set(['leaders', 'chiefs', 'timeline']);
 const SELECTIONS = {
   map: () => true,
-  regions: kind => kind === 'region' || kind === 'area',
+  regions: kind => kind === 'region' || kind === 'district',
   boundaries: kind => kind === 'change',
   jamborees: kind => kind === 'jamboree',
   leaders: () => false, chiefs: () => false, timeline: kind => kind === 'milestone',
@@ -31,7 +33,7 @@ export function readHkState(params, maxYear = MAX_YEAR) {
   if (rawSelection) {
     const [kind, ...rest] = rawSelection.split(':');
     const value = rest.join(':');
-    if ((kind === 'region' || kind === 'area' || kind === 'jamboree') && value) selected = { kind, id: value };
+    if ((kind === 'region' || kind === 'district' || kind === 'jamboree') && value) selected = { kind, id: value };
     else if (kind === 'change' && /^\d{4}$/.test(value)) selected = { kind, id: Number(value) };
     else if (kind === 'milestone' && /^\d{4}$/.test(value)) selected = { kind, id: Number(value) };
   }
@@ -62,15 +64,16 @@ function localized(tag, className, value, lang) {
 }
 
 export async function startHkView({ params, data }) {
-  const areas = data.hkAreas;
+  const hkDistricts = data.hkDistricts;
   const hk = data.hk;
   const sources = data.sources;
   const sourceIndex = new Map(sources.map(source => [source.id, source]));
   setHkSources(sources);
+  setHkDistricts(data.hkDistricts);
   let lang = getInitialLanguage(params);
   const state = readHkState(params);
   state.lang = lang;
-  state.focusArea = null;
+  state.focusDistrict = null;
 
   const tabsNav = document.querySelector('#hk-tabs');
   // Map, regions, boundaries and jamborees each pair a list with a story
@@ -78,7 +81,7 @@ export async function startHkView({ params, data }) {
   const panel = document.querySelector('#hk-section-map #hk-panel');
   const fullWidthNodes = [...document.querySelectorAll('[data-hk-section]')];
 
-  const map = createHkMap(areas, hk, {
+  const map = createHkMap(hkDistricts, hk, {
     onSelect(selection) {
       if (!selection) return;
       select(selection);
@@ -109,28 +112,25 @@ export async function startHkView({ params, data }) {
     } catch { /* URL syncing is optional in restricted contexts. */ }
   }
 
-  function areaCentre(code) {
-    const feature = areas.features.find(item => item.id === code);
-    if (!feature) return null;
-    const rings = feature.geometry.type === 'Polygon' ? feature.geometry.coordinates : feature.geometry.coordinates.flat();
-    let lon = 0, lat = 0, count = 0;
-    for (const ring of rings) for (const point of ring) { lon += point[0]; lat += point[1]; count++; }
-    return count ? [lon / count, lat / count] : null;
+  const districtById = new Map(hkDistricts.districts.map(district => [district.id, district]));
+  function districtCentre(code) {
+    const district = districtById.get(code);
+    return district ? district.label : null;
   }
 
   function revealSelection() {
     if (state.selected?.kind === 'jamboree') {
       const event = hk.jamborees.find(item => item.id === state.selected.id);
       if (event?.coordinate) map.reveal(event.coordinate);
-    } else if (state.selected?.kind === 'area') {
-      const centre = areaCentre(state.selected.id);
+    } else if (state.selected?.kind === 'district') {
+      const centre = districtCentre(state.selected.id);
       if (centre) map.reveal(centre);
     }
   }
 
   function select(selection) {
     state.selected = selection;
-    state.focusArea = selection?.kind === 'area' ? selection.id : null;
+    state.focusDistrict = selection?.kind === 'district' ? selection.id : null;
     if (selection?.kind === 'jamboree') {
       const event = hk.jamborees.find(item => item.id === selection.id);
       if (event) state.year = event.year;
@@ -153,8 +153,11 @@ export async function startHkView({ params, data }) {
     // once at start-up so the open section is never hidden off the edge.
     if (!tabScrollDone) {
       tabScrollDone = true;
-      tabsNav.querySelector('[aria-selected="true"]')
-        ?.scrollIntoView({ block: 'nearest', inline: 'center' });
+      const activeTab = tabsNav.querySelector('[aria-selected="true"]');
+      // Older browsers and some embedded web views do not implement it.
+      if (activeTab && typeof activeTab.scrollIntoView === 'function') {
+        activeTab.scrollIntoView({ block: 'nearest', inline: 'center' });
+      }
     }
     updateTabEdges();
   }
@@ -171,8 +174,16 @@ export async function startHkView({ params, data }) {
   function renderSummary() {
     const label = state.year == null ? t('hkAllYears', lang) : String(state.year);
     document.querySelector('#hk-year-label').textContent = label;
-    const inHongKong = hk.jamborees.filter(event => event.area).length;
-    document.querySelector('#hk-map-note').textContent = t('hkMapNote', lang, { count: inHongKong });
+    const inHongKong = hk.jamborees.filter(event => event.inHongKong).length;
+    // 43 plotted districts; Silver Jubilee is defined by language, not territory.
+    const districtCount = hkDistricts.districts.length;
+    const formed = state.year == null ? districtCount
+      : hkDistricts.districts.filter(district => district.formed <= state.year).length;
+    const scope = state.year == null
+      ? t('hkMapScopeAll', lang, { count: districtCount })
+      : t('hkMapScopeYear', lang, { year: state.year, count: formed, total: districtCount });
+    const separator = lang === 'zh' ? '。' : '. ';
+    document.querySelector('#hk-map-note').textContent = `${scope}${separator}${t('hkMapNote', lang, { count: inHongKong })}`;
     const slider = document.querySelector('#hk-year-range');
     slider.value = String(state.year ?? MIN_YEAR);
     slider.setAttribute('aria-valuetext', label);
@@ -200,25 +211,53 @@ export async function startHkView({ params, data }) {
       const button = element('button', 'hk-rail-region');
       button.type = 'button'; button.dataset.hkSelect = `region:${region.id}`;
       button.append(localized('strong', '', region.name, lang));
-      // 銀禧區 has no Council outline, so its count is the only map clue.
+      // 銀禧區 has no territory of its own, so its count is the only map clue.
       button.append(element('span', '', t('hkDistrictCount', lang, { count: region.districts.length })));
       button.classList.toggle('is-selected', state.selected?.kind === 'region' && state.selected.id === region.id);
       entry(button);
     }
-    // The explanatory note belongs in the list, not beside it, so the markup
-    // stays a valid list of regions.
-    const noteItem = element('li', 'hk-rail-note-item');
-    const note = element('p', 'hk-rail-note');
-    note.append(document.createTextNode(t('hkRailNote', lang)), document.createTextNode(' '), document.createTextNode(t('hkBoundaryNote', lang)));
-    noteItem.append(note);
-    list.append(noteItem);
+    document.querySelector('#hk-rail-note').textContent =
+      `${t('hkRailNote', lang)} ${t('hkSchematicNote', lang)}`;
+  }
+
+  // The text timeline under the map. It lists the same boundary records as the
+  // 區劃演變 tab, but stays in step with the year band: the entry for the year
+  // being viewed is highlighted, and choosing an entry moves the band.
+  function renderEvolution() {
+    const list = document.querySelector('#hk-evolution-list');
+    if (!list) return;
+    list.replaceChildren();
+    for (const change of hk.boundaryChanges) {
+      const item = element('li', 'hk-evolution-item');
+      const button = element('button', 'hk-evolution-entry');
+      button.type = 'button';
+      button.dataset.hkEvolutionYear = String(change.year);
+      button.append(element('span', 'hk-evolution-year', String(change.year)));
+      const copy = element('span', 'hk-evolution-copy');
+      copy.append(localized('span', '', change.changes[0], lang));
+      button.append(copy);
+      button.title = t('hkEvolutionJump', lang, { year: change.year });
+      item.append(button);
+      const active = state.year === change.year;
+      item.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+      if (active) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+      list.append(item);
+    }
+    // Keep the highlighted year visible without yanking the strip around while
+    // the reader is scrolling it by hand.
+    const current = list.querySelector('.is-active');
+    if (current && !evolutionTouched && typeof current.scrollIntoView === 'function') {
+      current.scrollIntoView({ block: 'nearest', inline: 'center' });
+    }
   }
 
   function renderMain() {
     document.querySelectorAll('[data-hk-section]').forEach(section => {
       section.hidden = section.dataset.hkSection !== state.tab;
     });
-    if (state.tab === 'map') { map.render(state); renderRail(); }
+    if (state.tab === 'map') { map.render(state); renderRail(); renderEvolution(); }
     else if (state.tab === 'regions') renderRegions();
     else if (state.tab === 'boundaries') renderBoundaries();
     else if (state.tab === 'jamborees') renderJamborees();
@@ -230,6 +269,8 @@ export async function startHkView({ params, data }) {
 
   function renderRegions() {
     const board = document.querySelector('#hk-region-board');
+    // The districts that existed at this year are the ones the map shows; the
+    // rest stay listed but marked as not yet formed.
     board.replaceChildren();
     for (const region of hk.regions) {
       const card = element('article', 'hk-region-tile');
@@ -239,11 +280,26 @@ export async function startHkView({ params, data }) {
       title.append(localized('strong', '', region.name, lang));
       title.append(element('span', 'hk-region-founded-label', t('hkFounded', lang, { year: region.founded })));
       card.append(title);
-      // district chips: names only, because only a few have a sourced history
+      // Every district has its own schematic polygon and a sourced note, so the
+      // chips are buttons that select the district and reveal it on the map.
       const chips = element('ul', 'hk-district-chips');
-      // District names are chip text only: only a handful have a sourced
-      // history, so clicking one would promise detail the data cannot give.
-      for (const district of region.districts) chips.append(localized('li', '', district, lang));
+      for (const district of region.districts) {
+        const record = hkDistricts.districts.find(item => item.region === region.id && item.name.en === district.en);
+        const chip = element('li');
+        if (record) {
+          const button = element('button', 'hk-district-chip');
+          button.type = 'button';
+          button.dataset.hkSelect = `district:${record.id}`;
+          button.append(localized('span', '', district, lang));
+          if (record.formed) button.append(element('span', 'hk-district-year', String(record.formed)));
+          button.disabled = state.year != null && record.formed > state.year;
+          button.title = button.disabled ? `${record.formed}` : '';
+          chip.append(button);
+        } else {
+          chip.append(localized('span', '', district, lang));
+        }
+        chips.append(chip);
+      }
       card.append(localized('p', 'hk-region-founded', region.foundedText, lang));
       card.append(chips);
       card.append(localized('p', 'hk-region-insight', region.insight, lang));
@@ -391,7 +447,7 @@ export async function startHkView({ params, data }) {
     if (!button) return;
     state.tab = button.dataset.hkTab;
     if (!SELECTIONS[state.tab](state.selected?.kind)) state.selected = null;
-    state.focusArea = state.selected?.kind === 'area' ? state.selected.id : null;
+    state.focusDistrict = state.selected?.kind === 'district' ? state.selected.id : null;
     render();
   });
   tabsNav.addEventListener('keydown', event => {
@@ -413,6 +469,15 @@ export async function startHkView({ params, data }) {
       render();
     });
   }
+  let evolutionTouched = false;
+  document.querySelector('#hk-evolution').addEventListener('pointerdown', () => { evolutionTouched = true; }, { once: true });
+  document.querySelector('#hk-evolution').addEventListener('click', event => {
+    const button = event.target.closest('[data-hk-evolution-year]');
+    if (!button) return;
+    const year = Number(button.dataset.hkEvolutionYear);
+    state.year = state.year === year ? null : year;
+    render();
+  });
   document.querySelector('#hk-year-range').addEventListener('input', event => {
     state.year = clamp(Number(event.target.value), MIN_YEAR, MAX_YEAR);
     render();
@@ -435,7 +500,7 @@ export async function startHkView({ params, data }) {
     const openPopover = document.querySelector('.hk-legend-panel:not([hidden])');
     if (openPopover) { openPopover.hidden = true; return; }
     if (!state.selected) return;
-    state.selected = null; state.focusArea = null; render();
+    state.selected = null; state.focusDistrict = null; render();
   });
   document.querySelector('#hk-share').addEventListener('click', async () => {
     try {
@@ -459,7 +524,10 @@ export async function startHkView({ params, data }) {
   render();
   // At narrow widths the header's five mode links scroll; bring the current
   // page's link into view so it is not the one hidden behind the fade.
-  document.querySelector('.primary-nav .is-active')?.scrollIntoView({ block: 'nearest', inline: 'center' });
+  const activeMode = document.querySelector('.primary-nav .is-active');
+  if (activeMode && typeof activeMode.scrollIntoView === 'function') {
+    activeMode.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }
   document.querySelector('#hk-stage-root')?.setAttribute('data-ready', 'true');
   return { state, render, select };
 }

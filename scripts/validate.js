@@ -148,7 +148,7 @@ membership.forEach((row, index) => {
 // Structural checks only: these do not verify that the cited pages say what the
 // entries claim, nor that the Council outlines are cartographically accurate.
 const hk = read('hk');
-const hkAreas = read('hk-areas');
+const hkDistricts = read('hk-districts');
 const regionIds = new Set(hk.regions.map(region => region.id));
 check(hk.regions.length === 6 && regionIds.size === 6, 'hk: expected 6 regions including Silver Jubilee');
 for (const region of hk.regions) {
@@ -160,25 +160,34 @@ for (const region of hk.regions) {
 }
 const scoutDistricts = hk.regions.reduce((sum, region) => sum + region.districts.length, 0);
 check(scoutDistricts === 44, `hk: expected 44 Scout districts, got ${scoutDistricts}`);
-unique(hk.areas, 'code', 'hk areas');
-check(hk.areas.length === hkAreas.features.length, 'hk: area records and Council features differ in number');
-for (const area of hk.areas) {
-  const label = `hk area ${area.code}`;
-  check(/^[A-Z]{1,3}$/.test(area.code) && regionIds.has(area.region), `${label}: invalid code or region`);
-  check(bilingual(area.zone) && bilingual(area.insight), `${label}: missing zone or insight translation`);
-  check(hkAreas.features.some(feature => feature.id === area.code), `${label}: no matching Council feature`);
-  hkSources(area, label);
+// The Scout district layer: 43 plotted districts (Silver Jubilee has no
+// territory) plus the historical roots they descend from.
+unique(hkDistricts.districts, 'id', 'hk districts');
+check(hkDistricts.districts.length === 43, `hk-districts: expected 43 districts, got ${hkDistricts.districts.length}`);
+unique(hkDistricts.roots, 'id', 'hk district roots');
+check(hkDistricts.roots.length === 5, `hk-districts: expected 5 roots, got ${hkDistricts.roots.length}`);
+const districtIds = new Set(hkDistricts.districts.map(district => district.id));
+for (const root of hkDistricts.roots) {
+  const label = `hk district root ${root.id}`;
+  check(bilingual(root.name) && regionIds.has(root.region) && Array.isArray(root.label) && coords(...root.label), `${label}: invalid name, region or label`);
+  check(root.formed == null || year(root.formed), `${label}: invalid formed year`);
 }
-check(hkAreas.type === 'FeatureCollection' && hkAreas.features.length === 18, 'hk-areas: expected 18 Council features');
-for (const feature of hkAreas.features) {
-  const geometry = feature.geometry;
-  check(geometry && ['Polygon', 'MultiPolygon'].includes(geometry.type), `hk-areas ${feature.id}: invalid geometry type`);
+for (const district of hkDistricts.districts) {
+  const label = `hk district ${district.id}`;
+  check(bilingual(district.name) && regionIds.has(district.region), `${label}: invalid name or region`);
+  check(year(district.formed), `${label}: invalid formed year`);
+  check(Array.isArray(district.sources) && district.sources.length > 0, `${label}: missing sources`);
+  for (const id of district.sources) check(ids.has(id), `${label}: unknown source ${id}`);
+  check(typeof district.note === 'object' && bilingual(district.note), `${label}: missing note translation`);
+  check(Array.isArray(district.label) && coords(...district.label), `${label}: missing label anchor`);
+  check(Number.isFinite(district.area) && district.area > 0, `${label}: missing area`);
+  check(!district.parent || districtIds.has(district.parent) || hkDistricts.roots.some(root => root.id === district.parent), `${label}: parent does not resolve`);
+  const geometry = district.geometry;
+  check(geometry && ['Polygon', 'MultiPolygon'].includes(geometry.type), `${label}: invalid geometry type`);
   const rings = geometry?.type === 'Polygon' ? geometry.coordinates : geometry?.type === 'MultiPolygon' ? geometry.coordinates.flat() : [];
-  check(rings.length > 0 && rings.every(ring => ring.length >= 4 && ring.every(([lon, lat]) => coords(lon, lat))), `hk-areas ${feature.id}: invalid ring`);
-  check(Array.isArray(feature.properties?.label) && coords(...(feature.properties.label || [])), `hk-areas ${feature.id}: missing label anchor`);
-  check(feature.properties?.code === feature.id, `hk-areas ${feature.id}: code mismatch`);
+  check(rings.length > 0 && rings.every(ring => ring.length >= 4 && ring.every(([lon, lat]) => coords(lon, lat))), `${label}: invalid ring`);
 }
-check(statSync(new URL('../data/hk-areas.json', import.meta.url)).size <= 120 * 1024, 'hk-areas: exceeds 120 KiB');
+check(statSync(new URL('../data/hk-districts.json', import.meta.url)).size <= 200 * 1024, 'hk-districts: exceeds 200 KiB');
 unique(hk.boundaryChanges, 'year', 'hk boundary changes');
 for (const change of hk.boundaryChanges) {
   const label = `hk boundary change ${change.year}`;
@@ -195,7 +204,8 @@ for (const event of hk.jamborees) {
   check(bilingual(event.name) && bilingual(event.place) && bilingual(event.dates) && bilingual(event.note), `${label}: missing translation`);
   check(event.theme === null || bilingual(event.theme), `${label}: invalid theme`);
   check(event.coordinate === null || coords(...event.coordinate), `${label}: invalid coordinate`);
-  check(event.area === null ? event.place : regionIds.has(hk.areas.find(area => area.code === event.area)?.region), `${label}: area code does not resolve to a region`);
+  check(event.district === null ? event.place : districtIds.has(event.district) && regionIds.has(hkDistricts.districts.find(district => district.id === event.district).region), `${label}: district does not resolve to a region`);
+  check(typeof event.inHongKong === 'boolean', `${label}: missing inHongKong flag`);
   check(event.participants === null || (Number.isInteger(event.participants) && event.participants > 0), `${label}: invalid participants`);
   hkSources(event, label);
 }
@@ -219,8 +229,8 @@ for (const entry of hk.timeline) {
   hkSources(entry, label);
 }
 check(year(hk.about.founded), 'hk: invalid founding year');
-for (const field of ['foundedNote', 'boundaryNote', 'zonesNote', 'draft']) check(bilingual(hk.about[field]), `hk about: missing ${field}`);
+for (const field of ['foundedNote', 'boundaryNote', 'zonesNote', 'draft', 'schematicNote']) check(bilingual(hk.about[field]), `hk about: missing ${field}`);
 
 if (errors.length) { for (const error of errors) console.error(`FAIL ${error}`); process.exitCode = 1; }
-else console.log(`PASS: ${journey.length} stops, ${nso.length} directory entries (${nso.filter(item => item.scoutingStart !== null).length} provisionally plotted, ${nso.filter(item => item.wosmMembership?.year != null).length} with primary WOSM directory/news years), ${jamborees.length} jamborees/cancellation, ${membership.length} statistical rows, ${sources.length} sources; world map under 300 KiB and correctly wound; Hong Kong ${hk.regions.length} regions / ${scoutDistricts} Scout districts / ${hk.areas.length} Council outlines / ${hk.jamborees.length} jamborees.`);
+else console.log(`PASS: ${journey.length} stops, ${nso.length} directory entries (${nso.filter(item => item.scoutingStart !== null).length} provisionally plotted, ${nso.filter(item => item.wosmMembership?.year != null).length} with primary WOSM directory/news years), ${jamborees.length} jamborees/cancellation, ${membership.length} statistical rows, ${sources.length} sources; world map under 300 KiB and correctly wound; Hong Kong ${hk.regions.length} regions / ${scoutDistricts} Scout districts / ${hkDistricts.districts.length} plotted district outlines / ${hk.jamborees.length} jamborees.`);
 console.log('NOTICE: Structure is valid; historical accuracy, coverage, source relevance, licences and release readiness require human verification.');

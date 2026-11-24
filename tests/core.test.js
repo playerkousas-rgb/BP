@@ -420,36 +420,48 @@ test('Hong Kong state round-trips through the share URL', () => {
   assert.deepEqual(roundTrip.selected, { kind: 'jamboree', id: 'hk-jam-2016' });
 
   // Unknown tabs, out-of-range years and selections that the tab cannot show are dropped.
-  const hostile = readHkState(new URLSearchParams('hk=nowhere&year=1200&sel=area:CW'));
-  assert.deepEqual(hostile, { tab: 'map', year: 1909, selected: { kind: 'area', id: 'CW' } });
+  const hostile = readHkState(new URLSearchParams('hk=nowhere&year=1200&sel=district:kowloon-tong'));
+  assert.deepEqual(hostile, { tab: 'map', year: 1909, selected: { kind: 'district', id: 'kowloon-tong' } });
+  const districtRoundTrip = readHkState(new URLSearchParams('hk=map&sel=district:sha-tin-north'));
+  assert.deepEqual(districtRoundTrip.selected, { kind: 'district', id: 'sha-tin-north' });
   const mismatched = readHkState(new URLSearchParams('hk=leaders&sel=jamboree:hk-jam-2016'));
   assert.equal(mismatched.selected, null);
   assert.equal(readHkState(new URLSearchParams('hk=boundaries&sel=change:1968')).selected.id, 1968);
   assert.match(hkStateToSearch({ tab: 'map', year: null, selected: null }, 'zh'), /^lang=zh&hk=map$/);
 });
 
-test('Hong Kong Council outlines and Scout regions agree on coverage', () => {
+test('Hong Kong Scout district layer and Scout regions agree on coverage', () => {
   const hk = read('hk');
+  const districts = read('hk-districts');
   const areas = read('hk-areas');
+  // The 18 Council outlines are only the cut scaffold; the map draws districts.
   assert.equal(areas.features.length, 18);
-  assert.equal(hk.areas.length, 18);
-  const codes = new Set(areas.features.map(feature => feature.id));
-  for (const area of hk.areas) assert.ok(codes.has(area.code), area.code);
+  assert.equal(districts.districts.length, 43);
+  assert.equal(districts.roots.length, 5);
   // 44 Scout districts: five regions plus the directly administered Silver Jubilee District.
   const total = hk.regions.reduce((sum, region) => sum + region.districts.length, 0);
   assert.equal(total, 44);
   assert.ok(hk.regions.some(region => region.id === 'silverjubilee' && region.districts.length === 1));
-  // Jamboree 13 is in Zhuhai and deliberately has no Council area.
+  const regionIds = new Set(hk.regions.map(region => region.id));
+  const districtIds = new Set(districts.districts.map(district => district.id));
+  assert.equal(districtIds.size, 43);
+  for (const district of districts.districts) {
+    assert.ok(regionIds.has(district.region), `${district.id}: unknown region`);
+    assert.ok(district.formed, `${district.id}: missing formed year`);
+    // Every parent must be a district or one of the historical roots.
+    assert.ok(district.parent == null || districtIds.has(district.parent)
+      || districts.roots.some(root => root.id === district.parent), `${district.id}: dangling parent`);
+  }
+  // Jamboree 13 is in Zhuhai and deliberately has no Scout district.
   const zhuhai = hk.jamborees.find(event => event.id === 'hk-jam-2024');
-  assert.equal(zhuhai.area, null);
-  assert.equal(hk.jamborees.filter(event => event.area === null).length, 1);
+  assert.equal(zhuhai.district, null);
+  assert.equal(hk.jamborees.filter(event => event.district === null).length, 1);
   // Only inside Hong Kong should a camp be plotted.
   for (const event of hk.jamborees) assert.ok(event.coordinate, event.id);
-  // Every jamboree area code must resolve to a Scout region.
-  const regionIds = new Set(hk.regions.map(region => region.id));
+  // Every jamboree district must resolve to a Scout region.
   for (const event of hk.jamborees) {
-    if (event.area === null) continue;
-    const area = hk.areas.find(item => item.code === event.area);
-    assert.ok(area && regionIds.has(area.region), `${event.id}: ${event.area}`);
+    if (event.district === null) continue;
+    const district = districts.districts.find(item => item.id === event.district);
+    assert.ok(district && regionIds.has(district.region), `${event.id}: ${event.district}`);
   }
 });

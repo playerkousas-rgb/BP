@@ -108,19 +108,7 @@
       </div>
     </section>
 
-    <div class="hk-tabs-wrap">
-    <nav id="hk-tabs" class="hk-tabs" role="tablist" aria-label="香港童軍歷史分頁" data-i18n-aria="hkTabs">
-      <button type="button" role="tab" data-hk-tab="map" aria-selected="true" aria-controls="hk-section-map"><span data-i18n="hkTabMap">地圖</span></button>
-      <button type="button" role="tab" data-hk-tab="regions" aria-selected="false" aria-controls="hk-section-regions"><span data-i18n="hkTabRegions">地域與區</span></button>
-      <button type="button" role="tab" data-hk-tab="boundaries" aria-selected="false" aria-controls="hk-section-boundaries"><span data-i18n="hkTabBoundaries">區劃演變</span></button>
-      <button type="button" role="tab" data-hk-tab="jamborees" aria-selected="false" aria-controls="hk-section-jamborees"><span data-i18n="hkTabJamborees">大露營地點</span></button>
-      <button type="button" role="tab" data-hk-tab="leaders" aria-selected="false" aria-controls="hk-section-leaders"><span data-i18n="hkTabLeaders">歷任總領袖</span></button>
-      <button type="button" role="tab" data-hk-tab="chiefs" aria-selected="false" aria-controls="hk-section-chiefs"><span data-i18n="hkTabChiefs">歷任總監</span></button>
-      <button type="button" role="tab" data-hk-tab="timeline" aria-selected="false" aria-controls="hk-section-timeline"><span data-i18n="hkTabTimeline">童軍大事</span></button>
-    </nav>
-    </div>
-
-    <section id="hk-section-map" class="hk-stage" data-hk-section="map" role="tabpanel" aria-labelledby="hk-title">
+    <section id="hk-section-map" class="hk-stage" data-hk-section="map" aria-labelledby="hk-title">
       <div class="hk-map-toolbar">
         <div class="hk-map-heading">
           <svg class="icon" aria-hidden="true"><use href="#icon-compass"></use></svg>
@@ -136,93 +124,48 @@
           </div>
         </div>
       </div>
-      <div class="hk-map-frame">
-        <svg id="hk-map" class="hk-map" viewBox="0 0 800 555" role="application" tabindex="0" aria-label="香港地圖；可拖曳、滾輪或雙指縮放，方向鍵平移，加減鍵縮放" data-i18n-aria="hkMapAria"></svg>
-        <div class="hk-map-compass" aria-hidden="true"><svg viewBox="0 0 66 66"><use href="#icon-compass-n"></use></svg></div>
-        <p class="hk-map-note" id="hk-map-note"></p>
-        <div id="hk-legend" class="hk-legend-panel" hidden>
-          <strong data-i18n="hkLegend">圖例</strong>
-          <ul>
-            <li><span class="hk-key hk-key-area"></span><span data-i18n="hkLegendArea">童軍區（界線為示意）</span></li>
-            <li><span class="hk-key hk-key-region"></span><span data-i18n="hkLegendRegion">地域名稱</span></li>
-            <li><span class="hk-key hk-key-hq"></span><span data-i18n="hkLegendHq">地域總部</span></li>
-            <li><span class="hk-key hk-key-tent"></span><span data-i18n="hkLegendJamboree">大露營地點（數字為屆次）</span></li>
-          </ul>
-          <p data-i18n="hkBoundaryNote">童軍區界不以公開地理數據發布。本頁以十八區區議會輪廓為底稿，按各區公開文字描述以直線切割重繪，只表示各區大約位置，不代表官方區界。</p>
+
+      <div class="hk-synced hk-synced-onepage">
+        <aside class="hk-timeline-col" aria-labelledby="hk-left-heading">
+          <div class="hk-timeline-panel">
+            <div class="hk-timeline-panel-head">
+              <h2 id="hk-left-heading" data-i18n="hkLeftHeading">探索香港童軍</h2>
+              <p class="hk-timeline-panel-hint" data-i18n="hkTimelineHint">點選年份，地圖與內容會同步</p>
+            </div>
+            <div class="hk-left-tabs" role="tablist" aria-label="左側資料分類" data-i18n-aria="hkLeftTabs">
+              <button type="button" role="tab" class="hk-left-tab is-active" data-hk-left="milestones" aria-selected="true"><span data-i18n="hkTabTimeline">童軍大事</span></button>
+              <button type="button" role="tab" class="hk-left-tab" data-hk-left="jamborees" aria-selected="false"><span data-i18n="hkTabJamborees">大露營地點</span></button>
+              <button type="button" role="tab" class="hk-left-tab" data-hk-left="boundaries" aria-selected="false"><span data-i18n="hkTabBoundaries">區劃演變</span></button>
+              <button type="button" role="tab" class="hk-left-tab" data-hk-left="regions" aria-selected="false"><span data-i18n="hkTabRegions">地域與區</span></button>
+              <button type="button" role="tab" class="hk-left-tab" data-hk-left="people" aria-selected="false"><span data-i18n="hkTabPeople">總領袖/總監</span></button>
+            </div>
+            <div id="hk-left-list" class="hk-left-list" aria-live="polite"></div>
+          </div>
+        </aside>
+
+        <div class="hk-map-col">
+          <div class="hk-map-frame">
+            <svg id="hk-map" class="hk-map" viewBox="0 0 800 555" role="application" tabindex="0" aria-label="香港地圖；可拖曳、滾輪或雙指縮放，方向鍵平移，加減鍵縮放" data-i18n-aria="hkMapAria"></svg>
+            <div class="hk-map-compass" aria-hidden="true"><svg viewBox="0 0 66 66"><use href="#icon-compass-n"></use></svg></div>
+            <aside id="hk-leaders-overlay" class="hk-leaders-overlay" aria-label="當年總領袖及總監" data-i18n-aria="hkLeadersOverlayAria"></aside>
+            <p class="hk-map-note" id="hk-map-note"></p>
+            <div id="hk-legend" class="hk-legend-panel" hidden>
+              <strong data-i18n="hkLegend">圖例</strong>
+              <ul>
+                <li><span class="hk-key hk-key-area"></span><span data-i18n="hkLegendArea">童軍區（界線為示意）</span></li>
+                <li><span class="hk-key hk-key-region"></span><span data-i18n="hkLegendRegion">地域名稱</span></li>
+                <li><span class="hk-key hk-key-hq"></span><span data-i18n="hkLegendHq">地域總部</span></li>
+                <li><span class="hk-key hk-key-tent"></span><span data-i18n="hkLegendJamboree">大露營地點（數字為屆次）</span></li>
+              </ul>
+              <p data-i18n="hkBoundaryNote">童軍區界不以公開地理數據發布。本頁以十八區區議會輪廓為底稿，按各區公開文字描述以直線切割重繪，只表示各區大約位置，不代表官方區界。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hk-side-col">
+          <aside id="hk-panel" class="hk-panel" data-hk-panel aria-live="polite" aria-atomic="true" aria-label="故事卡" data-i18n-aria="hkStoryAria"></aside>
         </div>
       </div>
-      <div class="hk-stage-lower">
-        <div class="hk-rail" id="hk-rail">
-          <h2 class="hk-rail-heading" data-i18n="hkRailHeading">地域 · 總部 · 營地</h2>
-          <p class="hk-rail-note" id="hk-rail-note"></p>
-          <ul class="hk-rail-list" id="hk-rail-list"></ul>
-        </div>
-        <aside id="hk-panel" class="hk-panel" data-hk-panel aria-live="polite" aria-atomic="true" aria-label="故事卡" data-i18n-aria="hkStoryAria"></aside>
-      </div>
-      <section class="hk-evolution" id="hk-evolution" aria-labelledby="hk-evolution-heading">
-        <div class="hk-evolution-head">
-          <h2 id="hk-evolution-heading" data-i18n="hkEvolutionHeading">區界如何演變</h2>
-          <span class="hk-evolution-hint" data-i18n="hkEvolutionHint">年表與年份帶連動；選一年即可在地圖上查看當時的區界。</span>
-        </div>
-        <ol class="hk-evolution-list" id="hk-evolution-list"></ol>
-        <p class="hk-evolution-empty" id="hk-evolution-empty" data-i18n="hkEvolutionEmpty">年表只列出有公開記載的改動；未列出的年份不代表沒有改動。</p>
-      </section>
-    </section>
-
-    <section id="hk-section-regions" class="hk-layout" data-hk-section="regions" role="tabpanel" hidden>
-      <div class="hk-main-column">
-        <p class="hk-column-intro" data-i18n="hkRegionsIntro">五個地域加一個總會直轄區，合共四十四個童軍區；地圖按年份顯示當時存在的區，下方列出各區會、總部與沿革。</p>
-        <div id="hk-region-board" class="hk-region-board"></div>
-      </div>
-      <aside class="hk-panel" data-hk-panel aria-live="polite" aria-label="故事卡" data-i18n-aria="hkStoryAria"></aside>
-    </section>
-
-    <section id="hk-section-boundaries" class="hk-layout" data-hk-section="boundaries" role="tabpanel" hidden>
-      <div class="hk-main-column">
-        <p id="hk-boundary-note" class="hk-column-intro"></p>
-        <ol id="hk-boundary-list" class="hk-boundary-list"></ol>
-      </div>
-      <aside class="hk-panel" data-hk-panel aria-live="polite" aria-label="故事卡" data-i18n-aria="hkStoryAria"></aside>
-    </section>
-
-    <section id="hk-section-jamborees" class="hk-layout hk-layout-wide" data-hk-section="jamborees" role="tabpanel" hidden>
-      <div class="hk-main-column">
-        <p id="hk-jamboree-caption" class="hk-column-intro"></p>
-        <div class="hk-table-wrap" role="region" tabindex="0" aria-label="香港童軍大露營一覽" data-i18n-aria="hkTabJamborees">
-          <table class="hk-jamboree-table">
-            <thead><tr><th scope="col" data-i18n="hkColumnJamboree">屆次 · 名稱</th><th scope="col" data-i18n="hkColumnYear">年份</th><th scope="col" data-i18n="hkColumnPlace">地點</th><th scope="col" data-i18n="hkColumnTheme">主題</th><th scope="col" data-i18n="hkColumnParticipants">人數</th><th scope="col" data-i18n="hkColumnNote">備註</th></tr></thead>
-            <tbody id="hk-jamboree-body"></tbody>
-          </table>
-        </div>
-      </div>
-      <aside class="hk-panel" data-hk-panel aria-live="polite" aria-label="故事卡" data-i18n-aria="hkStoryAria"></aside>
-    </section>
-
-    <section id="hk-section-leaders" class="hk-people" data-hk-section="leaders" role="tabpanel" hidden>
-      <div class="hk-people-head">
-        <p class="hk-panel-kicker" data-i18n="hkPeopleTag">人事紀錄</p>
-        <h2 class="hk-office-title"><span data-i18n="hkTabLeaders">歷任總領袖</span></h2>
-        <div class="hk-office-note"></div>
-      </div>
-      <ol id="hk-leaders-list" class="hk-people-list"></ol>
-    </section>
-
-    <section id="hk-section-chiefs" class="hk-people" data-hk-section="chiefs" role="tabpanel" hidden>
-      <div class="hk-people-head">
-        <p class="hk-panel-kicker" data-i18n="hkPeopleTag">人事紀錄</p>
-        <h2 class="hk-office-title"><span data-i18n="hkTabChiefs">歷任總監</span></h2>
-        <div class="hk-office-note"></div>
-      </div>
-      <ol id="hk-chiefs-list" class="hk-people-list"></ol>
-    </section>
-
-    <section id="hk-section-timeline" class="hk-timeline" data-hk-section="timeline" role="tabpanel" hidden>
-      <div class="hk-people-head">
-        <p class="hk-panel-kicker" data-i18n="hkMilestones">童軍大事</p>
-        <h2 data-i18n="hkTimelineHeading">香港童軍大事年表</h2>
-        <p id="hk-timeline-note" class="hk-office-note"></p>
-      </div>
-      <ol id="hk-timeline-list" class="hk-timeline-list"></ol>
     </section>
 
     <footer class="site-footer"><span>© SCOUT SYSTEM · COPYRIGHT SCOUT SYSTEM · B-P Atlas v1.3 · <a href="credits.html#rights" target="_blank" rel="noopener noreferrer" data-i18n="footerLicense">授權待確認</a></span><span data-i18n="footerDisclaimer">非世界童軍組織或任何童軍總會的官方作品</span><span data-i18n="hkFooterNote">香港童軍資料為研究草稿，年份與人事紀錄仍須逐項核實。</span></footer>

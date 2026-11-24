@@ -137,37 +137,53 @@
           </div>
         </div>
       </div>
-      <div class="hk-map-frame">
-        <svg id="hk-map" class="hk-map" viewBox="0 0 800 555" role="application" tabindex="0" aria-label="香港地圖；可拖曳、滾輪或雙指縮放，方向鍵平移，加減鍵縮放" data-i18n-aria="hkMapAria"></svg>
-        <div class="hk-map-compass" aria-hidden="true"><svg viewBox="0 0 66 66"><use href="#icon-compass-n"></use></svg></div>
-        <p class="hk-map-note" id="hk-map-note"></p>
-        <div id="hk-legend" class="hk-legend-panel" hidden>
-          <strong data-i18n="hkLegend">圖例</strong>
-          <ul>
-            <li><span class="hk-key hk-key-area"></span><span data-i18n="hkLegendArea">童軍區（界線為示意）</span></li>
-            <li><span class="hk-key hk-key-region"></span><span data-i18n="hkLegendRegion">地域名稱</span></li>
-            <li><span class="hk-key hk-key-hq"></span><span data-i18n="hkLegendHq">地域總部</span></li>
-            <li><span class="hk-key hk-key-tent"></span><span data-i18n="hkLegendJamboree">大露營地點（數字為屆次）</span></li>
-          </ul>
-          <p data-i18n="hkBoundaryNote">童軍區界不以公開地理數據發布。本頁以十八區區議會輪廓為底稿，按各區公開文字描述以直線切割重繪，只表示各區大約位置，不代表官方區界。</p>
+      <div class="hk-synced">
+        <aside class="hk-timeline-col" aria-labelledby="hk-synced-timeline-heading">
+          <div class="hk-timeline-panel">
+            <div class="hk-timeline-panel-head">
+              <h2 id="hk-synced-timeline-heading" data-i18n="hkTabTimeline">童軍大事</h2>
+              <p class="hk-timeline-panel-hint" data-i18n="hkTimelineHint">點選年份，地圖與內容會同步</p>
+            </div>
+            <ol id="hk-synced-timeline" class="hk-synced-timeline"></ol>
+          </div>
+        </aside>
+
+        <div class="hk-map-col">
+          <div class="hk-map-frame">
+            <svg id="hk-map" class="hk-map" viewBox="0 0 800 555" role="application" tabindex="0" aria-label="香港地圖；可拖曳、滾輪或雙指縮放，方向鍵平移，加減鍵縮放" data-i18n-aria="hkMapAria"></svg>
+            <div class="hk-map-compass" aria-hidden="true"><svg viewBox="0 0 66 66"><use href="#icon-compass-n"></use></svg></div>
+            <p class="hk-map-note" id="hk-map-note"></p>
+            <div id="hk-legend" class="hk-legend-panel" hidden>
+              <strong data-i18n="hkLegend">圖例</strong>
+              <ul>
+                <li><span class="hk-key hk-key-area"></span><span data-i18n="hkLegendArea">童軍區（界線為示意）</span></li>
+                <li><span class="hk-key hk-key-region"></span><span data-i18n="hkLegendRegion">地域名稱</span></li>
+                <li><span class="hk-key hk-key-hq"></span><span data-i18n="hkLegendHq">地域總部</span></li>
+                <li><span class="hk-key hk-key-tent"></span><span data-i18n="hkLegendJamboree">大露營地點（數字為屆次）</span></li>
+              </ul>
+              <p data-i18n="hkBoundaryNote">童軍區界不以公開地理數據發布。本頁以十八區區議會輪廓為底稿，按各區公開文字描述以直線切割重繪，只表示各區大約位置，不代表官方區界。</p>
+            </div>
+          </div>
+
+          <section class="hk-evolution" id="hk-evolution" aria-labelledby="hk-evolution-heading">
+            <div class="hk-evolution-head">
+              <h2 id="hk-evolution-heading" data-i18n="hkEvolutionHeading">區界如何演變</h2>
+              <span class="hk-evolution-hint" data-i18n="hkEvolutionHint">年表與年份帶連動；選一年即可在地圖上查看當時的區界。</span>
+            </div>
+            <ol class="hk-evolution-list" id="hk-evolution-list"></ol>
+            <p class="hk-evolution-empty" id="hk-evolution-empty" data-i18n="hkEvolutionEmpty">年表只列出有公開記載的改動；未列出的年份不代表沒有改動。</p>
+          </section>
+        </div>
+
+        <div class="hk-side-col">
+          <div class="hk-rail" id="hk-rail">
+            <h2 class="hk-rail-heading" data-i18n="hkRailHeading">地域 · 總部 · 營地</h2>
+            <p class="hk-rail-note" id="hk-rail-note"></p>
+            <ul class="hk-rail-list" id="hk-rail-list"></ul>
+          </div>
+          <aside id="hk-panel" class="hk-panel" data-hk-panel aria-live="polite" aria-atomic="true" aria-label="故事卡" data-i18n-aria="hkStoryAria"></aside>
         </div>
       </div>
-      <div class="hk-stage-lower">
-        <div class="hk-rail" id="hk-rail">
-          <h2 class="hk-rail-heading" data-i18n="hkRailHeading">地域 · 總部 · 營地</h2>
-          <p class="hk-rail-note" id="hk-rail-note"></p>
-          <ul class="hk-rail-list" id="hk-rail-list"></ul>
-        </div>
-        <aside id="hk-panel" class="hk-panel" data-hk-panel aria-live="polite" aria-atomic="true" aria-label="故事卡" data-i18n-aria="hkStoryAria"></aside>
-      </div>
-      <section class="hk-evolution" id="hk-evolution" aria-labelledby="hk-evolution-heading">
-        <div class="hk-evolution-head">
-          <h2 id="hk-evolution-heading" data-i18n="hkEvolutionHeading">區界如何演變</h2>
-          <span class="hk-evolution-hint" data-i18n="hkEvolutionHint">年表與年份帶連動；選一年即可在地圖上查看當時的區界。</span>
-        </div>
-        <ol class="hk-evolution-list" id="hk-evolution-list"></ol>
-        <p class="hk-evolution-empty" id="hk-evolution-empty" data-i18n="hkEvolutionEmpty">年表只列出有公開記載的改動；未列出的年份不代表沒有改動。</p>
-      </section>
     </section>
 
     <section id="hk-section-regions" class="hk-layout" data-hk-section="regions" role="tabpanel" hidden>

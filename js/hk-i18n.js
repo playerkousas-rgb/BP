@@ -49,6 +49,7 @@ export const hkMessages = {
   hkJamboreeCaption: ['十三屆香港童軍大露營（包括一次在珠海舉行）；人數以來源所載為準，差異保留在備註。', 'Thirteen Hong Kong Scout jamborees, one of them held in Zhuhai; figures follow the sources and differences are kept in the notes.'],
   hkPeopleTag: ['人事紀錄', 'Office records'],
   hkMilestones: ['童軍大事', 'Milestones'],
+  hkTimelineHint: ['點選年份，地圖與內容會同步', 'Select a year to sync the map and story'],
   hkTimelineHeading: ['香港童軍大事年表', 'Hong Kong Scout milestones'],
   hkTimelineNote: ['年份按事件首次見於公開來源時間排列；同一事件不同來源若有出入，會在故事卡內保留。', 'Years follow when an event first appears in public sources; where sources disagree, both versions remain in the story card.'],
   hkFooterNote: ['香港童軍資料為研究草稿，年份與人事紀錄仍須逐項核實。', 'Hong Kong Scout material is a research draft; dates and office-holders still need checking entry by entry.'],

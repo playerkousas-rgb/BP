@@ -622,6 +622,18 @@
       "sources": [
         "hk-yle-timetable"
       ]
+    },
+    {
+      "year": 2018,
+      "changes": [
+        {
+          "zh": "參考《港島地域童軍50周年特刊》二〇一八年區界圖：港島地域區界調整為港島西區、維城區、灣仔區、港島北區、筲箕灣區、柴灣區及港島南區。",
+          "en": "Per the Hong Kong Island Region Scout 50th Anniversary Booklet (2018 boundary map), Island Region districts were shown as Hong Kong West, Victoria City, Wan Chai, Hong Kong North, Shau Kei Wan, Chai Wan and Hong Kong South."
+        }
+      ],
+      "sources": [
+        "hkir-50th-anniversary-booklet"
+      ]
     }
   ],
   "jamborees": [

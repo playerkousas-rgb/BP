@@ -105,12 +105,12 @@ export function createHkMap(districtsData, hk, callbacks = {}) {
     if (year == null) return district;
     let current = district;
     const seen = new Set();
-    while (current && current.formed > year) {
+    while (current && (current.formed > year || (current.dissolved != null && current.dissolved <= year))) {
       if (!current.parent || seen.has(current.id)) return null;
       seen.add(current.id);
       current = byId.get(current.parent);
     }
-    return current && current.formed <= year ? current : null;
+    return current && current.formed <= year && (current.dissolved == null || current.dissolved > year) ? current : null;
   }
 
   const shapesByCode = new Map();

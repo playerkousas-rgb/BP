@@ -154,7 +154,7 @@ export async function startHkView({ params, data }) {
     const inHongKong = hk.jamborees.filter(event => event.inHongKong).length;
     const districtCount = hkDistricts.districts.length;
     const formed = state.year == null ? districtCount
-      : hkDistricts.districts.filter(district => district.formed <= state.year).length;
+      : hkDistricts.districts.filter(district => (district.originalFormed || district.formed) <= state.year).length;
     const scope = state.year == null
       ? t('hkMapScopeAll', lang, { count: districtCount })
       : t('hkMapScopeYear', lang, { year: state.year, count: formed, total: districtCount });
@@ -319,7 +319,9 @@ export async function startHkView({ params, data }) {
         btn.textContent = localize(district, lang);
         const actual = localizationLanguage(district, lang);
         if (actual) btn.lang = actual;
-        btn.disabled = state.year != null && record.formed > state.year;
+        const formedYear = record.originalFormed || record.formed;
+        if (formedYear) btn.append(element('span', 'hk-left-district-year', ` ${formedYear}`));
+        btn.disabled = state.year != null && formedYear > state.year;
         btn.classList.toggle('is-selected', state.selected?.kind === 'district' && state.selected.id === record.id);
         chips.append(btn);
       }

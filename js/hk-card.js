@@ -159,7 +159,8 @@ function regionCard(region, state, hk) {
       button.type = 'button';
       button.dataset.hkSelect = `district:${record.id}`;
       button.append(localizedElement('span', '', record.name, lang));
-      if (record.formed) button.append(element('span', 'hk-district-year', String(record.formed)));
+      const formedYear = record.originalFormed || record.formed;
+      if (formedYear) button.append(element('span', 'hk-district-year', String(formedYear)));
       item.append(button);
     } else {
       item.append(localizedElement('span', '', district, lang));
@@ -207,7 +208,7 @@ function districtCard(district, hk, state) {
     if (value && typeof value === 'object') facts.append(localizedElement('dd', '', value, lang));
     else facts.append(element('dd', '', String(value)));
   };
-  fact(t('hkFormedLabel', lang), String(district.formed));
+  fact(t('hkFormedLabel', lang), String(district.originalFormed || district.formed));
   if (region) fact(t('hkRegionLabel', lang), region.name);
   fact(t('hkDistrictArea', lang), `${district.area.toFixed(1)} km²`);
   wrap.append(facts);

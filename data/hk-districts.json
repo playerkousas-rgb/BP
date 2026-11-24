@@ -73,6 +73,86 @@
         114.2,
         22.4
       ]
+    },
+    {
+      "id": "hk1968-wes",
+      "region": "island",
+      "name": {
+        "zh": "西區",
+        "en": "West District"
+      },
+      "formed": 1968,
+      "dissolved": 2018,
+      "parent": "root-hk",
+      "label": [
+        114.135,
+        22.255
+      ],
+      "source": "hkir-50th-anniversary-booklet"
+    },
+    {
+      "id": "hk1968-vic",
+      "region": "island",
+      "name": {
+        "zh": "維多利亞區",
+        "en": "Victoria District"
+      },
+      "formed": 1968,
+      "dissolved": 2018,
+      "parent": "root-hk",
+      "label": [
+        114.155,
+        22.275
+      ],
+      "source": "hkir-50th-anniversary-booklet"
+    },
+    {
+      "id": "hk1968-nor",
+      "region": "island",
+      "name": {
+        "zh": "北區",
+        "en": "North District"
+      },
+      "formed": 1968,
+      "dissolved": 2018,
+      "parent": "root-hk",
+      "label": [
+        114.205,
+        22.285
+      ],
+      "source": "hkir-50th-anniversary-booklet"
+    },
+    {
+      "id": "hk1968-eas",
+      "region": "island",
+      "name": {
+        "zh": "東區",
+        "en": "East District"
+      },
+      "formed": 1968,
+      "dissolved": 2018,
+      "parent": "root-hk",
+      "label": [
+        114.185,
+        22.245
+      ],
+      "source": "hkir-50th-anniversary-booklet"
+    },
+    {
+      "id": "hk1968-skw",
+      "region": "island",
+      "name": {
+        "zh": "筲箕灣區",
+        "en": "Shau Kei Wan District"
+      },
+      "formed": 1968,
+      "dissolved": 2018,
+      "parent": "root-hk",
+      "label": [
+        114.245,
+        22.265
+      ],
+      "source": "hkir-50th-anniversary-booklet"
     }
   ],
   "districts": [
@@ -83,8 +163,8 @@
         "zh": "港島西區",
         "en": "Hong Kong West"
       },
-      "formed": 1961,
-      "parent": "root-hk",
+      "formed": 2018,
+      "parent": "hk1968-wes",
       "label": [
         114.15,
         22.256
@@ -92,7 +172,8 @@
       "area": 18.8,
       "sources": [
         "hk-regions",
-        "hk-wiki"
+        "hk-wiki",
+        "hkir-50th-anniversary-booklet"
       ],
       "note": {
         "zh": "範圍約包括堅尼地城、石塘咀、薄扶林、香港仔及華富一帶。",
@@ -230,7 +311,8 @@
             ]
           ]
         ]
-      }
+      },
+      "originalFormed": 1961
     },
     {
       "id": "victoria-city",
@@ -239,8 +321,8 @@
         "zh": "維多利亞城區",
         "en": "Victoria City"
       },
-      "formed": 1953,
-      "parent": "root-hk",
+      "formed": 2018,
+      "parent": "hk1968-vic",
       "label": [
         114.1569,
         22.2741
@@ -248,7 +330,8 @@
       "area": 6.2,
       "sources": [
         "hk-wiki-history",
-        "hk-wiki"
+        "hk-wiki",
+        "hkir-50th-anniversary-booklet"
       ],
       "note": {
         "zh": "1953 年自香港區分出，名稱沿自舊維多利亞城。",
@@ -300,7 +383,8 @@
             ]
           ]
         ]
-      }
+      },
+      "originalFormed": 1953
     },
     {
       "id": "wan-chai",
@@ -309,8 +393,8 @@
         "zh": "灣仔區",
         "en": "Wan Chai"
       },
-      "formed": 1953,
-      "parent": "root-hk",
+      "formed": 2018,
+      "parent": "hk1968-eas",
       "label": [
         114.1829,
         22.2691
@@ -318,7 +402,8 @@
       "area": 9.5,
       "sources": [
         "hk-wiki-history",
-        "hk-wiki"
+        "hk-wiki",
+        "hkir-50th-anniversary-booklet"
       ],
       "note": {
         "zh": "前身為 1953 年劃出的黃泥涌區，1961 年正名港島東區，後來再稱灣仔區。",
@@ -398,7 +483,8 @@
             ]
           ]
         ]
-      }
+      },
+      "originalFormed": 1953
     },
     {
       "id": "hk-north",
@@ -407,8 +493,8 @@
         "zh": "港島北區",
         "en": "Hong Kong North"
       },
-      "formed": 1961,
-      "parent": "root-hk",
+      "formed": 2018,
+      "parent": "hk1968-nor",
       "label": [
         114.2117,
         22.2816
@@ -416,7 +502,8 @@
       "area": 9.6,
       "sources": [
         "hk-regions",
-        "hk-wiki"
+        "hk-wiki",
+        "hkir-50th-anniversary-booklet"
       ],
       "note": {
         "zh": "約包括北角及鰂魚涌一帶。",
@@ -496,7 +583,8 @@
             ]
           ]
         ]
-      }
+      },
+      "originalFormed": 1961
     },
     {
       "id": "shau-kei-wan",
@@ -505,8 +593,8 @@
         "zh": "筲箕灣區",
         "en": "Shau Kei Wan"
       },
-      "formed": 1961,
-      "parent": "root-hk",
+      "formed": 1999,
+      "parent": "hk1968-skw",
       "label": [
         114.2324,
         22.2688
@@ -514,7 +602,8 @@
       "area": 6.9,
       "sources": [
         "hk-regions",
-        "hk-wiki"
+        "hk-wiki",
+        "hkir-50th-anniversary-booklet"
       ],
       "note": {
         "zh": "約包括太古、西灣河及筲箕灣一帶。",
@@ -570,7 +659,8 @@
             ]
           ]
         ]
-      }
+      },
+      "originalFormed": 1961
     },
     {
       "id": "chai-wan",
@@ -580,7 +670,7 @@
         "en": "Chai Wan"
       },
       "formed": 1999,
-      "parent": "shau-kei-wan",
+      "parent": "hk1968-skw",
       "label": [
         114.2513,
         22.2599
@@ -588,7 +678,8 @@
       "area": 2.1,
       "sources": [
         "hk-chaiwan-history",
-        "hk-hkw-districts"
+        "hk-hkw-districts",
+        "hkir-50th-anniversary-booklet"
       ],
       "note": {
         "zh": "1999 年成立，服務柴灣、小西灣及杏花邨。",
@@ -632,7 +723,8 @@
             ]
           ]
         ]
-      }
+      },
+      "originalFormed": 1999
     },
     {
       "id": "hk-south",
@@ -641,8 +733,8 @@
         "zh": "港島南區",
         "en": "Hong Kong South"
       },
-      "formed": 1961,
-      "parent": "root-hk",
+      "formed": 2018,
+      "parent": "hk1968-eas",
       "label": [
         114.2112,
         22.2391
@@ -650,7 +742,8 @@
       "area": 28.6,
       "sources": [
         "hk-regions",
-        "hk-wiki"
+        "hk-wiki",
+        "hkir-50th-anniversary-booklet"
       ],
       "note": {
         "zh": "約包括黃竹坑、淺水灣、赤柱、石澳及大潭一帶。",
@@ -992,7 +1085,8 @@
             ]
           ]
         ]
-      }
+      },
+      "originalFormed": 1961
     },
     {
       "id": "yau-tsim",

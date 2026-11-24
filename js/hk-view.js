@@ -1,10 +1,8 @@
 // B-P Atlas v1.3 · © SCOUT SYSTEM
-// Controls the standalone Hong Kong Scout-history page: one year band drives
-// the map, the region directory, the jamboree table and the milestone list
-// together, and one story card explains whatever is selected. The year band
-// drives the Scout district layer as well: a district that had not been formed
-// yet is drawn inside its predecessor. All text comes from data/hk.json,
-// data/hk-districts.json and data/sources.json.
+// One-page Hong Kong Scout history view: year band drives the map, left selector,
+// right story card, and a map overlay showing the Chief Scout and Commissioner
+// of the selected year. All text comes from data/hk.json, data/hk-districts.json
+// and data/sources.json.
 import { applyLanguage, getInitialLanguage, localize, localizationLanguage, localeFor, t } from './i18n.js';
 import { clamp } from './state.js';
 import { createHkMap } from './hk-map.js';
@@ -12,22 +10,13 @@ import { renderHkCard, setHkSources, setHkDistricts } from './hk-card.js';
 
 const MIN_YEAR = 1909;
 const MAX_YEAR = Math.max(new Date().getFullYear(), 2026);
-const TABS = ['map', 'regions', 'boundaries', 'jamborees', 'leaders', 'chiefs', 'timeline'];
-// Tabs whose main section is itself a full list, so the story card is hidden.
-const FULL_WIDTH_TABS = new Set(['leaders', 'chiefs', 'timeline']);
-const SELECTIONS = {
-  map: () => true,
-  regions: kind => kind === 'region' || kind === 'district',
-  boundaries: kind => kind === 'change',
-  jamborees: kind => kind === 'jamboree',
-  leaders: () => false, chiefs: () => false, timeline: kind => kind === 'milestone',
-};
+const LEFT_VIEWS = ['milestones', 'jamborees', 'boundaries', 'regions', 'people'];
 
 export function readHkState(params, maxYear = MAX_YEAR) {
-  const requested = params.get('hk');
-  const tab = TABS.includes(requested) ? requested : 'map';
   const rawYear = params.get('year');
   const year = rawYear && /^\d{4}$/.test(rawYear) ? clamp(Number(rawYear), MIN_YEAR, maxYear) : null;
+  const rawView = params.get('view');
+  const leftView = LEFT_VIEWS.includes(rawView) ? rawView : 'milestones';
   const rawSelection = params.get('sel');
   let selected = null;
   if (rawSelection) {
@@ -36,16 +25,15 @@ export function readHkState(params, maxYear = MAX_YEAR) {
     if ((kind === 'region' || kind === 'district' || kind === 'jamboree') && value) selected = { kind, id: value };
     else if (kind === 'change' && /^\d{4}$/.test(value)) selected = { kind, id: Number(value) };
     else if (kind === 'milestone' && /^\d{4}$/.test(value)) selected = { kind, id: Number(value) };
+    else if ((kind === 'leader' || kind === 'chief') && /^\d+$/.test(value)) selected = { kind, id: Number(value) };
   }
-  // A selection from another tab would show a card for an invisible list item.
-  if (selected && !SELECTIONS[tab](selected.kind)) selected = null;
-  return { tab, year, selected };
+  return { tab: 'map', leftView, year, selected };
 }
 
 export function hkStateToSearch(state, lang) {
   const params = new URLSearchParams();
   params.set('lang', lang);
-  params.set('hk', state.tab);
+  if (state.leftView && state.leftView !== 'milestones') params.set('view', state.leftView);
   if (state.year != null) params.set('year', String(state.year));
   if (state.selected) params.set('sel', `${state.selected.kind}:${state.selected.id}`);
   return params.toString();
@@ -59,8 +47,14 @@ function element(tag, className, text) {
 }
 function localized(tag, className, value, lang) {
   const node = element(tag, className, localize(value, lang));
-  const actual = localizationLanguage(value, lang); if (actual) node.lang = actual;
+  const actual = localizationLanguage(value, lang);
+  if (actual) node.lang = actual;
   return node;
+}
+
+function inOffice(record, year) {
+  if (year == null) return record.to == null;
+  return record.from <= year && (record.to == null || record.to >= year);
 }
 
 export async function startHkView({ params, data }) {
@@ -75,12 +69,7 @@ export async function startHkView({ params, data }) {
   state.lang = lang;
   state.focusDistrict = null;
 
-  const tabsNav = document.querySelector('#hk-tabs');
-  // Map, regions, boundaries and jamborees each pair a list with a story
-  // card; the map section has its own panel under the map.
-  const panel = document.querySelector('#hk-section-map #hk-panel');
-  const fullWidthNodes = [...document.querySelectorAll('[data-hk-section]')];
-
+  const panel = document.querySelector('#hk-panel');
   const map = createHkMap(hkDistricts, hk, {
     onSelect(selection) {
       if (!selection) return;
@@ -90,7 +79,7 @@ export async function startHkView({ params, data }) {
 
   function sourceLinks(ids) {
     const box = element('span', 'hk-source-links');
-    for (const id of ids) {
+    for (const id of ids || []) {
       const source = sourceIndex.get(id);
       if (!source) continue;
       const link = element('a', '', localize(source.title, lang));
@@ -99,8 +88,10 @@ export async function startHkView({ params, data }) {
         if (!['https:', 'http:'].includes(url.protocol)) continue;
         link.href = url.href;
       } catch { continue; }
-      link.target = '_blank'; link.rel = 'noopener noreferrer';
-      const actual = localizationLanguage(source.title, lang); if (actual) link.lang = actual;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      const actual = localizationLanguage(source.title, lang);
+      if (actual) link.lang = actual;
       box.append(link);
     }
     return box;
@@ -109,7 +100,7 @@ export async function startHkView({ params, data }) {
   function updateUrl() {
     try {
       history.replaceState(null, '', `${location.pathname}?${hkStateToSearch(state, lang)}${location.hash}`);
-    } catch { /* URL syncing is optional in restricted contexts. */ }
+    } catch { /* optional */ }
   }
 
   const districtById = new Map(hkDistricts.districts.map(district => [district.id, district]));
@@ -128,54 +119,34 @@ export async function startHkView({ params, data }) {
     }
   }
 
+  function leftViewForSelection(selection) {
+    if (!selection) return state.leftView;
+    if (selection.kind === 'milestone') return 'milestones';
+    if (selection.kind === 'jamboree') return 'jamborees';
+    if (selection.kind === 'change') return 'boundaries';
+    if (selection.kind === 'region' || selection.kind === 'district') return 'regions';
+    if (selection.kind === 'leader' || selection.kind === 'chief') return 'people';
+    return state.leftView;
+  }
+
   function select(selection) {
     state.selected = selection;
+    state.leftView = leftViewForSelection(selection);
     state.focusDistrict = selection?.kind === 'district' ? selection.id : null;
     if (selection?.kind === 'jamboree') {
       const event = hk.jamborees.find(item => item.id === selection.id);
       if (event) state.year = event.year;
-    } else if (selection?.kind === 'milestone') {
+    } else if (selection?.kind === 'milestone' || selection?.kind === 'change') {
       state.year = selection.id;
     }
     revealSelection();
     render();
   }
 
-  let tabScrollDone = false;
-  function renderTabs() {
-    for (const button of tabsNav.querySelectorAll('[data-hk-tab]')) {
-      const active = button.dataset.hkTab === state.tab;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-selected', String(active));
-      button.tabIndex = active ? 0 : -1;
-    }
-    // On a narrow screen the tab strip scrolls; bring the active tab into view
-    // once at start-up so the open section is never hidden off the edge.
-    if (!tabScrollDone) {
-      tabScrollDone = true;
-      const activeTab = tabsNav.querySelector('[aria-selected="true"]');
-      // Older browsers and some embedded web views do not implement it.
-      if (activeTab && typeof activeTab.scrollIntoView === 'function') {
-        activeTab.scrollIntoView({ block: 'nearest', inline: 'center' });
-      }
-    }
-    updateTabEdges();
-  }
-
-  // Fade the edge that still has tabs behind it, so a clipped label reads as
-  // "scroll for more" instead of a broken line of text.
-  function updateTabEdges() {
-    const wrap = tabsNav.parentElement;
-    if (!wrap?.classList.contains('hk-tabs-wrap')) return;
-    wrap.classList.toggle('can-scroll-left', tabsNav.scrollLeft > 2);
-    wrap.classList.toggle('can-scroll-right', tabsNav.scrollLeft + tabsNav.clientWidth < tabsNav.scrollWidth - 2);
-  }
-
   function renderSummary() {
     const label = state.year == null ? t('hkAllYears', lang) : String(state.year);
     document.querySelector('#hk-year-label').textContent = label;
     const inHongKong = hk.jamborees.filter(event => event.inHongKong).length;
-    // 43 plotted districts; Silver Jubilee is defined by language, not territory.
     const districtCount = hkDistricts.districts.length;
     const formed = state.year == null ? districtCount
       : hkDistricts.districts.filter(district => district.formed <= state.year).length;
@@ -183,7 +154,8 @@ export async function startHkView({ params, data }) {
       ? t('hkMapScopeAll', lang, { count: districtCount })
       : t('hkMapScopeYear', lang, { year: state.year, count: formed, total: districtCount });
     const separator = lang === 'zh' ? '。' : '. ';
-    document.querySelector('#hk-map-note').textContent = `${scope}${separator}${t('hkMapNote', lang, { count: inHongKong })}`;
+    const note = document.querySelector('#hk-map-note');
+    if (note) note.textContent = `${scope}${separator}${t('hkMapNote', lang, { count: inHongKong })}`;
     const slider = document.querySelector('#hk-year-range');
     slider.value = String(state.year ?? MIN_YEAR);
     slider.setAttribute('aria-valuetext', label);
@@ -198,65 +170,64 @@ export async function startHkView({ params, data }) {
     document.querySelector('#hk-figures').textContent = t('hkFigures', lang);
   }
 
-  // The rail under the map is a compact directory of what the map shows.
-  function renderRail() {
-    const list = document.querySelector('#hk-rail-list');
-    list.replaceChildren();
-    const entry = (button, className) => {
-      const item = element('li', className || '');
-      item.append(button); list.append(item);
-      return button;
+  function renderLeadersOverlay() {
+    const box = document.querySelector('#hk-leaders-overlay');
+    if (!box) return;
+    box.replaceChildren();
+    const year = state.year;
+    const leader = hk.leaders.find(r => inOffice(r, year)) || hk.leaders[hk.leaders.length - 1];
+    const chief = hk.chiefs.find(r => inOffice(r, year)) || hk.chiefs[hk.chiefs.length - 1];
+    const title = element('div', 'hk-overlay-title');
+    title.append(element('span', '', year == null ? t('hkCurrentOfficeholders', lang) : t('hkOfficeholdersAtYear', lang, { year })));
+    box.append(title);
+    const grid = element('div', 'hk-overlay-grid');
+    const person = (role, record) => {
+      const card = element('div', 'hk-overlay-person');
+      if (record.photo) {
+        const img = element('img', 'hk-overlay-photo');
+        img.src = record.photo;
+        img.alt = localize(record.name, lang);
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.referrerPolicy = 'no-referrer';
+        img.width = 56; img.height = 70;
+        img.addEventListener('error', () => img.remove(), { once: true });
+        card.append(img);
+      }
+      const body = element('div', 'hk-overlay-body');
+      body.append(element('span', 'hk-overlay-role', role));
+      body.append(localized('strong', 'hk-overlay-name', record.name, lang));
+      body.append(element('span', 'hk-overlay-years', record.to ? `${record.from}–${record.to}` : `${record.from}–`));
+      card.append(body);
+      return card;
     };
-    for (const region of hk.regions) {
-      const button = element('button', 'hk-rail-region');
-      button.type = 'button'; button.dataset.hkSelect = `region:${region.id}`;
-      button.append(localized('strong', '', region.name, lang));
-      // 銀禧區 has no territory of its own, so its count is the only map clue.
-      button.append(element('span', '', t('hkDistrictCount', lang, { count: region.districts.length })));
-      button.classList.toggle('is-selected', state.selected?.kind === 'region' && state.selected.id === region.id);
-      entry(button);
-    }
-    document.querySelector('#hk-rail-note').textContent =
-      `${t('hkRailNote', lang)} ${t('hkSchematicNote', lang)}`;
+    grid.append(person(t('hkTabLeaders', lang), leader));
+    grid.append(person(t('hkTabChiefs', lang), chief));
+    box.append(grid);
   }
 
-  // The text timeline under the map. It lists the same boundary records as the
-  // 區劃演變 tab, but stays in step with the year band: the entry for the year
-  // being viewed is highlighted, and choosing an entry moves the band.
-  function renderEvolution() {
-    const list = document.querySelector('#hk-evolution-list');
-    if (!list) return;
-    list.replaceChildren();
-    for (const change of hk.boundaryChanges) {
-      const item = element('li', 'hk-evolution-item');
-      const button = element('button', 'hk-evolution-entry');
-      button.type = 'button';
-      button.dataset.hkEvolutionYear = String(change.year);
-      button.append(element('span', 'hk-evolution-year', String(change.year)));
-      const copy = element('span', 'hk-evolution-copy');
-      copy.append(localized('span', '', change.changes[0], lang));
-      button.append(copy);
-      button.title = t('hkEvolutionJump', lang, { year: change.year });
-      item.append(button);
-      const active = state.year === change.year;
-      item.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', String(active));
-      if (active) button.setAttribute('aria-current', 'true');
-      else button.removeAttribute('aria-current');
-      list.append(item);
-    }
-    // Keep the highlighted year visible without yanking the strip around while
-    // the reader is scrolling it by hand.
-    const current = list.querySelector('.is-active');
-    if (current && !evolutionTouched && typeof current.scrollIntoView === 'function') {
-      current.scrollIntoView({ block: 'nearest', inline: 'center' });
+  function renderLeftTabs() {
+    for (const btn of document.querySelectorAll('[data-hk-left]')) {
+      const active = btn.dataset.hkLeft === state.leftView;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-selected', String(active));
+      btn.tabIndex = active ? 0 : -1;
     }
   }
 
-  function renderSyncedTimeline() {
-    const list = document.querySelector('#hk-synced-timeline');
-    if (!list) return;
-    list.replaceChildren();
+  function renderLeftList() {
+    const host = document.querySelector('#hk-left-list');
+    if (!host) return;
+    host.replaceChildren();
+    if (state.leftView === 'milestones') renderMilestones(host);
+    else if (state.leftView === 'jamborees') renderJamborees(host);
+    else if (state.leftView === 'boundaries') renderBoundaries(host);
+    else if (state.leftView === 'regions') renderRegions(host);
+    else if (state.leftView === 'people') renderPeople(host);
+  }
+
+  function renderMilestones(host) {
+    const list = element('ol', 'hk-synced-timeline hk-left-timeline');
     for (const entry of hk.timeline) {
       const item = element('li', 'hk-synced-item');
       const button = element('button', 'hk-synced-btn');
@@ -273,191 +244,142 @@ export async function startHkView({ params, data }) {
       item.classList.toggle('is-active', activeYear);
       item.classList.toggle('is-selected', selected);
       if (selected) button.setAttribute('aria-current', 'true');
-      else button.removeAttribute('aria-current');
       list.append(item);
     }
+    host.append(list);
+    scrollSelectedIntoView(list);
+  }
+
+  function renderJamborees(host) {
+    const list = element('ol', 'hk-left-compact-list');
+    for (const event of hk.jamborees) {
+      const item = element('li', 'hk-left-compact-item');
+      const button = element('button', 'hk-left-compact-btn');
+      button.type = 'button';
+      button.dataset.hkSelect = `jamboree:${event.id}`;
+      button.append(element('span', 'hk-left-compact-year', event.yearEnd && event.yearEnd !== event.year ? `${event.year}–${event.yearEnd}` : String(event.year)));
+      const body = element('span', 'hk-left-compact-body');
+      body.append(localized('strong', 'hk-left-compact-title', event.name, lang));
+      body.append(localized('span', 'hk-left-compact-meta', event.place, lang));
+      button.append(body);
+      item.append(button);
+      item.classList.toggle('is-selected', state.selected?.kind === 'jamboree' && state.selected.id === event.id);
+      item.classList.toggle('is-future', state.year != null && event.year > state.year);
+      list.append(item);
+    }
+    host.append(list);
+    scrollSelectedIntoView(list);
+  }
+
+  function renderBoundaries(host) {
+    const list = element('ol', 'hk-left-compact-list');
+    for (const change of hk.boundaryChanges) {
+      const item = element('li', 'hk-left-compact-item');
+      const button = element('button', 'hk-left-compact-btn');
+      button.type = 'button';
+      button.dataset.hkSelect = `change:${change.year}`;
+      button.append(element('span', 'hk-left-compact-year', String(change.year)));
+      const body = element('span', 'hk-left-compact-body');
+      body.append(localized('strong', 'hk-left-compact-title', { zh: '區界變動', en: 'Boundary change' }, lang));
+      body.append(localized('span', 'hk-left-compact-meta', change.changes[0], lang));
+      button.append(body);
+      item.append(button);
+      const active = state.year === change.year;
+      item.classList.toggle('is-active', active);
+      item.classList.toggle('is-selected', state.selected?.kind === 'change' && state.selected.id === change.year);
+      list.append(item);
+    }
+    host.append(list);
+    scrollSelectedIntoView(list);
+  }
+
+  function renderRegions(host) {
+    const wrap = element('div', 'hk-left-regions');
+    for (const region of hk.regions) {
+      const card = element('section', 'hk-left-region-card');
+      const head = element('button', 'hk-left-region-head');
+      head.type = 'button';
+      head.dataset.hkSelect = `region:${region.id}`;
+      head.append(localized('strong', '', region.name, lang));
+      head.append(element('span', 'hk-left-region-count', t('hkDistrictCount', lang, { count: region.districts.length })));
+      head.classList.toggle('is-selected', state.selected?.kind === 'region' && state.selected.id === region.id);
+      card.append(head);
+      const chips = element('div', 'hk-left-district-chips');
+      for (const district of region.districts) {
+        const record = hkDistricts.districts.find(item => item.region === region.id && item.name.en === district.en);
+        if (!record) continue;
+        const btn = element('button', 'hk-left-district-chip');
+        btn.type = 'button';
+        btn.dataset.hkSelect = `district:${record.id}`;
+        btn.textContent = localize(district, lang);
+        const actual = localizationLanguage(district, lang);
+        if (actual) btn.lang = actual;
+        btn.disabled = state.year != null && record.formed > state.year;
+        btn.classList.toggle('is-selected', state.selected?.kind === 'district' && state.selected.id === record.id);
+        chips.append(btn);
+      }
+      card.append(chips);
+      wrap.append(card);
+    }
+    host.append(wrap);
+  }
+
+  function renderPeople(host) {
+    const wrap = element('div', 'hk-left-people');
+    const section = (title, items, kind) => {
+      const sec = element('section', 'hk-left-people-sec');
+      sec.append(localized('h3', 'hk-left-people-title', title, lang));
+      const list = element('ol', 'hk-left-people-list');
+      for (const row of items) {
+        const item = element('li', 'hk-left-person');
+        const btn = element('button', 'hk-left-person-btn');
+        btn.type = 'button';
+        btn.dataset.hkSelect = `${kind}:${row.n}`;
+        if (row.photo) {
+          const img = element('img', 'hk-left-person-photo');
+          img.src = row.photo; img.alt = localize(row.name, lang);
+          img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
+          img.width = 40; img.height = 50;
+          img.addEventListener('error', () => img.remove(), { once: true });
+          btn.append(img);
+        }
+        const body = element('span', 'hk-left-person-body');
+        body.append(localized('strong', '', row.name, lang));
+        body.append(element('span', 'hk-left-person-years', row.to ? `${row.from}–${row.to}` : `${row.from}–`));
+        btn.append(body);
+        item.append(btn);
+        const active = inOffice(row, state.year);
+        item.classList.toggle('is-active', active);
+        item.classList.toggle('is-selected', state.selected?.kind === kind && state.selected.id === row.n);
+        list.append(item);
+      }
+      sec.append(list);
+      wrap.append(sec);
+    };
+    section(hk.offices.leader.title, hk.leaders, 'leader');
+    section(hk.offices.chief.title, hk.chiefs, 'chief');
+    host.append(wrap);
+  }
+
+  function scrollSelectedIntoView(list) {
     const current = list.querySelector('.is-selected, .is-active');
-    if (current && !evolutionTouched && typeof current.scrollIntoView === 'function') {
+    if (current && typeof current.scrollIntoView === 'function') {
       current.scrollIntoView({ block: 'nearest' });
     }
   }
 
-  function renderMain() {
-    document.querySelectorAll('[data-hk-section]').forEach(section => {
-      section.hidden = section.dataset.hkSection !== state.tab;
-    });
-    if (state.tab === 'map') { map.render(state); renderRail(); renderEvolution(); renderSyncedTimeline(); }
-    else if (state.tab === 'regions') renderRegions();
-    else if (state.tab === 'boundaries') renderBoundaries();
-    else if (state.tab === 'jamborees') renderJamborees();
-    else if (state.tab === 'leaders' || state.tab === 'chiefs') renderPeople(state.tab);
-    else if (state.tab === 'timeline') renderTimeline();
-    const full = FULL_WIDTH_TABS.has(state.tab);
-    for (const section of fullWidthNodes) section.classList.toggle('hk-full-width', full);
-  }
-
-  function renderRegions() {
-    const board = document.querySelector('#hk-region-board');
-    // The districts that existed at this year are the ones the map shows; the
-    // rest stay listed but marked as not yet formed.
-    board.replaceChildren();
-    for (const region of hk.regions) {
-      const card = element('article', 'hk-region-tile');
-      card.dataset.region = region.id;
-      const title = element('button', 'hk-region-title');
-      title.type = 'button'; title.dataset.hkSelect = `region:${region.id}`;
-      title.append(localized('strong', '', region.name, lang));
-      title.append(element('span', 'hk-region-founded-label', t('hkFounded', lang, { year: region.founded })));
-      card.append(title);
-      // Every district has its own schematic polygon and a sourced note, so the
-      // chips are buttons that select the district and reveal it on the map.
-      const chips = element('ul', 'hk-district-chips');
-      for (const district of region.districts) {
-        const record = hkDistricts.districts.find(item => item.region === region.id && item.name.en === district.en);
-        const chip = element('li');
-        if (record) {
-          const button = element('button', 'hk-district-chip');
-          button.type = 'button';
-          button.dataset.hkSelect = `district:${record.id}`;
-          button.append(localized('span', '', district, lang));
-          if (record.formed) button.append(element('span', 'hk-district-year', String(record.formed)));
-          button.disabled = state.year != null && record.formed > state.year;
-          button.title = button.disabled ? `${record.formed}` : '';
-          chip.append(button);
-        } else {
-          chip.append(localized('span', '', district, lang));
-        }
-        chips.append(chip);
-      }
-      card.append(localized('p', 'hk-region-founded', region.foundedText, lang));
-      card.append(chips);
-      card.append(localized('p', 'hk-region-insight', region.insight, lang));
-      const hq = element('p', 'hk-region-hq');
-      hq.append(element('strong', '', `${t('hkHq', lang)}：`), localized('span', '', region.hq, lang));
-      card.append(hq);
-      card.append(sourceLinks(region.sources));
-      card.classList.toggle('is-selected', state.selected?.kind === 'region' && state.selected.id === region.id);
-      board.append(card);
-    }
-  }
-
-  function renderBoundaries() {
-    const list = document.querySelector('#hk-boundary-list');
-    list.replaceChildren();
-    for (const change of hk.boundaryChanges) {
-      const row = element('li', 'hk-boundary-row');
-      const button = element('button', 'hk-boundary-entry');
-      button.type = 'button'; button.dataset.hkSelect = `change:${change.year}`;
-      button.append(element('span', 'hk-boundary-year', String(change.year)));
-      const copy = element('span', 'hk-boundary-copy');
-      for (const entry of change.changes) copy.append(localized('span', '', entry, lang));
-      button.append(copy);
-      // Citations sit beside the button, never inside it: a button may not
-      // contain links.
-      const sources = sourceLinks(change.sources);
-      sources.classList.add('hk-boundary-sources');
-      const body = element('div', 'hk-boundary-body');
-      body.append(button, sources);
-      row.append(body);
-      row.classList.toggle('is-selected', state.selected?.kind === 'change' && state.selected.id === change.year);
-      list.append(row);
-    }
-    document.querySelector('#hk-boundary-note').textContent = t('hkBoundaryNote', lang);
-  }
-
-  function renderJamborees() {
-    const body = document.querySelector('#hk-jamboree-body');
-    body.replaceChildren();
-    for (const event of hk.jamborees) {
-      const row = element('tr');
-      row.dataset.jamboree = event.id;
-      const nameCell = element('th', 'hk-jamboree-name');
-      nameCell.scope = 'row';
-      const button = element('button', 'hk-jamboree-link');
-      button.type = 'button'; button.dataset.hkSelect = `jamboree:${event.id}`;
-      button.append(element('span', 'hk-jamboree-number', String(event.n)), localized('strong', '', event.name, lang));
-      nameCell.append(button);
-      const year = element('td', 'hk-jamboree-year', event.yearEnd && event.yearEnd !== event.year ? `${event.year}–${event.yearEnd}` : String(event.year));
-      const place = element('td');
-      const theme = element('td');
-      place.append(localized('span', '', event.place, lang));
-      if (event.theme) theme.append(localized('span', '', event.theme, lang));
-      else theme.append(element('span', 'hk-muted', t('hkUnknown', lang)));
-      const count = element('td', 'hk-jamboree-count', event.participants ? event.participants.toLocaleString(localeFor(lang)) : t('hkUnknown', lang));
-      const note = element('td', 'hk-jamboree-note');
-      note.append(localized('span', '', event.note, lang), sourceLinks(event.sources));
-      row.append(nameCell, year, place, theme, count, note);
-      row.classList.toggle('is-future', state.year != null && event.year > state.year);
-      row.classList.toggle('is-selected', state.selected?.kind === 'jamboree' && state.selected.id === event.id);
-      body.append(row);
-    }
-    document.querySelector('#hk-jamboree-caption').textContent = t('hkJamboreeCaption', lang);
-  }
-
-  function renderPeople(kind) {
-    const list = document.querySelector(kind === 'leaders' ? '#hk-leaders-list' : '#hk-chiefs-list');
-    list.replaceChildren();
-    const office = hk.offices[kind === 'leaders' ? 'leader' : 'chief'];
-    const note = list.closest('[data-hk-section]').querySelector('.hk-office-note');
-    note.replaceChildren(localized('p', '', office.note, lang));
-    for (const row of kind === 'leaders' ? hk.leaders : hk.chiefs) {
-      const item = element('li', 'hk-person');
-      if (row.photo) {
-        const photo = element('img', 'hk-person-photo');
-        photo.src = row.photo;
-        photo.alt = localize(row.name, lang);
-        photo.loading = 'lazy';
-        photo.decoding = 'async';
-        photo.referrerPolicy = 'no-referrer';
-        photo.width = 96;
-        photo.height = 120;
-        photo.addEventListener('error', () => photo.remove(), { once: true });
-        item.append(photo);
-      }
-      const body = element('div', 'hk-person-body');
-      body.append(element('span', 'hk-person-number', String(row.n)));
-      body.append(localized('strong', '', row.name, lang));
-      body.append(element('span', 'hk-person-years', row.to ? `${row.from}–${row.to}` : `${row.from}–`));
-      if (kind === 'leaders') body.append(element('span', 'hk-person-office', t(row.office === 'governor' ? 'hkGovernor' : 'hkChiefExecutive', lang)));
-      item.append(body);
-      list.append(item);
-    }
-    const head = list.closest('[data-hk-section]').querySelector('.hk-office-title');
-    head.replaceChildren(localized('span', '', office.title, lang));
-  }
-
-  function renderTimeline() {
-    const list = document.querySelector('#hk-timeline-list');
-    list.replaceChildren();
-    for (const entry of hk.timeline) {
-      const item = element('li', 'hk-timeline-item');
-      const button = element('button', 'hk-timeline-card');
-      button.type = 'button'; button.dataset.hkSelect = `milestone:${entry.year}`;
-      button.append(element('span', 'hk-timeline-year', String(entry.year)));
-      const copy = element('span', 'hk-timeline-copy');
-      copy.append(localized('strong', '', entry.title, lang), localized('span', '', entry.body, lang));
-      button.append(copy);
-      item.append(button);
-      item.classList.toggle('is-future', state.year != null && entry.year > state.year);
-      list.append(item);
-    }
-    document.querySelector('#hk-timeline-note').textContent = t('hkTimelineNote', lang);
-  }
-
-  // Each section owns a panel; the map section's sits under the map, the list
-  // sections' panels stand beside their lists. Every panel is cleared first so
-  // a stale card never survives a tab switch.
   function renderPanel() {
-    for (const node of document.querySelectorAll('[data-hk-panel]')) node.replaceChildren();
-    const host = state.tab === 'map' ? panel
-      : document.querySelector(`[data-hk-section="${state.tab}"] [data-hk-panel]`);
-    if (host) renderHkCard(host, state, hk);
+    if (!panel) return;
+    panel.replaceChildren();
+    renderHkCard(panel, state, hk);
   }
 
   let toastTimer = null;
   function toast(message) {
     const node = document.querySelector('#toast');
-    node.textContent = message; node.classList.add('is-visible');
+    if (!node) return;
+    node.textContent = message;
+    node.classList.add('is-visible');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => node.classList.remove('is-visible'), 2500);
   }
@@ -465,44 +387,28 @@ export async function startHkView({ params, data }) {
   function render() {
     state.lang = lang;
     applyLanguage(lang);
-    document.body.dataset.hkTab = state.tab;
-    renderTabs();
     renderSummary();
-    renderMain();
+    renderLeadersOverlay();
+    renderLeftTabs();
+    map.render(state);
+    renderLeftList();
     renderPanel();
     updateUrl();
   }
 
-  // One delegated handler for every selection control on the page.
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-hk-select]');
     if (!button) return;
     const [kind, ...rest] = button.dataset.hkSelect.split(':');
     const value = rest.join(':');
-    select({ kind, id: kind === 'change' || kind === 'milestone' ? Number(value) : value });
+    select({ kind, id: kind === 'change' || kind === 'milestone' || kind === 'leader' || kind === 'chief' ? Number(value) : value });
   });
 
-  tabsNav.addEventListener('scroll', updateTabEdges, { passive: true });
-  window.addEventListener('resize', updateTabEdges);
-
-  tabsNav.addEventListener('click', event => {
-    const button = event.target.closest('[data-hk-tab]');
-    if (!button) return;
-    state.tab = button.dataset.hkTab;
-    if (!SELECTIONS[state.tab](state.selected?.kind)) state.selected = null;
-    state.focusDistrict = state.selected?.kind === 'district' ? state.selected.id : null;
+  document.querySelector('.hk-left-tabs')?.addEventListener('click', event => {
+    const btn = event.target.closest('[data-hk-left]');
+    if (!btn) return;
+    state.leftView = btn.dataset.hkLeft;
     render();
-  });
-  tabsNav.addEventListener('keydown', event => {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-    const buttons = [...tabsNav.querySelectorAll('[data-hk-tab]')];
-    const index = buttons.indexOf(document.activeElement);
-    if (index < 0) return;
-    event.preventDefault();
-    const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1
-      : (index + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
-    buttons[next].focus();
-    buttons[next].click();
   });
 
   for (const button of document.querySelectorAll('[data-hk-year]')) {
@@ -512,15 +418,6 @@ export async function startHkView({ params, data }) {
       render();
     });
   }
-  let evolutionTouched = false;
-  document.querySelector('#hk-evolution').addEventListener('pointerdown', () => { evolutionTouched = true; }, { once: true });
-  document.querySelector('#hk-evolution').addEventListener('click', event => {
-    const button = event.target.closest('[data-hk-evolution-year]');
-    if (!button) return;
-    const year = Number(button.dataset.hkEvolutionYear);
-    state.year = state.year === year ? null : year;
-    render();
-  });
   document.querySelector('#hk-year-range').addEventListener('input', event => {
     state.year = clamp(Number(event.target.value), MIN_YEAR, MAX_YEAR);
     render();
@@ -531,13 +428,8 @@ export async function startHkView({ params, data }) {
   document.querySelector('#hk-zoom-out').addEventListener('click', () => map.zoomOut());
   document.querySelector('#hk-zoom-reset').addEventListener('click', () => map.reset());
   const mapSvg = document.querySelector('#hk-map');
-  mapSvg.addEventListener('keydown', event => {
-    if (map.key(event.key)) event.preventDefault();
-  });
-  document.querySelector('#language-select').addEventListener('change', event => {
-    lang = event.target.value;
-    render();
-  });
+  mapSvg.addEventListener('keydown', event => { if (map.key(event.key)) event.preventDefault(); });
+  document.querySelector('#language-select').addEventListener('change', event => { lang = event.target.value; render(); });
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape' || document.querySelector('dialog[open]')) return;
     const openPopover = document.querySelector('.hk-legend-panel:not([hidden])');
@@ -546,12 +438,8 @@ export async function startHkView({ params, data }) {
     state.selected = null; state.focusDistrict = null; render();
   });
   document.querySelector('#hk-share').addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(location.href);
-      toast(t('copied', lang));
-    } catch {
-      toast(t('copyFailed', lang));
-    }
+    try { await navigator.clipboard.writeText(location.href); toast(t('copied', lang)); }
+    catch { toast(t('copyFailed', lang)); }
   });
   const aboutDialog = document.querySelector('#about-dialog');
   document.querySelector('#about-button').addEventListener('click', () => aboutDialog.showModal());
@@ -565,12 +453,9 @@ export async function startHkView({ params, data }) {
   });
 
   render();
-  // At narrow widths the header's five mode links scroll; bring the current
-  // page's link into view so it is not the one hidden behind the fade.
   const activeMode = document.querySelector('.primary-nav .is-active');
   if (activeMode && typeof activeMode.scrollIntoView === 'function') {
     activeMode.scrollIntoView({ block: 'nearest', inline: 'center' });
   }
-  document.querySelector('#hk-stage-root')?.setAttribute('data-ready', 'true');
   return { state, render, select };
 }

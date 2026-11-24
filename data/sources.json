@@ -2358,5 +2358,20 @@
       "en": "Sha Tin North District: Boundary"
     },
     "url": "http://www.stnscout.org/district-boundary.php"
+  },
+  {
+    "id": "hk-scout-history-page",
+    "title": {
+      "zh": "香港童軍總會：香港童軍發展史",
+      "en": "Scout Association of Hong Kong: History of Hong Kong Scouting"
+    },
+    "url": "https://www.scout.org.hk/tc/scouting/history-of-hk-scouting/history/index.html",
+    "publisher": {
+      "zh": "香港童軍總會",
+      "en": "Scout Association of Hong Kong"
+    },
+    "language": "zh-Hant",
+    "accessed": "2026-11-24",
+    "type": "official-history"
   }
 ]

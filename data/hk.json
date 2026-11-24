@@ -25,8 +25,14 @@
   "regions": [
     {
       "id": "island",
-      "name": { "zh": "港島地域", "en": "Island Region" },
-      "short": { "zh": "港島", "en": "Island" },
+      "name": {
+        "zh": "港島地域",
+        "en": "Island Region"
+      },
+      "short": {
+        "zh": "港島",
+        "en": "Island"
+      },
       "founded": 1951,
       "foundedText": {
         "zh": "1951 年分區制度開始時稱「香港區」，1968 年改稱港島地域。",
@@ -37,24 +43,55 @@
         "en": "Hong Kong Scout Centenary Building (since 2019); it shared Morse Hut on Garden Road with headquarters in 1951–1954 and moved to Tang Shiu Kin Building, Oi Kwan Road, in 1978."
       },
       "districts": [
-        { "zh": "柴灣區", "en": "Chai Wan" },
-        { "zh": "港島北區", "en": "Hong Kong North" },
-        { "zh": "港島南區", "en": "Hong Kong South" },
-        { "zh": "港島西區", "en": "Hong Kong West" },
-        { "zh": "筲箕灣區", "en": "Shau Kei Wan" },
-        { "zh": "維多利亞城區", "en": "Victoria City" },
-        { "zh": "灣仔區", "en": "Wan Chai" }
+        {
+          "zh": "柴灣區",
+          "en": "Chai Wan"
+        },
+        {
+          "zh": "港島北區",
+          "en": "Hong Kong North"
+        },
+        {
+          "zh": "港島南區",
+          "en": "Hong Kong South"
+        },
+        {
+          "zh": "港島西區",
+          "en": "Hong Kong West"
+        },
+        {
+          "zh": "筲箕灣區",
+          "en": "Shau Kei Wan"
+        },
+        {
+          "zh": "維多利亞城區",
+          "en": "Victoria City"
+        },
+        {
+          "zh": "灣仔區",
+          "en": "Wan Chai"
+        }
       ],
       "insight": {
         "zh": "全港第一個童軍旅（1913 年聖若瑟書院香港第 1 旅，今港島第 1 旅）在這一地域；柴灣營地（1929–1970）與大潭童軍中心亦在此。",
         "en": "The territory's first Scout troop — the Hong Kong 1st Troop of St Joseph's College, 1913, today the Island 1st — belongs here, as did the Chai Wan Camp (1929–1970) and today's Tai Tam Scout Centre."
       },
-      "sources": ["hk-regions", "hk-wiki", "hk-wiki-history"]
+      "sources": [
+        "hk-regions",
+        "hk-wiki",
+        "hk-wiki-history"
+      ]
     },
     {
       "id": "kowloon",
-      "name": { "zh": "九龍地域", "en": "Kowloon Region" },
-      "short": { "zh": "九龍", "en": "Kowloon" },
+      "name": {
+        "zh": "九龍地域",
+        "en": "Kowloon Region"
+      },
+      "short": {
+        "zh": "九龍",
+        "en": "Kowloon"
+      },
       "founded": 1951,
       "foundedText": {
         "zh": "1951 年設「九龍區」，1968 年改稱九龍地域；1976 年東九龍地域分出。",
@@ -65,26 +102,63 @@
         "en": "Room 926, 9/F, Hong Kong Scout Centre, Scout Path, Austin Road — the same building as headquarters."
       },
       "districts": [
-        { "zh": "紅磡區", "en": "Hung Hom" },
-        { "zh": "何文田區", "en": "Ho Man Tin" },
-        { "zh": "九龍城區", "en": "Kowloon City" },
-        { "zh": "九龍塘區", "en": "Kowloon Tong" },
-        { "zh": "旺角區", "en": "Mong Kok" },
-        { "zh": "深旺區", "en": "Sham Mong" },
-        { "zh": "深水埗東區", "en": "Sham Shui Po East" },
-        { "zh": "深水埗西區", "en": "Sham Shui Po West" },
-        { "zh": "油尖區", "en": "Yau Tsim" }
+        {
+          "zh": "紅磡區",
+          "en": "Hung Hom"
+        },
+        {
+          "zh": "何文田區",
+          "en": "Ho Man Tin"
+        },
+        {
+          "zh": "九龍城區",
+          "en": "Kowloon City"
+        },
+        {
+          "zh": "九龍塘區",
+          "en": "Kowloon Tong"
+        },
+        {
+          "zh": "旺角區",
+          "en": "Mong Kok"
+        },
+        {
+          "zh": "深旺區",
+          "en": "Sham Mong"
+        },
+        {
+          "zh": "深水埗東區",
+          "en": "Sham Shui Po East"
+        },
+        {
+          "zh": "深水埗西區",
+          "en": "Sham Shui Po West"
+        },
+        {
+          "zh": "油尖區",
+          "en": "Yau Tsim"
+        }
       ],
       "insight": {
         "zh": "1961 年首個在香港舉行的國際大露營「香港金禧大露營」在啟德機場旁的九龍仔（今九龍仔公園）舉行；2006 年大都會露營則在尖沙咀西九龍海旁。",
         "en": "The first international jamboree held in Hong Kong, the 1961 Golden Jubilee Jamboree, took place at Kowloon Tsai beside Kai Tak; the 2006 Metropolitan Jamboree camped by the harbour at West Kowloon."
       },
-      "sources": ["hk-regions", "hk-wiki", "hk-wiki-history"]
+      "sources": [
+        "hk-regions",
+        "hk-wiki",
+        "hk-wiki-history"
+      ]
     },
     {
       "id": "ekowloon",
-      "name": { "zh": "東九龍地域", "en": "East Kowloon Region" },
-      "short": { "zh": "東九龍", "en": "E. Kowloon" },
+      "name": {
+        "zh": "東九龍地域",
+        "en": "East Kowloon Region"
+      },
+      "short": {
+        "zh": "東九龍",
+        "en": "E. Kowloon"
+      },
       "founded": 1976,
       "foundedText": {
         "zh": "1976 年成立，1977 年起總部設於觀塘和樂邨，1994 年遷入香港童軍中心。",
@@ -95,25 +169,59 @@
         "en": "Room 923, 9/F, Hong Kong Scout Centre; its centre is the Tam Wah Ching Sea Activity Centre at Pak Sha Wan, Sai Kung."
       },
       "districts": [
-        { "zh": "西貢區", "en": "Sai Kung" },
-        { "zh": "慈雲山區", "en": "Tsz Wan Shan" },
-        { "zh": "黃大仙區", "en": "Wong Tai Sin" },
-        { "zh": "九龍灣區", "en": "Kowloon Bay" },
-        { "zh": "秀茂坪區", "en": "Sau Mau Ping" },
-        { "zh": "將軍澳區", "en": "Tseung Kwan O" },
-        { "zh": "觀塘區", "en": "Kwun Tong" },
-        { "zh": "鯉魚門區", "en": "Lei Yue Mun" }
+        {
+          "zh": "西貢區",
+          "en": "Sai Kung"
+        },
+        {
+          "zh": "慈雲山區",
+          "en": "Tsz Wan Shan"
+        },
+        {
+          "zh": "黃大仙區",
+          "en": "Wong Tai Sin"
+        },
+        {
+          "zh": "九龍灣區",
+          "en": "Kowloon Bay"
+        },
+        {
+          "zh": "秀茂坪區",
+          "en": "Sau Mau Ping"
+        },
+        {
+          "zh": "將軍澳區",
+          "en": "Tseung Kwan O"
+        },
+        {
+          "zh": "觀塘區",
+          "en": "Kwun Tong"
+        },
+        {
+          "zh": "鯉魚門區",
+          "en": "Lei Yue Mun"
+        }
       ],
       "insight": {
         "zh": "飛鵝山基維爾營地（1960 年獲政府撥地約二十萬平方米）是這一帶最重要的營地；西貢灣仔半島與萬宜水庫則是 1999、2001、2007 年大露營的場地。",
         "en": "The Gilwell Campsite on Fei Ngo Shan (about 200,000 m² granted by the government in 1960) is the area's key campsite; the Wan Tsai peninsula and High Island reservoir hosted the 1999, 2001 and 2007 jamborees."
       },
-      "sources": ["hk-regions", "hk-wiki", "hk-wiki-history"]
+      "sources": [
+        "hk-regions",
+        "hk-wiki",
+        "hk-wiki-history"
+      ]
     },
     {
       "id": "newterritories",
-      "name": { "zh": "新界地域", "en": "New Territories Region" },
-      "short": { "zh": "新界", "en": "N.T." },
+      "name": {
+        "zh": "新界地域",
+        "en": "New Territories Region"
+      },
+      "short": {
+        "zh": "新界",
+        "en": "N.T."
+      },
       "founded": 1951,
       "foundedText": {
         "zh": "1951 年設新界區，1952 年分為南約、北約；1958 年 7 月 1 日設「新界地方」，1968 年改稱新界地域。",
@@ -124,28 +232,73 @@
         "en": "Tang Shiu Kin Girl Guides and Scouts Centre, Wo Yi Hop Road, Kwai Chung (since 1987); earlier premises included Pok Ah Shan Fong on Ma Wo Road, Sheung Shui."
       },
       "districts": [
-        { "zh": "元朗東區", "en": "Yuen Long East" },
-        { "zh": "元朗西區", "en": "Yuen Long West" },
-        { "zh": "十八鄉區", "en": "Shap Pat Heung" },
-        { "zh": "屯門東區", "en": "Tuen Mun East" },
-        { "zh": "屯門西區", "en": "Tuen Mun West" },
-        { "zh": "荃灣區", "en": "Tsuen Wan" },
-        { "zh": "青衣區", "en": "Tsing Yi" },
-        { "zh": "北葵涌區", "en": "North Kwai Chung" },
-        { "zh": "南葵涌區", "en": "South Kwai Chung" },
-        { "zh": "離島區", "en": "Outlying Islands" },
-        { "zh": "大嶼山區", "en": "Lantau" }
+        {
+          "zh": "元朗東區",
+          "en": "Yuen Long East"
+        },
+        {
+          "zh": "元朗西區",
+          "en": "Yuen Long West"
+        },
+        {
+          "zh": "十八鄉區",
+          "en": "Shap Pat Heung"
+        },
+        {
+          "zh": "屯門東區",
+          "en": "Tuen Mun East"
+        },
+        {
+          "zh": "屯門西區",
+          "en": "Tuen Mun West"
+        },
+        {
+          "zh": "荃灣區",
+          "en": "Tsuen Wan"
+        },
+        {
+          "zh": "青衣區",
+          "en": "Tsing Yi"
+        },
+        {
+          "zh": "北葵涌區",
+          "en": "North Kwai Chung"
+        },
+        {
+          "zh": "南葵涌區",
+          "en": "South Kwai Chung"
+        },
+        {
+          "zh": "離島區",
+          "en": "Outlying Islands"
+        },
+        {
+          "zh": "大嶼山區",
+          "en": "Lantau"
+        }
       ],
       "insight": {
         "zh": "1971 年鑽禧大露營在青山（今屯門大興邨一帶）舉行；屯門 1990 年分成東西兩區，元朗三區則在 2007 年重新劃界。竹篙灣兩屆大露營（2010、2016）也在這地域範圍。",
         "en": "The 1971 Diamond Jubilee Jamboree camped at Castle Peak (now the Tai Hing Estate area of Tuen Mun); Tuen Mun was split east–west in 1990 and the three Yuen Long districts were redrawn in 2007. Both Penny's Bay jamborees (2010, 2016) fall within this region."
       },
-      "sources": ["hk-regions", "hk-ntr-overview", "hk-ntr-history", "hk-yle-timetable", "hk-wiki"]
+      "sources": [
+        "hk-regions",
+        "hk-ntr-overview",
+        "hk-ntr-history",
+        "hk-yle-timetable",
+        "hk-wiki"
+      ]
     },
     {
       "id": "ntheast",
-      "name": { "zh": "新界東地域", "en": "New Territories East Region" },
-      "short": { "zh": "新界東", "en": "N.T. East" },
+      "name": {
+        "zh": "新界東地域",
+        "en": "New Territories East Region"
+      },
+      "short": {
+        "zh": "新界東",
+        "en": "N.T. East"
+      },
       "founded": 2000,
       "foundedText": {
         "zh": "2000 年 4 月 1 日由新界地域分拆成第五個地域；2002–2003 年重新劃定沙田、大埔、北區的區界。",
@@ -156,25 +309,60 @@
         "en": "Law Ting Pong Scout Centre, Wan Tau Kok Lane, Tai Po — the former Old District Office North, a declared monument — in use since 2002."
       },
       "districts": [
-        { "zh": "雙魚區", "en": "Sheung Yue" },
-        { "zh": "璧峰區", "en": "Pik Fung" },
-        { "zh": "大埔北區", "en": "Tai Po North" },
-        { "zh": "大埔南區", "en": "Tai Po South" },
-        { "zh": "沙田西區", "en": "Sha Tin West" },
-        { "zh": "沙田南區", "en": "Sha Tin South" },
-        { "zh": "沙田東區", "en": "Sha Tin East" },
-        { "zh": "沙田北區", "en": "Sha Tin North" }
+        {
+          "zh": "雙魚區",
+          "en": "Sheung Yue"
+        },
+        {
+          "zh": "璧峰區",
+          "en": "Pik Fung"
+        },
+        {
+          "zh": "大埔北區",
+          "en": "Tai Po North"
+        },
+        {
+          "zh": "大埔南區",
+          "en": "Tai Po South"
+        },
+        {
+          "zh": "沙田西區",
+          "en": "Sha Tin West"
+        },
+        {
+          "zh": "沙田南區",
+          "en": "Sha Tin South"
+        },
+        {
+          "zh": "沙田東區",
+          "en": "Sha Tin East"
+        },
+        {
+          "zh": "沙田北區",
+          "en": "Sha Tin North"
+        }
       ],
       "insight": {
         "zh": "最後成立的地域：原新界地域的十一區之外，2002 年把大埔、北區、沙田東西兩區重劃成八區；沙田北區（馬鞍山）2003 年 4 月 1 日成立。",
         "en": "The youngest region: in 2002 the Tai Po, North and two Sha Tin districts of the old region were redrawn into eight, and Sha Tin North (Ma On Shan) was formed on 1 April 2003."
       },
-      "sources": ["hk-regions", "hk-tps-history", "hk-stn-history", "hk-ntr-overview"]
+      "sources": [
+        "hk-regions",
+        "hk-tps-history",
+        "hk-stn-history",
+        "hk-ntr-overview"
+      ]
     },
     {
       "id": "silverjubilee",
-      "name": { "zh": "銀禧區（總會直轄）", "en": "Silver Jubilee District (national HQ)" },
-      "short": { "zh": "銀禧", "en": "Silver Jubilee" },
+      "name": {
+        "zh": "銀禧區（總會直轄）",
+        "en": "Silver Jubilee District (national HQ)"
+      },
+      "short": {
+        "zh": "銀禧",
+        "en": "Silver Jubilee"
+      },
       "founded": 1977,
       "foundedText": {
         "zh": "1977 年成立，以英語或非華語旅團為對象；1982 年一度劃入大同地域，現由總會直轄、國際及內聯署分管。",
@@ -185,423 +373,1121 @@
         "en": "No regional headquarters; administered by the association's International and Liaison Branch."
       },
       "districts": [
-        { "zh": "銀禧區（英語童軍區）", "en": "Silver Jubilee (English-speaking)" }
+        {
+          "zh": "銀禧區（英語童軍區）",
+          "en": "Silver Jubilee (English-speaking)"
+        }
       ],
       "insight": {
         "zh": "全港唯一不屬於五個地域的區，因此 5 個地域加 1 個直轄區共 44 區；地圖色塊不覆蓋此區，因為它以語言而非地區劃分。",
         "en": "The only district outside the five regions — hence five regions plus one directly administered district make 44. It has no place on this map because it is defined by language, not geography."
       },
-      "sources": ["hk-regions", "hk-wiki", "hk-wiki-history"]
+      "sources": [
+        "hk-regions",
+        "hk-wiki",
+        "hk-wiki-history"
+      ]
     }
   ],
   "boundaryChanges": [
     {
       "year": 1951,
       "changes": [
-        { "zh": "全港劃為香港區、九龍區、新界區三個童軍區，與此前的單一管理架構不同。", "en": "The territory was divided into three Scout districts — Hong Kong, Kowloon and New Territories." }
+        {
+          "zh": "全港劃為香港區、九龍區、新界區三個童軍區，與此前的單一管理架構不同。",
+          "en": "The territory was divided into three Scout districts — Hong Kong, Kowloon and New Territories."
+        }
       ],
-      "sources": ["hk-wiki-history", "hk-wiki"]
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
     },
     {
       "year": 1952,
       "changes": [
-        { "zh": "香港區及新界區各自再分為兩個童軍區；新界按文獻分為南約、北約（部分文獻記為 1951 年）。", "en": "The Hong Kong and New Territories districts each split into two; New Territories sources record a South and North Yue split (some dated 1951)." }
+        {
+          "zh": "香港區及新界區各自再分為兩個童軍區；新界按文獻分為南約、北約（部分文獻記為 1951 年）。",
+          "en": "The Hong Kong and New Territories districts each split into two; New Territories sources record a South and North Yue split (some dated 1951)."
+        }
       ],
-      "sources": ["hk-wiki-history", "hk-ntr-overview"]
+      "sources": [
+        "hk-wiki-history",
+        "hk-ntr-overview"
+      ]
     },
     {
       "year": 1958,
       "changes": [
-        { "zh": "7 月 1 日設立「新界地方」，原南約、北約兩區重劃為北約、元朗、荃灣三區。", "en": "On 1 July a New Territories Area was created and the two Yue districts were redrawn into North Yue, Yuen Long and Tsuen Wan." }
+        {
+          "zh": "7 月 1 日設立「新界地方」，原南約、北約兩區重劃為北約、元朗、荃灣三區。",
+          "en": "On 1 July a New Territories Area was created and the two Yue districts were redrawn into North Yue, Yuen Long and Tsuen Wan."
+        }
       ],
-      "sources": ["hk-ntr-overview"]
+      "sources": [
+        "hk-ntr-overview"
+      ]
     },
     {
       "year": 1968,
       "changes": [
-        { "zh": "「新界地方」改稱新界地域；港島地域、九龍地域、新界地域三名並用至今（新界東 2000 年分出）。", "en": "The New Territories Area was renamed a region; the Island, Kowloon and New Territories regional names date from this change (New Territories East split off in 2000)." }
+        {
+          "zh": "「新界地方」改稱新界地域；港島地域、九龍地域、新界地域三名並用至今（新界東 2000 年分出）。",
+          "en": "The New Territories Area was renamed a region; the Island, Kowloon and New Territories regional names date from this change (New Territories East split off in 2000)."
+        }
       ],
-      "sources": ["hk-wiki-history", "hk-ntr-overview"]
+      "sources": [
+        "hk-wiki-history",
+        "hk-ntr-overview"
+      ]
     },
     {
       "year": 1969,
       "changes": [
-        { "zh": "首屆新界地域會務委員會成立，轄下童軍區增至七個。", "en": "The first New Territories regional committee was formed; its Scout districts had grown to seven." }
+        {
+          "zh": "首屆新界地域會務委員會成立，轄下童軍區增至七個。",
+          "en": "The first New Territories regional committee was formed; its Scout districts had grown to seven."
+        }
       ],
-      "sources": ["hk-ntr-overview"]
+      "sources": [
+        "hk-ntr-overview"
+      ]
     },
     {
       "year": 1971,
       "changes": [
-        { "zh": "文獻顯示當年已有「大埔南區」，範圍包括今天的大埔、沙田及西貢；「大埔北區」則涵蓋上水、粉嶺、打鼓嶺、沙頭角。", "en": "Records show a Tai Po South district already covering today's Tai Po, Sha Tin and Sai Kung, with Tai Po North covering Sheung Shui, Fanling, Ta Kwu Ling and Sha Tau Kok." }
+        {
+          "zh": "文獻顯示當年已有「大埔南區」，範圍包括今天的大埔、沙田及西貢；「大埔北區」則涵蓋上水、粉嶺、打鼓嶺、沙頭角。",
+          "en": "Records show a Tai Po South district already covering today's Tai Po, Sha Tin and Sai Kung, with Tai Po North covering Sheung Shui, Fanling, Ta Kwu Ling and Sha Tau Kok."
+        }
       ],
-      "sources": ["hk-tps-history"]
+      "sources": [
+        "hk-tps-history"
+      ]
     },
     {
       "year": 1975,
       "changes": [
-        { "zh": "沙田自大埔南區獨立成區（沙田區）。", "en": "Sha Tin became a separate district, leaving the Tai Po South area." }
+        {
+          "zh": "沙田自大埔南區獨立成區（沙田區）。",
+          "en": "Sha Tin became a separate district, leaving the Tai Po South area."
+        }
       ],
-      "sources": ["hk-tps-history"]
+      "sources": [
+        "hk-tps-history"
+      ]
     },
     {
       "year": 1976,
       "changes": [
-        { "zh": "東九龍地域成立（1977 年起在觀塘和樂邨設總部），九龍地域的範圍因而收窄。", "en": "The East Kowloon Region was formed (headquartered in Wo Lok Estate, Kwun Tong, from 1977), reducing the Kowloon Region's area." }
+        {
+          "zh": "東九龍地域成立（1977 年起在觀塘和樂邨設總部），九龍地域的範圍因而收窄。",
+          "en": "The East Kowloon Region was formed (headquartered in Wo Lok Estate, Kwun Tong, from 1977), reducing the Kowloon Region's area."
+        }
       ],
-      "sources": ["hk-wiki-history", "hk-wiki"]
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
     },
     {
       "year": 1977,
       "changes": [
-        { "zh": "成立銀禧區，以英語及非華語旅團為對象，不屬任何地域；同年新界下花山營地交回政府。", "en": "The Silver Jubilee District was created for English-speaking and non-Chinese troops, outside the regions; the same year Ha Fa Shan camp was handed back." }
+        {
+          "zh": "成立銀禧區，以英語及非華語旅團為對象，不屬任何地域；同年新界下花山營地交回政府。",
+          "en": "The Silver Jubilee District was created for English-speaking and non-Chinese troops, outside the regions; the same year Ha Fa Shan camp was handed back."
+        }
       ],
-      "sources": ["hk-wiki-history", "hk-wiki"]
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
     },
     {
       "year": 1980,
       "changes": [
-        { "zh": "大埔南區改稱大埔區，範圍只包括今大埔區。", "en": "Tai Po South was renamed Tai Po District, limited to today's Tai Po area." }
+        {
+          "zh": "大埔南區改稱大埔區，範圍只包括今大埔區。",
+          "en": "Tai Po South was renamed Tai Po District, limited to today's Tai Po area."
+        }
       ],
-      "sources": ["hk-tps-history"]
+      "sources": [
+        "hk-tps-history"
+      ]
     },
     {
       "year": 1982,
       "changes": [
-        { "zh": "大同地域成立，銀禧區一度劃入大同地域管理（大同地域現已不存在）。", "en": "The Tai Tung Region was formed and the Silver Jubilee District was placed under it (Tai Tung no longer exists)." }
+        {
+          "zh": "大同地域成立，銀禧區一度劃入大同地域管理（大同地域現已不存在）。",
+          "en": "The Tai Tung Region was formed and the Silver Jubilee District was placed under it (Tai Tung no longer exists)."
+        }
       ],
-      "sources": ["hk-wiki-history", "hk-wiki"]
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
     },
     {
       "year": 1990,
       "changes": [
-        { "zh": "5 月 1 日屯門區分為屯門東區及屯門西區，新界地域增至十三區。", "en": "On 1 May Tuen Mun was divided into East and West, bringing the New Territories Region to thirteen districts." }
+        {
+          "zh": "5 月 1 日屯門區分為屯門東區及屯門西區，新界地域增至十三區。",
+          "en": "On 1 May Tuen Mun was divided into East and West, bringing the New Territories Region to thirteen districts."
+        }
       ],
-      "sources": ["hk-yle-timetable"]
+      "sources": [
+        "hk-yle-timetable"
+      ]
     },
     {
       "year": 1996,
       "changes": [
-        { "zh": "沙田區旅團達 100 個，分拆為沙田東區及沙田西區。", "en": "With 100 troops, Sha Tin was split into East and West districts." }
+        {
+          "zh": "沙田區旅團達 100 個，分拆為沙田東區及沙田西區。",
+          "en": "With 100 troops, Sha Tin was split into East and West districts."
+        }
       ],
-      "sources": ["hk-stn-history"]
+      "sources": [
+        "hk-stn-history"
+      ]
     },
     {
       "year": 2000,
       "changes": [
-        { "zh": "4 月 1 日新界地域分拆為新界地域與新界東地域，後者成為第五個地域。", "en": "On 1 April the New Territories Region was split, creating the New Territories East Region as the fifth region." }
+        {
+          "zh": "4 月 1 日新界地域分拆為新界地域與新界東地域，後者成為第五個地域。",
+          "en": "On 1 April the New Territories Region was split, creating the New Territories East Region as the fifth region."
+        }
       ],
-      "sources": ["hk-ntr-overview", "hk-stn-history"]
+      "sources": [
+        "hk-ntr-overview",
+        "hk-stn-history"
+      ]
     },
     {
       "year": 2002,
       "changes": [
-        { "zh": "新界東地域把大埔區、北區、沙田東區、沙田西區重劃為大埔北、大埔南、雙魚、璧峰、沙田東、沙田南、沙田西、沙田北八區。", "en": "The New Territories East Region redrew Tai Po, North, Sha Tin East and Sha Tin West into eight districts: Tai Po North and South, Sheung Yue, Pik Fung, and Sha Tin East, South, West and North." }
+        {
+          "zh": "新界東地域把大埔區、北區、沙田東區、沙田西區重劃為大埔北、大埔南、雙魚、璧峰、沙田東、沙田南、沙田西、沙田北八區。",
+          "en": "The New Territories East Region redrew Tai Po, North, Sha Tin East and Sha Tin West into eight districts: Tai Po North and South, Sheung Yue, Pik Fung, and Sha Tin East, South, West and North."
+        }
       ],
-      "sources": ["hk-tps-history", "hk-stn-history"]
+      "sources": [
+        "hk-tps-history",
+        "hk-stn-history"
+      ]
     },
     {
       "year": 2003,
       "changes": [
-        { "zh": "4 月 1 日新界東地域擴展區會計劃完成，沙田北區（馬鞍山）正式成立。", "en": "The New Territories East district-expansion plan completed on 1 April and Sha Tin North (Ma On Shan) was established." }
+        {
+          "zh": "4 月 1 日新界東地域擴展區會計劃完成，沙田北區（馬鞍山）正式成立。",
+          "en": "The New Territories East district-expansion plan completed on 1 April and Sha Tin North (Ma On Shan) was established."
+        }
       ],
-      "sources": ["hk-stn-history"]
+      "sources": [
+        "hk-stn-history"
+      ]
     },
     {
       "year": 2007,
       "changes": [
-        { "zh": "4 月 1 日元朗東區、元朗西區及十八鄉區三區區界重新劃分，以平衡童軍人口。", "en": "On 1 April the boundaries of Yuen Long East, Yuen Long West and Shap Pat Heung were redrawn to balance Scout populations." }
+        {
+          "zh": "4 月 1 日元朗東區、元朗西區及十八鄉區三區區界重新劃分，以平衡童軍人口。",
+          "en": "On 1 April the boundaries of Yuen Long East, Yuen Long West and Shap Pat Heung were redrawn to balance Scout populations."
+        }
       ],
-      "sources": ["hk-yle-timetable"]
+      "sources": [
+        "hk-yle-timetable"
+      ]
     }
   ],
   "jamborees": [
-      {
-        "id": "hk-jam-1957",
-        "n": 1,
-        "year": 1957, "yearEnd": 1957,
-        "name": { "zh": "香港童子軍大露營", "en": "Hong Kong Colony Jamborette" },
-        "theme": null,
-        "place": { "zh": "上水金錢村", "en": "Kam Tsin Village, Sheung Shui" },
-        "district": "sheung-yue",
-        "inHongKong": true,
-        "coordinate": [114.113, 22.503],
-        "participants": 1361,
-        "dates": { "zh": "1957 年 10 月 19–22 日", "en": "19–22 October 1957" },
-        "note": {
-          "zh": "首次全港性大露營，配合世界童軍運動五十周年及貝登堡百歲冥壽；不同來源記 1,300 餘人或 1,361 人。",
-          "en": "The first territory-wide jamboree, marking 50 years of World Scouting and B-P's centenary; sources give \"over 1,300\" or 1,361 participants."
-        },
-        "sources": ["hk-wiki-history", "hk-wiki", "hk-stheadline-jam"]
+    {
+      "id": "hk-jam-1957",
+      "n": 1,
+      "year": 1957,
+      "yearEnd": 1957,
+      "name": {
+        "zh": "香港童子軍大露營",
+        "en": "Hong Kong Colony Jamborette"
       },
-      {
-        "id": "hk-jam-1961",
-        "n": 2,
-        "year": 1961, "yearEnd": 1962,
-        "name": { "zh": "香港金禧大露營", "en": "Hong Kong Golden Jubilee Jamborette" },
-        "theme": { "zh": "天下一家", "en": "One World" },
-        "place": { "zh": "九龍仔（今九龍仔公園）", "en": "Kowloon Tsai (now Kowloon Tsai Park)" },
-        "district": "kowloon-tong",
-        "inHongKong": true,
-        "coordinate": [114.1825, 22.3395],
-        "participants": 2732,
-        "dates": { "zh": "1961 年 12 月 27 日至 1962 年 1 月 2 日", "en": "27 December 1961 – 2 January 1962" },
-        "note": {
-          "zh": "香港首個國際大露營，紀念香港童軍金禧。",
-          "en": "The first international jamboree held in Hong Kong, marking the movement's golden jubilee here."
-        },
-        "sources": ["hk-wiki-history", "hk-wiki"]
+      "theme": null,
+      "place": {
+        "zh": "上水金錢村",
+        "en": "Kam Tsin Village, Sheung Shui"
       },
-      {
-        "id": "hk-jam-1971",
-        "n": 3,
-        "year": 1971, "yearEnd": 1971,
-        "name": { "zh": "香港鑽禧大露營", "en": "Diamond Jubilee Jamboree" },
-        "theme": { "zh": "大同", "en": "World Harmony" },
-        "place": { "zh": "新界青山（今屯門大興邨一帶）", "en": "Castle Peak, New Territories (now Tai Hing Estate, Tuen Mun)" },
-        "district": "tuen-mun-east",
-        "inHongKong": true,
-        "coordinate": [113.973, 22.4045],
-        "participants": 5000,
-        "dates": { "zh": "1971 年 7 月 22–28 日（颱風後順延一日）", "en": "22–28 July 1971 (postponed by one day after a typhoon)" },
-        "note": {
-          "zh": "紀念香港童軍鑽禧；來源記「近 5,000 人」。",
-          "en": "Marked the movement's diamond jubilee in Hong Kong; sources say \"nearly 5,000\"."
-        },
-        "sources": ["hk-wiki-history", "hk-wiki"]
+      "district": "sheung-yue",
+      "inHongKong": true,
+      "coordinate": [
+        114.113,
+        22.503
+      ],
+      "participants": 1361,
+      "dates": {
+        "zh": "1957 年 10 月 19–22 日",
+        "en": "19–22 October 1957"
       },
-      {
-        "id": "hk-jam-1975",
-        "n": 4,
-        "year": 1975, "yearEnd": 1975,
-        "name": { "zh": "香港國際大露營", "en": "Hong Kong International Jamboree" },
-        "theme": null,
-        "place": { "zh": "大埔林村", "en": "Lam Tsuen, Tai Po" },
-        "district": "tai-po-north",
-        "inHongKong": true,
-        "coordinate": [114.1325, 22.4585],
-        "participants": null,
-        "dates": { "zh": "1975 年", "en": "1975" },
-        "note": {
-          "zh": "總會列出的國際大露營之一；年份、人數及主題在公開來源中未有完整記載，待核實。",
-          "en": "Listed among the association's international jamborees; the exact dates, theme and participation are not fully recorded in public sources and need verification."
-        },
-        "sources": ["hk-hkir-history"]
+      "note": {
+        "zh": "首次全港性大露營，配合世界童軍運動五十周年及貝登堡百歲冥壽；不同來源記 1,300 餘人或 1,361 人。",
+        "en": "The first territory-wide jamboree, marking 50 years of World Scouting and B-P's centenary; sources give \"over 1,300\" or 1,361 participants."
       },
-      {
-        "id": "hk-jam-1982",
-        "n": 5,
-        "year": 1982, "yearEnd": 1982,
-        "name": { "zh": "香港國際露營", "en": "Hong Kong International Camp" },
-        "theme": null,
-        "place": { "zh": "港島大潭", "en": "Tai Tam, Hong Kong Island" },
-        "district": "hk-south",
-        "inHongKong": true,
-        "coordinate": [114.2225, 22.2385],
-        "participants": 250,
-        "dates": { "zh": "1982 年", "en": "1982" },
-        "note": {
-          "zh": "規模遠小於其他屆次，部分列表將它與大露營並列，性質可能是國際露營而非全港大露營。",
-          "en": "Much smaller than the others and listed alongside them in one table; it may have been an international camp rather than a territory-wide jamboree."
-        },
-        "sources": ["hk-hkir-history"]
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki",
+        "hk-stheadline-jam"
+      ]
+    },
+    {
+      "id": "hk-jam-1961",
+      "n": 2,
+      "year": 1961,
+      "yearEnd": 1962,
+      "name": {
+        "zh": "香港金禧大露營",
+        "en": "Hong Kong Golden Jubilee Jamborette"
       },
-      {
-        "id": "hk-jam-1986",
-        "n": 6,
-        "year": 1986, "yearEnd": 1987,
-        "name": { "zh": "香港鑽禧大露營", "en": "Hong Kong Diamond Jubilee Jamboree" },
-        "theme": { "zh": "邁進", "en": "Marching On" },
-        "place": { "zh": "西貢大埔仔（今香港科技大學）", "en": "Tai Po Tsai, Sai Kung (now HKUST)" },
-        "district": "sai-kung",
-        "inHongKong": true,
-        "coordinate": [114.2635, 22.3375],
-        "participants": 5143,
-        "dates": { "zh": "1986 年 12 月 27 日至 1987 年 1 月 1 日", "en": "27 December 1986 – 1 January 1987" },
-        "note": {
-          "zh": "紀念香港童軍七十五周年，是總會成為世界童軍組織會員後首次大露營；來源記 5,143 人或 5,200 人。",
-          "en": "Marked 75 years of Hong Kong Scouting and was the first jamboree after WOSM membership; sources give 5,143 or 5,200 participants."
-        },
-        "sources": ["hk-wiki", "hk-hkir-history"]
+      "theme": {
+        "zh": "天下一家",
+        "en": "One World"
       },
-      {
-        "id": "hk-jam-1999",
-        "n": 7,
-        "year": 1999, "yearEnd": 2000,
-        "name": { "zh": "香港童軍跨世紀大露營", "en": "Hong Kong Scout Millennium Jamboree" },
-        "theme": { "zh": "邁向新紀元，同享大自然", "en": "Towards a New Era, Sharing Nature" },
-        "place": { "zh": "西貢灣仔半島", "en": "Wan Tsai Peninsula, Sai Kung" },
-        "district": "sai-kung",
-        "inHongKong": true,
-        "coordinate": [114.3745, 22.4565],
-        "participants": 3350,
-        "dates": { "zh": "1999 年 12 月 28 日至 2000 年 1 月 2 日", "en": "28 December 1999 – 2 January 2000" },
-        "note": {
-          "zh": "跨過千禧年；來源記 3,350 人或 3,600 人。營期內曾以 4,500 個平結連成 6,858 米長結鏈。",
-          "en": "Crossed the millennium; sources give 3,350 or 3,600 participants. Campers joined 4,500 reef knots into a 6,858 m chain during the camp."
-        },
-        "sources": ["hk-wiki", "hk-wiki-history", "hk-hkir-history"]
+      "place": {
+        "zh": "九龍仔（今九龍仔公園）",
+        "en": "Kowloon Tsai (now Kowloon Tsai Park)"
       },
-      {
-        "id": "hk-jam-2001",
-        "n": 8,
-        "year": 2001, "yearEnd": 2001,
-        "name": { "zh": "香港童軍 90 週年紀念大露營", "en": "Hong Kong Scout 90th Anniversary Jamboree" },
-        "theme": { "zh": "竭盡所能", "en": "Do Your Best" },
-        "place": { "zh": "西貢灣仔半島", "en": "Wan Tsai Peninsula, Sai Kung" },
-        "district": "sai-kung",
-        "inHongKong": true,
-        "coordinate": [114.3745, 22.4565],
-        "participants": 3500,
-        "dates": { "zh": "2001 年 12 月 23–26 日", "en": "23–26 December 2001" },
-        "note": {
-          "zh": "來源記 3,500 人或 5,800 人，兩者差距大，暫以較保守數字列出。",
-          "en": "Sources give 3,500 or 5,800 participants; the lower figure is used here pending verification."
-        },
-        "sources": ["hk-wiki", "hk-wiki-history", "hk-hkir-history"]
+      "district": "kowloon-tong",
+      "inHongKong": true,
+      "coordinate": [
+        114.1825,
+        22.3395
+      ],
+      "participants": 2732,
+      "dates": {
+        "zh": "1961 年 12 月 27 日至 1962 年 1 月 2 日",
+        "en": "27 December 1961 – 2 January 1962"
       },
-      {
-        "id": "hk-jam-2006",
-        "n": 9,
-        "year": 2006, "yearEnd": 2007,
-        "name": { "zh": "香港童軍 95 週年大都會大露營", "en": "Hong Kong Scout 95th Anniversary Metropolitan Jamboree" },
-        "theme": { "zh": "和平獻禮", "en": "A Gift of Peace" },
-        "place": { "zh": "西九龍文娛藝術區預留地（尖沙咀海旁）", "en": "West Kowloon cultural district site, Tsim Sha Tsui waterfront" },
-        "district": "sham-mong",
-        "inHongKong": true,
-        "coordinate": [114.1605, 22.3015],
-        "participants": 4225,
-        "dates": { "zh": "2006 年 12 月 27 日至 2007 年 1 月 1 日", "en": "27 December 2006 – 1 January 2007" },
-        "note": {
-          "zh": "首次在維港旁及市區舉行的大露營，約 600 名海外及內地、台灣參加者；另一列表記 3,580 人。",
-          "en": "The first jamboree beside Victoria Harbour and in an urban setting, with about 600 overseas, mainland and Taiwanese participants; another table gives 3,580."
-        },
-        "sources": ["hk-wiki", "hk-hkir-history"]
+      "note": {
+        "zh": "香港首個國際大露營，紀念香港童軍金禧。",
+        "en": "The first international jamboree held in Hong Kong, marking the movement's golden jubilee here."
       },
-      {
-        "id": "hk-jam-2007",
-        "n": 10,
-        "year": 2007, "yearEnd": 2007,
-        "name": { "zh": "慶祝童軍百周年世界同步大露營", "en": "Scouting 100th Anniversary Synchronised Jamboree" },
-        "theme": { "zh": "世界童軍 · 承諾", "en": "Scouting · Promise" },
-        "place": { "zh": "西貢萬宜水庫西壩", "en": "High Island Reservoir West Dam, Sai Kung" },
-        "district": "sai-kung",
-        "inHongKong": true,
-        "coordinate": [114.3405, 22.3945],
-        "participants": 1500,
-        "dates": { "zh": "2007 年 7 月 29 日至 8 月 3 日", "en": "29 July – 3 August 2007" },
-        "note": {
-          "zh": "配合第 21 屆世界童軍大露營的全球同步活動，形式與常規全港大露營不同。",
-          "en": "Part of the global synchronised event around the 21st World Scout Jamboree; its format differs from a regular territory-wide jamboree."
-        },
-        "sources": ["hk-wiki", "hk-hkir-history"]
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "id": "hk-jam-1971",
+      "n": 3,
+      "year": 1971,
+      "yearEnd": 1971,
+      "name": {
+        "zh": "香港鑽禧大露營",
+        "en": "Diamond Jubilee Jamboree"
       },
-      {
-        "id": "hk-jam-2010",
-        "n": 11,
-        "year": 2010, "yearEnd": 2011,
-        "name": { "zh": "香港童軍 100 週年紀念大露營", "en": "Hong Kong Scout Centenary Jamboree" },
-        "theme": { "zh": "成就百載、綻放未來", "en": "A Century of Achievement, A Future in Bloom" },
-        "place": { "zh": "大嶼山竹篙灣", "en": "Penny's Bay, Lantau" },
-        "district": "lantau",
-        "inHongKong": true,
-        "coordinate": [114.0375, 22.3125],
-        "participants": 5200,
-        "dates": { "zh": "2010 年 12 月 27 日至 2011 年 1 月 1 日", "en": "27 December 2010 – 1 January 2011" },
-        "note": {
-          "zh": "百周年紀念活動的揭幕項目，12 月 25 日另有幼童軍百周年活動。",
-          "en": "The opening event of the centenary year, with a Cub centenary programme on 25 December."
-        },
-        "sources": ["hk-hkir-history", "hk-nkc-100"]
+      "theme": {
+        "zh": "大同",
+        "en": "World Harmony"
       },
-      {
-        "id": "hk-jam-2016",
-        "n": 12,
-        "year": 2016, "yearEnd": 2016,
-        "name": { "zh": "香港童軍 105 周年紀念大露營", "en": "Hong Kong Scout 105th Anniversary Jamboree" },
-        "theme": { "zh": "童 · 惠青年 105", "en": "Youth 105" },
-        "place": { "zh": "大嶼山竹篙灣", "en": "Penny's Bay, Lantau" },
-        "district": "lantau",
-        "inHongKong": true,
-        "coordinate": [114.0375, 22.3125],
-        "participants": 4000,
-        "dates": { "zh": "2016 年 12 月 23–27 日", "en": "23–27 December 2016" },
-        "note": {
-          "zh": "行政長官開幕辭記「超過 4,000 名」參加者，另有報道記約 5,600 人；12 月 25 日設幼童軍百周年「森林狂歡」。",
-          "en": "The Chief Executive's opening speech cites \"more than 4,000\" participants while one report says about 5,600; a Cub centenary \"Forest Carnival\" ran on 25 December."
-        },
-        "sources": ["hk-ce-2016", "hk-stheadline-jam", "hk-scout-cub-2016"]
+      "place": {
+        "zh": "新界青山（今屯門大興邨一帶）",
+        "en": "Castle Peak, New Territories (now Tai Hing Estate, Tuen Mun)"
       },
-      {
-        "id": "hk-jam-2024",
-        "n": 13,
-        "year": 2024, "yearEnd": 2024,
-        "name": { "zh": "同行未來—香港童軍大露營", "en": "Hong Kong Scout Jamboree: WE@FUTURE" },
-        "theme": { "zh": "同行未來 WE@FUTURE", "en": "WE@FUTURE" },
-        "place": { "zh": "珠海淇澳島（廣東）", "en": "Qi'ao Island, Zhuhai (Guangdong)" },
-        "district": null,
-        "inHongKong": false,
-        "coordinate": [113.6425, 22.3965],
-        "participants": 4400,
-        "dates": { "zh": "2024 年 12 月 23–27 日", "en": "23–27 December 2024" },
-        "note": {
-          "zh": "首次在香港以外舉行（原訂 2021 年，因疫情延期）；約 4,400 名香港、內地及海外參加者。地圖不顯示此營地。",
-          "en": "The first jamboree held outside Hong Kong (planned for 2021 and delayed by the pandemic), with about 4,400 participants from Hong Kong, the mainland and overseas. It is not plotted on this map."
-        },
-        "sources": ["hk-stheadline-2024", "hk-tkww-2024"]
-      }
+      "district": "tuen-mun-east",
+      "inHongKong": true,
+      "coordinate": [
+        113.973,
+        22.4045
+      ],
+      "participants": 5000,
+      "dates": {
+        "zh": "1971 年 7 月 22–28 日（颱風後順延一日）",
+        "en": "22–28 July 1971 (postponed by one day after a typhoon)"
+      },
+      "note": {
+        "zh": "紀念香港童軍鑽禧；來源記「近 5,000 人」。",
+        "en": "Marked the movement's diamond jubilee in Hong Kong; sources say \"nearly 5,000\"."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "id": "hk-jam-1975",
+      "n": 4,
+      "year": 1975,
+      "yearEnd": 1975,
+      "name": {
+        "zh": "香港國際大露營",
+        "en": "Hong Kong International Jamboree"
+      },
+      "theme": null,
+      "place": {
+        "zh": "大埔林村",
+        "en": "Lam Tsuen, Tai Po"
+      },
+      "district": "tai-po-north",
+      "inHongKong": true,
+      "coordinate": [
+        114.1325,
+        22.4585
+      ],
+      "participants": null,
+      "dates": {
+        "zh": "1975 年",
+        "en": "1975"
+      },
+      "note": {
+        "zh": "總會列出的國際大露營之一；年份、人數及主題在公開來源中未有完整記載，待核實。",
+        "en": "Listed among the association's international jamborees; the exact dates, theme and participation are not fully recorded in public sources and need verification."
+      },
+      "sources": [
+        "hk-hkir-history"
+      ]
+    },
+    {
+      "id": "hk-jam-1982",
+      "n": 5,
+      "year": 1982,
+      "yearEnd": 1982,
+      "name": {
+        "zh": "香港國際露營",
+        "en": "Hong Kong International Camp"
+      },
+      "theme": null,
+      "place": {
+        "zh": "港島大潭",
+        "en": "Tai Tam, Hong Kong Island"
+      },
+      "district": "hk-south",
+      "inHongKong": true,
+      "coordinate": [
+        114.2225,
+        22.2385
+      ],
+      "participants": 250,
+      "dates": {
+        "zh": "1982 年",
+        "en": "1982"
+      },
+      "note": {
+        "zh": "規模遠小於其他屆次，部分列表將它與大露營並列，性質可能是國際露營而非全港大露營。",
+        "en": "Much smaller than the others and listed alongside them in one table; it may have been an international camp rather than a territory-wide jamboree."
+      },
+      "sources": [
+        "hk-hkir-history"
+      ]
+    },
+    {
+      "id": "hk-jam-1986",
+      "n": 6,
+      "year": 1986,
+      "yearEnd": 1987,
+      "name": {
+        "zh": "香港鑽禧大露營",
+        "en": "Hong Kong Diamond Jubilee Jamboree"
+      },
+      "theme": {
+        "zh": "邁進",
+        "en": "Marching On"
+      },
+      "place": {
+        "zh": "西貢大埔仔（今香港科技大學）",
+        "en": "Tai Po Tsai, Sai Kung (now HKUST)"
+      },
+      "district": "sai-kung",
+      "inHongKong": true,
+      "coordinate": [
+        114.2635,
+        22.3375
+      ],
+      "participants": 5143,
+      "dates": {
+        "zh": "1986 年 12 月 27 日至 1987 年 1 月 1 日",
+        "en": "27 December 1986 – 1 January 1987"
+      },
+      "note": {
+        "zh": "紀念香港童軍七十五周年，是總會成為世界童軍組織會員後首次大露營；來源記 5,143 人或 5,200 人。",
+        "en": "Marked 75 years of Hong Kong Scouting and was the first jamboree after WOSM membership; sources give 5,143 or 5,200 participants."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-hkir-history"
+      ]
+    },
+    {
+      "id": "hk-jam-1999",
+      "n": 7,
+      "year": 1999,
+      "yearEnd": 2000,
+      "name": {
+        "zh": "香港童軍跨世紀大露營",
+        "en": "Hong Kong Scout Millennium Jamboree"
+      },
+      "theme": {
+        "zh": "邁向新紀元，同享大自然",
+        "en": "Towards a New Era, Sharing Nature"
+      },
+      "place": {
+        "zh": "西貢灣仔半島",
+        "en": "Wan Tsai Peninsula, Sai Kung"
+      },
+      "district": "sai-kung",
+      "inHongKong": true,
+      "coordinate": [
+        114.3745,
+        22.4565
+      ],
+      "participants": 3350,
+      "dates": {
+        "zh": "1999 年 12 月 28 日至 2000 年 1 月 2 日",
+        "en": "28 December 1999 – 2 January 2000"
+      },
+      "note": {
+        "zh": "跨過千禧年；來源記 3,350 人或 3,600 人。營期內曾以 4,500 個平結連成 6,858 米長結鏈。",
+        "en": "Crossed the millennium; sources give 3,350 or 3,600 participants. Campers joined 4,500 reef knots into a 6,858 m chain during the camp."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-wiki-history",
+        "hk-hkir-history"
+      ]
+    },
+    {
+      "id": "hk-jam-2001",
+      "n": 8,
+      "year": 2001,
+      "yearEnd": 2001,
+      "name": {
+        "zh": "香港童軍 90 週年紀念大露營",
+        "en": "Hong Kong Scout 90th Anniversary Jamboree"
+      },
+      "theme": {
+        "zh": "竭盡所能",
+        "en": "Do Your Best"
+      },
+      "place": {
+        "zh": "西貢灣仔半島",
+        "en": "Wan Tsai Peninsula, Sai Kung"
+      },
+      "district": "sai-kung",
+      "inHongKong": true,
+      "coordinate": [
+        114.3745,
+        22.4565
+      ],
+      "participants": 3500,
+      "dates": {
+        "zh": "2001 年 12 月 23–26 日",
+        "en": "23–26 December 2001"
+      },
+      "note": {
+        "zh": "來源記 3,500 人或 5,800 人，兩者差距大，暫以較保守數字列出。",
+        "en": "Sources give 3,500 or 5,800 participants; the lower figure is used here pending verification."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-wiki-history",
+        "hk-hkir-history"
+      ]
+    },
+    {
+      "id": "hk-jam-2006",
+      "n": 9,
+      "year": 2006,
+      "yearEnd": 2007,
+      "name": {
+        "zh": "香港童軍 95 週年大都會大露營",
+        "en": "Hong Kong Scout 95th Anniversary Metropolitan Jamboree"
+      },
+      "theme": {
+        "zh": "和平獻禮",
+        "en": "A Gift of Peace"
+      },
+      "place": {
+        "zh": "西九龍文娛藝術區預留地（尖沙咀海旁）",
+        "en": "West Kowloon cultural district site, Tsim Sha Tsui waterfront"
+      },
+      "district": "sham-mong",
+      "inHongKong": true,
+      "coordinate": [
+        114.1605,
+        22.3015
+      ],
+      "participants": 4225,
+      "dates": {
+        "zh": "2006 年 12 月 27 日至 2007 年 1 月 1 日",
+        "en": "27 December 2006 – 1 January 2007"
+      },
+      "note": {
+        "zh": "首次在維港旁及市區舉行的大露營，約 600 名海外及內地、台灣參加者；另一列表記 3,580 人。",
+        "en": "The first jamboree beside Victoria Harbour and in an urban setting, with about 600 overseas, mainland and Taiwanese participants; another table gives 3,580."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-hkir-history"
+      ]
+    },
+    {
+      "id": "hk-jam-2007",
+      "n": 10,
+      "year": 2007,
+      "yearEnd": 2007,
+      "name": {
+        "zh": "慶祝童軍百周年世界同步大露營",
+        "en": "Scouting 100th Anniversary Synchronised Jamboree"
+      },
+      "theme": {
+        "zh": "世界童軍 · 承諾",
+        "en": "Scouting · Promise"
+      },
+      "place": {
+        "zh": "西貢萬宜水庫西壩",
+        "en": "High Island Reservoir West Dam, Sai Kung"
+      },
+      "district": "sai-kung",
+      "inHongKong": true,
+      "coordinate": [
+        114.3405,
+        22.3945
+      ],
+      "participants": 1500,
+      "dates": {
+        "zh": "2007 年 7 月 29 日至 8 月 3 日",
+        "en": "29 July – 3 August 2007"
+      },
+      "note": {
+        "zh": "配合第 21 屆世界童軍大露營的全球同步活動，形式與常規全港大露營不同。",
+        "en": "Part of the global synchronised event around the 21st World Scout Jamboree; its format differs from a regular territory-wide jamboree."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-hkir-history"
+      ]
+    },
+    {
+      "id": "hk-jam-2010",
+      "n": 11,
+      "year": 2010,
+      "yearEnd": 2011,
+      "name": {
+        "zh": "香港童軍 100 週年紀念大露營",
+        "en": "Hong Kong Scout Centenary Jamboree"
+      },
+      "theme": {
+        "zh": "成就百載、綻放未來",
+        "en": "A Century of Achievement, A Future in Bloom"
+      },
+      "place": {
+        "zh": "大嶼山竹篙灣",
+        "en": "Penny's Bay, Lantau"
+      },
+      "district": "lantau",
+      "inHongKong": true,
+      "coordinate": [
+        114.0375,
+        22.3125
+      ],
+      "participants": 5200,
+      "dates": {
+        "zh": "2010 年 12 月 27 日至 2011 年 1 月 1 日",
+        "en": "27 December 2010 – 1 January 2011"
+      },
+      "note": {
+        "zh": "百周年紀念活動的揭幕項目，12 月 25 日另有幼童軍百周年活動。",
+        "en": "The opening event of the centenary year, with a Cub centenary programme on 25 December."
+      },
+      "sources": [
+        "hk-hkir-history",
+        "hk-nkc-100"
+      ]
+    },
+    {
+      "id": "hk-jam-2016",
+      "n": 12,
+      "year": 2016,
+      "yearEnd": 2016,
+      "name": {
+        "zh": "香港童軍 105 周年紀念大露營",
+        "en": "Hong Kong Scout 105th Anniversary Jamboree"
+      },
+      "theme": {
+        "zh": "童 · 惠青年 105",
+        "en": "Youth 105"
+      },
+      "place": {
+        "zh": "大嶼山竹篙灣",
+        "en": "Penny's Bay, Lantau"
+      },
+      "district": "lantau",
+      "inHongKong": true,
+      "coordinate": [
+        114.0375,
+        22.3125
+      ],
+      "participants": 4000,
+      "dates": {
+        "zh": "2016 年 12 月 23–27 日",
+        "en": "23–27 December 2016"
+      },
+      "note": {
+        "zh": "行政長官開幕辭記「超過 4,000 名」參加者，另有報道記約 5,600 人；12 月 25 日設幼童軍百周年「森林狂歡」。",
+        "en": "The Chief Executive's opening speech cites \"more than 4,000\" participants while one report says about 5,600; a Cub centenary \"Forest Carnival\" ran on 25 December."
+      },
+      "sources": [
+        "hk-ce-2016",
+        "hk-stheadline-jam",
+        "hk-scout-cub-2016"
+      ]
+    },
+    {
+      "id": "hk-jam-2024",
+      "n": 13,
+      "year": 2024,
+      "yearEnd": 2024,
+      "name": {
+        "zh": "同行未來—香港童軍大露營",
+        "en": "Hong Kong Scout Jamboree: WE@FUTURE"
+      },
+      "theme": {
+        "zh": "同行未來 WE@FUTURE",
+        "en": "WE@FUTURE"
+      },
+      "place": {
+        "zh": "珠海淇澳島（廣東）",
+        "en": "Qi'ao Island, Zhuhai (Guangdong)"
+      },
+      "district": null,
+      "inHongKong": false,
+      "coordinate": [
+        113.6425,
+        22.3965
+      ],
+      "participants": 4400,
+      "dates": {
+        "zh": "2024 年 12 月 23–27 日",
+        "en": "23–27 December 2024"
+      },
+      "note": {
+        "zh": "首次在香港以外舉行（原訂 2021 年，因疫情延期）；約 4,400 名香港、內地及海外參加者。地圖不顯示此營地。",
+        "en": "The first jamboree held outside Hong Kong (planned for 2021 and delayed by the pandemic), with about 4,400 participants from Hong Kong, the mainland and overseas. It is not plotted on this map."
+      },
+      "sources": [
+        "hk-stheadline-2024",
+        "hk-tkww-2024"
+      ]
+    }
   ],
   "leaders": [
-    { "n": 1, "name": { "zh": "梅含理 爵士", "en": "Sir Francis Henry May" }, "from": 1912, "to": 1919, "office": "governor" },
-    { "n": 2, "name": { "zh": "司徒拔 爵士", "en": "Sir Reginald Edward Stubbs" }, "from": 1919, "to": 1925, "office": "governor" },
-    { "n": 3, "name": { "zh": "金文泰 爵士", "en": "Sir Cecil Clementi" }, "from": 1925, "to": 1930, "office": "governor" },
-    { "n": 4, "name": { "zh": "貝璐 爵士", "en": "Sir William Peel" }, "from": 1930, "to": 1935, "office": "governor" },
-    { "n": 5, "name": { "zh": "郝德傑 爵士", "en": "Sir Andrew Caldecott" }, "from": 1935, "to": 1937, "office": "governor" },
-    { "n": 6, "name": { "zh": "羅富國 爵士", "en": "Sir Geoffry Northcote" }, "from": 1937, "to": 1941, "office": "governor" },
-    { "n": 7, "name": { "zh": "楊慕琦 爵士", "en": "Sir Mark Young" }, "from": 1941, "to": 1947, "office": "governor" },
-    { "n": 8, "name": { "zh": "葛量洪 爵士", "en": "Sir Alexander Grantham" }, "from": 1947, "to": 1958, "office": "governor" },
-    { "n": 9, "name": { "zh": "柏立基 爵士", "en": "Sir Robert Black" }, "from": 1958, "to": 1964, "office": "governor" },
-    { "n": 10, "name": { "zh": "戴麟趾 爵士", "en": "Sir David Trench" }, "from": 1964, "to": 1971, "office": "governor" },
-    { "n": 11, "name": { "zh": "麥理浩 勳爵", "en": "Lord MacLehose of Beoch" }, "from": 1971, "to": 1982, "office": "governor" },
-    { "n": 12, "name": { "zh": "尤德 爵士", "en": "Sir Edward Youde" }, "from": 1982, "to": 1986, "office": "governor" },
-    { "n": 13, "name": { "zh": "衛奕信 勳爵", "en": "Lord Wilson of Tillyorn" }, "from": 1987, "to": 1992, "office": "governor" },
-    { "n": 14, "name": { "zh": "彭定康 勳爵", "en": "Lord Patten of Barnes" }, "from": 1992, "to": 1997, "office": "governor" },
-    { "n": 15, "name": { "zh": "董建華", "en": "Tung Chee-hwa" }, "from": 1997, "to": 2005, "office": "chief-executive" },
-    { "n": 16, "name": { "zh": "曾蔭權", "en": "Donald Tsang Yam-kuen" }, "from": 2005, "to": 2012, "office": "chief-executive" },
-    { "n": 17, "name": { "zh": "梁振英", "en": "Leung Chun-ying" }, "from": 2012, "to": 2017, "office": "chief-executive" },
-    { "n": 18, "name": { "zh": "林鄭月娥", "en": "Carrie Lam Cheng Yuet-ngor" }, "from": 2017, "to": 2022, "office": "chief-executive" },
-    { "n": 19, "name": { "zh": "李家超", "en": "John Lee Ka-chiu" }, "from": 2022, "to": null, "office": "chief-executive" }
+    {
+      "n": 1,
+      "name": {
+        "zh": "梅含理 爵士",
+        "en": "Sir Francis Henry May"
+      },
+      "from": 1912,
+      "to": 1919,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_01.gif"
+    },
+    {
+      "n": 2,
+      "name": {
+        "zh": "司徒拔 爵士",
+        "en": "Sir Reginald Edward Stubbs"
+      },
+      "from": 1919,
+      "to": 1925,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_02.gif"
+    },
+    {
+      "n": 3,
+      "name": {
+        "zh": "金文泰 爵士",
+        "en": "Sir Cecil Clementi"
+      },
+      "from": 1925,
+      "to": 1930,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_03.gif"
+    },
+    {
+      "n": 4,
+      "name": {
+        "zh": "貝璐 爵士",
+        "en": "Sir William Peel"
+      },
+      "from": 1930,
+      "to": 1935,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_04.gif"
+    },
+    {
+      "n": 5,
+      "name": {
+        "zh": "郝德傑 爵士",
+        "en": "Sir Andrew Caldecott"
+      },
+      "from": 1935,
+      "to": 1937,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_05.gif"
+    },
+    {
+      "n": 6,
+      "name": {
+        "zh": "羅富國 爵士",
+        "en": "Sir Geoffry Northcote"
+      },
+      "from": 1937,
+      "to": 1941,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_06.gif"
+    },
+    {
+      "n": 7,
+      "name": {
+        "zh": "楊慕琦 爵士",
+        "en": "Sir Mark Young"
+      },
+      "from": 1941,
+      "to": 1947,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_07.gif"
+    },
+    {
+      "n": 8,
+      "name": {
+        "zh": "葛量洪 爵士",
+        "en": "Sir Alexander Grantham"
+      },
+      "from": 1947,
+      "to": 1958,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_08.gif"
+    },
+    {
+      "n": 9,
+      "name": {
+        "zh": "柏立基 爵士",
+        "en": "Sir Robert Black"
+      },
+      "from": 1958,
+      "to": 1964,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_09.gif"
+    },
+    {
+      "n": 10,
+      "name": {
+        "zh": "戴麟趾 爵士",
+        "en": "Sir David Trench"
+      },
+      "from": 1964,
+      "to": 1971,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_10.gif"
+    },
+    {
+      "n": 11,
+      "name": {
+        "zh": "麥理浩 勳爵",
+        "en": "Lord MacLehose of Beoch"
+      },
+      "from": 1971,
+      "to": 1982,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_11.gif"
+    },
+    {
+      "n": 12,
+      "name": {
+        "zh": "尤德 爵士",
+        "en": "Sir Edward Youde"
+      },
+      "from": 1982,
+      "to": 1986,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_12.gif"
+    },
+    {
+      "n": 13,
+      "name": {
+        "zh": "衛奕信 勳爵",
+        "en": "Lord Wilson of Tillyorn"
+      },
+      "from": 1987,
+      "to": 1992,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_13.gif"
+    },
+    {
+      "n": 14,
+      "name": {
+        "zh": "彭定康 勳爵",
+        "en": "Lord Patten of Barnes"
+      },
+      "from": 1992,
+      "to": 1997,
+      "office": "governor",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_14.png"
+    },
+    {
+      "n": 15,
+      "name": {
+        "zh": "董建華",
+        "en": "Tung Chee-hwa"
+      },
+      "from": 1997,
+      "to": 2005,
+      "office": "chief-executive",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_15.png"
+    },
+    {
+      "n": 16,
+      "name": {
+        "zh": "曾蔭權",
+        "en": "Donald Tsang Yam-kuen"
+      },
+      "from": 2005,
+      "to": 2012,
+      "office": "chief-executive",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_16.png"
+    },
+    {
+      "n": 17,
+      "name": {
+        "zh": "梁振英",
+        "en": "Leung Chun-ying"
+      },
+      "from": 2012,
+      "to": 2017,
+      "office": "chief-executive",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_17.png"
+    },
+    {
+      "n": 18,
+      "name": {
+        "zh": "林鄭月娥",
+        "en": "Carrie Lam Cheng Yuet-ngor"
+      },
+      "from": 2017,
+      "to": 2022,
+      "office": "chief-executive",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cs_18.png"
+    },
+    {
+      "n": 19,
+      "name": {
+        "zh": "李家超",
+        "en": "John Lee Ka-chiu"
+      },
+      "from": 2022,
+      "to": null,
+      "office": "chief-executive",
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_scout/cc_19.png"
+    }
   ],
   "chiefs": [
-    { "n": 1, "name": { "zh": "麥夏德 少校", "en": "Maj. Alexander Anderson McHardy" }, "from": 1914, "to": 1915 },
-    { "n": 2, "name": { "zh": "安史導 中將", "en": "Lt-Gen. Robert Hamilton Anstruther" }, "from": 1915, "to": 1920 },
-    { "n": 3, "name": { "zh": "寶雲 中校", "en": "Lt-Col. F. J. Brown" }, "from": 1920, "to": 1921 },
-    { "n": 4, "name": { "zh": "華德利 牧師", "en": "Rev. George Turner Waldegrave" }, "from": 1921, "to": 1934 },
-    { "n": 5, "name": { "zh": "侯利華 會督", "en": "Bishop Nelson Victor Halward" }, "from": 1934, "to": 1950 },
-    { "n": 6, "name": { "zh": "柯昭璋", "en": "Or Chiu-cheung" }, "from": 1950, "to": 1953 },
-    { "n": 7, "name": { "zh": "陸榮生", "en": "Luk Wing-sang" }, "from": 1953, "to": 1954 },
-    { "n": 8, "name": { "zh": "高本", "en": "Ko Poon" }, "from": 1954, "to": 1963 },
-    { "n": 9, "name": { "zh": "羅徵勤", "en": "Law Ching-kan" }, "from": 1963, "to": 1973 },
-    { "n": 10, "name": { "zh": "馬基", "en": "Ma Ki" }, "from": 1973, "to": 1984 },
-    { "n": 11, "name": { "zh": "周湛燊", "en": "Chau Cham-sang" }, "from": 1985, "to": 1996 },
-    { "n": 12, "name": { "zh": "許招賢", "en": "Hui Chiu-yin" }, "from": 1997, "to": 2003 },
-    { "n": 13, "name": { "zh": "鮑紹雄", "en": "Pau Shiu-hung" }, "from": 2004, "to": 2007 },
-    { "n": 14, "name": { "zh": "陳傑柱", "en": "Chan Kit-chu" }, "from": 2007, "to": 2011 },
-    { "n": 15, "name": { "zh": "張智新", "en": "Cheung Chi-sun" }, "from": 2011, "to": 2015 },
-    { "n": 16, "name": { "zh": "吳亞明", "en": "Ng Ah-ming" }, "from": 2015, "to": 2019 },
-    { "n": 17, "name": { "zh": "劉彥樑", "en": "Lau Yin-leung" }, "from": 2019, "to": 2023 },
-    { "n": 18, "name": { "zh": "黎偉生", "en": "Lai Wai-sang" }, "from": 2023, "to": null }
+    {
+      "n": 1,
+      "name": {
+        "zh": "麥夏德 少校",
+        "en": "Maj. Alexander Anderson McHardy"
+      },
+      "from": 1914,
+      "to": 1915,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/Mchardy.jpg"
+    },
+    {
+      "n": 2,
+      "name": {
+        "zh": "安史導 中將",
+        "en": "Lt-Gen. Robert Hamilton Anstruther"
+      },
+      "from": 1915,
+      "to": 1920,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/Anstruther.jpg"
+    },
+    {
+      "n": 3,
+      "name": {
+        "zh": "寶雲 中校",
+        "en": "Lt-Col. F. J. Brown"
+      },
+      "from": 1920,
+      "to": 1921,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/Bowen.jpg"
+    },
+    {
+      "n": 4,
+      "name": {
+        "zh": "華德利 牧師",
+        "en": "Rev. George Turner Waldegrave"
+      },
+      "from": 1921,
+      "to": 1934,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_04.gif"
+    },
+    {
+      "n": 5,
+      "name": {
+        "zh": "侯利華 會督",
+        "en": "Bishop Nelson Victor Halward"
+      },
+      "from": 1934,
+      "to": 1950,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_05.gif"
+    },
+    {
+      "n": 6,
+      "name": {
+        "zh": "柯昭璋",
+        "en": "Or Chiu-cheung"
+      },
+      "from": 1950,
+      "to": 1953,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_06.gif"
+    },
+    {
+      "n": 7,
+      "name": {
+        "zh": "陸榮生",
+        "en": "Luk Wing-sang"
+      },
+      "from": 1953,
+      "to": 1954,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_07.gif"
+    },
+    {
+      "n": 8,
+      "name": {
+        "zh": "高本",
+        "en": "Ko Poon"
+      },
+      "from": 1954,
+      "to": 1963,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_08.gif"
+    },
+    {
+      "n": 9,
+      "name": {
+        "zh": "羅徵勤",
+        "en": "Law Ching-kan"
+      },
+      "from": 1963,
+      "to": 1973,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_09.gif"
+    },
+    {
+      "n": 10,
+      "name": {
+        "zh": "馬基",
+        "en": "Ma Ki"
+      },
+      "from": 1973,
+      "to": 1984,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_10.jpg"
+    },
+    {
+      "n": 11,
+      "name": {
+        "zh": "周湛燊",
+        "en": "Chau Cham-sang"
+      },
+      "from": 1985,
+      "to": 1996,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_11.jpg"
+    },
+    {
+      "n": 12,
+      "name": {
+        "zh": "許招賢",
+        "en": "Hui Chiu-yin"
+      },
+      "from": 1997,
+      "to": 2003,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_12.jpg"
+    },
+    {
+      "n": 13,
+      "name": {
+        "zh": "鮑紹雄",
+        "en": "Pau Shiu-hung"
+      },
+      "from": 2004,
+      "to": 2007,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_13.jpg"
+    },
+    {
+      "n": 14,
+      "name": {
+        "zh": "陳傑柱",
+        "en": "Chan Kit-chu"
+      },
+      "from": 2007,
+      "to": 2011,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_14.jpg"
+    },
+    {
+      "n": 15,
+      "name": {
+        "zh": "張智新",
+        "en": "Cheung Chi-sun"
+      },
+      "from": 2011,
+      "to": 2015,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_15.jpg"
+    },
+    {
+      "n": 16,
+      "name": {
+        "zh": "吳亞明",
+        "en": "Ng Ah-ming"
+      },
+      "from": 2015,
+      "to": 2019,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_16.jpg"
+    },
+    {
+      "n": 17,
+      "name": {
+        "zh": "劉彥樑",
+        "en": "Lau Yin-leung"
+      },
+      "from": 2019,
+      "to": 2023,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_17.jpg"
+    },
+    {
+      "n": 18,
+      "name": {
+        "zh": "黎偉生",
+        "en": "Lai Wai-sang"
+      },
+      "from": 2023,
+      "to": null,
+      "photo": "https://www.scout.org.hk/uploads/tc/chief_commissioners/cc_18.jpg"
+    }
   ],
   "offices": {
     "leader": {
-      "title": { "zh": "香港總領袖", "en": "Chief Scout of Hong Kong" },
+      "title": {
+        "zh": "香港總領袖",
+        "en": "Chief Scout of Hong Kong"
+      },
       "note": {
         "zh": "1997 年前由香港總督出任，1997 年後由香港特別行政區行政長官出任；任期按總督／行政長官在任年份整理，並非童軍委任紀錄。",
         "en": "Held by the Governor before 1997 and by the Chief Executive of the HKSAR afterwards. Terms follow the office-holder's years in office, not a separate Scout appointment record."
       }
     },
     "chief": {
-      "title": { "zh": "香港總監", "en": "Chief Commissioner" },
+      "title": {
+        "zh": "香港總監",
+        "en": "Chief Commissioner"
+      },
       "note": {
         "zh": "負責會務的義務總監。部分年份之間有幾個月空檔，可能由署理人填補，來源未逐一說明；英文姓名依原文音譯，待核對。",
         "en": "The honorary commissioner responsible for the association's work. Some years have gaps of a few months, possibly filled by acting officers, which the sources do not explain; English spellings are transliterations and need checking."
@@ -609,41 +1495,578 @@
     }
   },
   "timeline": [
-    { "year": 1909, "title": { "zh": "童軍運動傳入香港", "en": "Scouting reaches Hong Kong" }, "body": { "zh": "最早出現的童軍活動由英國傳入；1911 年開始有英國商人及軍人正式組織旅團。", "en": "The earliest Scout activity arrived from Britain; British merchants and servicemen began forming troops formally in 1911." }, "sources": ["hk-wiki-history"] },
-    { "year": 1912, "title": { "zh": "貝登堡訪港", "en": "Baden-Powell visits Hong Kong" }, "body": { "zh": "4 月 16 日貝登堡勳爵訪港；同年總督梅含理出任香港總領袖。", "en": "Baden-Powell visited on 16 April; the Governor, Sir Francis May, became Chief Scout the same year." }, "sources": ["hk-wiki-history"] },
-    { "year": 1913, "title": { "zh": "香港第 1 旅成立", "en": "The 1st Hong Kong Troop forms" }, "body": { "zh": "9 月 20 日聖若瑟書院成立香港第 1 旅，1914 年 5 月 1 日在英國童軍總會註冊。", "en": "St Joseph's College formed the 1st Hong Kong Troop on 20 September; it registered with the British association on 1 May 1914." }, "sources": ["hk-wiki-history"] },
-    { "year": 1915, "title": { "zh": "總會組成、首次大會操", "en": "Association formed; first rally" }, "body": { "zh": "3 月 20 日首次童軍大會操；7 月「香港童軍總會」組成，第一次世界大戰期間活動一度停頓。", "en": "The first Scout rally was held on 20 March and the association was constituted in July; activities lapsed during the First World War." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1921, "title": { "zh": "戰後重組", "en": "Post-war reorganisation" }, "body": { "zh": "寶雲中校重組總會；1 月 8 日在美利操場舉行戰後首次大會操。", "en": "Lt-Col. F. J. Brown reorganised the association; the first post-war rally took place at Murray Parade Ground on 8 January." }, "sources": ["hk-wiki-history"] },
-    { "year": 1929, "title": { "zh": "柴灣營地", "en": "Chai Wan Camp" }, "body": { "zh": "以 16,000 港元購入柴灣海旁營地；同年首次參加世界童軍大會（第 3 屆，伯肯赫德）。", "en": "A seafront campsite at Chai Wan was bought for HK$16,000; Hong Kong Scouts joined the 3rd World Scout Jamboree at Birkenhead the same year." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1936, "title": { "zh": "首屆木章訓練班", "en": "First Wood Badge course" }, "body": { "zh": "首屆童軍木章訓練班（第二段）在柴灣營地舉行。", "en": "The first Wood Badge (part two) course was held at Chai Wan Camp." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1941, "title": { "zh": "戰時服務", "en": "Wartime service" }, "body": { "zh": "香港保衛戰前後，童軍協助防空、傳訊、救護及難民工作；淪陷期間運動停頓。", "en": "Around the Battle of Hong Kong, Scouts helped with air-raid precautions, communications, first aid and refugees; the movement lapsed under occupation." }, "sources": ["hk-wiki-history"] },
-    { "year": 1949, "title": { "zh": "摩士小屋啟用", "en": "Morse Hut opens" }, "body": { "zh": "11 月 12 日花園道新總部摩士小屋啟用；同年設首位香港訓練總監。", "en": "The new headquarters, Morse Hut on Garden Road, opened on 12 November; the first training commissioner was appointed the same year." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1951, "title": { "zh": "三區分治", "en": "Three districts" }, "body": { "zh": "全港分為香港區、九龍區、新界區；首屆嘉爾頓錦標比賽舉行。", "en": "Hong Kong was divided into Hong Kong, Kowloon and New Territories districts; the first Carlton Trophy competition was held." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1957, "title": { "zh": "首屆全港大露營", "en": "First territory-wide jamboree" }, "body": { "zh": "10 月 19–22 日在上水金錢村舉行，1,361 人參加。", "en": "Held at Kam Tsin Village, Sheung Shui, from 19 to 22 October with 1,361 participants." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1958, "title": { "zh": "新界地方成立", "en": "New Territories Area" }, "body": { "zh": "7 月 1 日設新界地方，重劃為北約、元朗、荃灣三區；8 月舉行首屆基維爾聯誼會。", "en": "A New Territories Area was created on 1 July with North Yue, Yuen Long and Tsuen Wan districts; the first Gilwell reunion followed in August." }, "sources": ["hk-ntr-overview", "hk-wiki-history"] },
-    { "year": 1960, "title": { "zh": "基維爾營地撥地", "en": "Gilwell land granted" }, "body": { "zh": "政府撥出飛鵝山約二十萬平方米土地作營地；同年亦獲荃灣西約土地作下花山營地。", "en": "About 200,000 m² on Fei Ngo Shan was granted for a campsite, along with land at Tsuen Wan West for Ha Fa Shan camp." }, "sources": ["hk-wiki-history"] },
-    { "year": 1961, "title": { "zh": "金禧國際大露營", "en": "Golden Jubilee Jamboree" }, "body": { "zh": "12 月 27 日至 1962 年 1 月 2 日在九龍仔舉行，2,732 人參加，主題「天下一家」。", "en": "Held at Kowloon Tsai from 27 December to 2 January 1962 with 2,732 participants on the theme \"One World\"." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1968, "title": { "zh": "三個地域成立", "en": "Three regions" }, "body": { "zh": "港島、九龍、新界地域成立；下花山營地 3 月 31 日開放。", "en": "The Island, Kowloon and New Territories regions were established; Ha Fa Shan camp opened on 31 March." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1971, "title": { "zh": "鑽禧大露營", "en": "Diamond Jubilee Jamboree" }, "body": { "zh": "青山舉行，近 5,000 人參加；香港郵政發行童軍鑽禧紀念郵票。", "en": "Held at Castle Peak with nearly 5,000 participants; Hongkong Post issued three jubilee stamps." }, "sources": ["hk-wiki-history"] },
-    { "year": 1972, "title": { "zh": "大潭童軍中心啟用", "en": "Tai Tam centre opens" }, "body": { "zh": "9 月啟用，以交還的柴灣營地換取土地建成。", "en": "Opened in September on land exchanged for the surrendered Chai Wan Camp." }, "sources": ["hk-wiki", "hk-wiki-history"] },
-    { "year": 1975, "title": { "zh": "洞梓童軍中心啟用", "en": "Tung Tsz centre opens" }, "body": { "zh": "3 月 9 日啟用；同年首次試驗讓女性加入深資童軍支部。", "en": "Opened on 9 March; a pilot scheme that year admitted young women to the Venture Scout section." }, "sources": ["hk-wiki", "hk-wiki-history"] },
-    { "year": 1976, "title": { "zh": "東九龍地域成立", "en": "East Kowloon Region" }, "body": { "zh": "由九龍地域分出，成為第四個地域。", "en": "Separated from the Kowloon Region as the fourth region." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1977, "title": { "zh": "加入世界童軍組織", "en": "WOSM membership" }, "body": { "zh": "4 月 16 日成為世界童軍組織第 111 個會員，脫離英國童軍總會；同年成立銀禧區。", "en": "Became WOSM's 111th member organisation on 16 April, leaving The Scout Association; the Silver Jubilee District was formed the same year." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1978, "title": { "zh": "接納女性成員", "en": "Women admitted" }, "body": { "zh": "正式接納女性為深資童軍成員，並通過女性可擔任各級領袖及總監職務。", "en": "Young women were formally admitted as Venture Scouts, and women were allowed to serve as leaders and commissioners." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1982, "title": { "zh": "大同地域成立", "en": "Tai Tung Region formed" }, "body": { "zh": "成立大同地域，銀禧區一度歸其管理；該地域其後不再存在。", "en": "The Tai Tung Region was formed and the Silver Jubilee District placed under it; Tai Tung no longer exists." }, "sources": ["hk-wiki-history", "hk-wiki"] },
-    { "year": 1986, "title": { "zh": "鑽禧大露營", "en": "Diamond Jubilee Jamboree" }, "body": { "zh": "12 月 27 日至 1987 年 1 月 1 日在西貢大埔仔（今香港科技大學）舉行，5,143 人參加，主題「邁進」。", "en": "Held at Tai Po Tsai, Sai Kung (now HKUST) from 27 December to 1 January 1987 with 5,143 participants on the theme \"Marching On\"." }, "sources": ["hk-wiki", "hk-wiki-history"] },
-    { "year": 1987, "title": { "zh": "新界地域總部", "en": "N.T. regional HQ" }, "body": { "zh": "1 月 21 日鄧肇堅男女童軍中心在和宜合道啟用，內設三個葵涌／荃灣區總部。", "en": "The Tang Shiu Kin Centre opened on Wo Yi Hop Road on 21 January, housing three district headquarters." }, "sources": ["hk-wiki"] },
-    { "year": 1990, "title": { "zh": "屯門分區", "en": "Tuen Mun split" }, "body": { "zh": "5 月 1 日屯門分為東、西兩區；同年沙田童軍中心 6 月 9 日落成。", "en": "Tuen Mun split into East and West on 1 May; the Sha Tin Scout Centre opened on 9 June." }, "sources": ["hk-yle-timetable", "hk-ntr-history"] },
-    { "year": 1994, "title": { "zh": "香港童軍中心", "en": "Hong Kong Scout Centre" }, "body": { "zh": "7 月總部遷入尖沙咀香港童軍中心，摩士大廈交還政府。", "en": "Headquarters moved to the Hong Kong Scout Centre in Tsim Sha Tsui in July; Morse Building was returned to the government." }, "sources": ["hk-wiki"] },
-    { "year": 1996, "title": { "zh": "沙田分東西", "en": "Sha Tin split" }, "body": { "zh": "沙田旅團達 100 個，分拆為沙田東區及沙田西區。", "en": "With 100 troops, Sha Tin became East and West districts." }, "sources": ["hk-stn-history"] },
-    { "year": 1999, "title": { "zh": "跨世紀大露營", "en": "Millennium Jamboree" }, "body": { "zh": "12 月 28 日至 2000 年 1 月 2 日在西貢灣仔半島舉行，3,350 人參加。", "en": "Held on the Wan Tsai peninsula, Sai Kung, from 28 December to 2 January 2000 with 3,350 participants." }, "sources": ["hk-wiki", "hk-wiki-history"] },
-    { "year": 2000, "title": { "zh": "新界東地域成立", "en": "N.T. East Region" }, "body": { "zh": "4 月 1 日新界地域分拆，新界東地域成為第五個地域。", "en": "The New Territories Region split on 1 April, making New Territories East the fifth region." }, "sources": ["hk-ntr-overview", "hk-stn-history"] },
-    { "year": 2002, "title": { "zh": "新界東重劃八區", "en": "Eight N.T. East districts" }, "body": { "zh": "大埔、北區、沙田重新劃為大埔南、大埔北、雙魚、璧峰及沙田四區；羅定邦童軍中心成為地域總部。", "en": "Tai Po, North and Sha Tin were redrawn into Tai Po South and North, Sheung Yue, Pik Fung and four Sha Tin districts; the Law Ting Pong Centre became regional HQ." }, "sources": ["hk-tps-history", "hk-stn-history", "hk-wiki"] },
-    { "year": 2006, "title": { "zh": "大都會大露營", "en": "Metropolitan Jamboree" }, "body": { "zh": "12 月 27 日至 2007 年 1 月 1 日在西九龍海旁舉行，4,225 人參加，主題「和平獻禮」。", "en": "Held on the West Kowloon waterfront from 27 December to 1 January 2007 with 4,225 participants on the theme \"A Gift of Peace\"." }, "sources": ["hk-wiki"] },
-    { "year": 2010, "title": { "zh": "百周年大露營", "en": "Centenary Jamboree" }, "body": { "zh": "12 月 27 日至 2011 年 1 月 1 日在大嶼山竹篙灣舉行，約 5,200 人參加。", "en": "Held at Penny's Bay, Lantau, from 27 December to 1 January 2011 with about 5,200 participants." }, "sources": ["hk-hkir-history", "hk-nkc-100"] },
-    { "year": 2016, "title": { "zh": "105 周年大露營", "en": "105th Anniversary Jamboree" }, "body": { "zh": "12 月 23–27 日在竹篙灣舉行，超過 4,000 人參加，主題「童 · 惠青年 105」。", "en": "Held at Penny's Bay from 23 to 27 December with more than 4,000 participants on the theme \"Youth 105\"." }, "sources": ["hk-ce-2016", "hk-stheadline-jam"] },
-    { "year": 2019, "title": { "zh": "百周年紀念大樓", "en": "Centenary Building" }, "body": { "zh": "4 月 1 日港島地域遷回香港童軍百周年紀念大樓，4 月 20 日正式開幕。", "en": "The Island Region moved back into the Hong Kong Scout Centenary Building on 1 April, which officially opened on 20 April." }, "sources": ["hk-wiki"] },
-    { "year": 2022, "title": { "zh": "恢復海童軍旅", "en": "Sea Scout troops restored" }, "body": { "zh": "恢復成立海童軍旅，並允許開設空童軍旅。", "en": "Sea Scout troops could again be registered and Air Scout troops were permitted." }, "sources": ["hk-wiki"] },
-    { "year": 2024, "title": { "zh": "珠海大露營", "en": "Zhuhai Jamboree" }, "body": { "zh": "12 月 23–27 日首次在香港以外舉行，選址珠海淇澳島，約 4,400 人參加。", "en": "Held outside Hong Kong for the first time, on Qi'ao Island, Zhuhai, from 23 to 27 December with about 4,400 participants." }, "sources": ["hk-stheadline-2024", "hk-tkww-2024"] }
+    {
+      "year": 1909,
+      "title": {
+        "zh": "童軍運動傳入香港",
+        "en": "Scouting reaches Hong Kong"
+      },
+      "body": {
+        "zh": "最早出現的童軍活動由英國傳入；1911 年開始有英國商人及軍人正式組織旅團。",
+        "en": "The earliest Scout activity arrived from Britain; British merchants and servicemen began forming troops formally in 1911."
+      },
+      "sources": [
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1912,
+      "title": {
+        "zh": "貝登堡訪港",
+        "en": "Baden-Powell visits Hong Kong"
+      },
+      "body": {
+        "zh": "4 月 16 日貝登堡勳爵訪港；同年總督梅含理出任香港總領袖。",
+        "en": "Baden-Powell visited on 16 April; the Governor, Sir Francis May, became Chief Scout the same year."
+      },
+      "sources": [
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1913,
+      "title": {
+        "zh": "香港第 1 旅成立",
+        "en": "The 1st Hong Kong Troop forms"
+      },
+      "body": {
+        "zh": "9 月 20 日聖若瑟書院成立香港第 1 旅，1914 年 5 月 1 日在英國童軍總會註冊。",
+        "en": "St Joseph's College formed the 1st Hong Kong Troop on 20 September; it registered with the British association on 1 May 1914."
+      },
+      "sources": [
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1915,
+      "title": {
+        "zh": "總會組成、首次大會操",
+        "en": "Association formed; first rally"
+      },
+      "body": {
+        "zh": "3 月 20 日首次童軍大會操；7 月「香港童軍總會」組成，第一次世界大戰期間活動一度停頓。",
+        "en": "The first Scout rally was held on 20 March and the association was constituted in July; activities lapsed during the First World War."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1921,
+      "title": {
+        "zh": "戰後重組",
+        "en": "Post-war reorganisation"
+      },
+      "body": {
+        "zh": "寶雲中校重組總會；1 月 8 日在美利操場舉行戰後首次大會操。",
+        "en": "Lt-Col. F. J. Brown reorganised the association; the first post-war rally took place at Murray Parade Ground on 8 January."
+      },
+      "sources": [
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1929,
+      "title": {
+        "zh": "柴灣營地",
+        "en": "Chai Wan Camp"
+      },
+      "body": {
+        "zh": "以 16,000 港元購入柴灣海旁營地；同年首次參加世界童軍大會（第 3 屆，伯肯赫德）。",
+        "en": "A seafront campsite at Chai Wan was bought for HK$16,000; Hong Kong Scouts joined the 3rd World Scout Jamboree at Birkenhead the same year."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1936,
+      "title": {
+        "zh": "首屆木章訓練班",
+        "en": "First Wood Badge course"
+      },
+      "body": {
+        "zh": "首屆童軍木章訓練班（第二段）在柴灣營地舉行。",
+        "en": "The first Wood Badge (part two) course was held at Chai Wan Camp."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1941,
+      "title": {
+        "zh": "戰時服務",
+        "en": "Wartime service"
+      },
+      "body": {
+        "zh": "香港保衛戰前後，童軍協助防空、傳訊、救護及難民工作；淪陷期間運動停頓。",
+        "en": "Around the Battle of Hong Kong, Scouts helped with air-raid precautions, communications, first aid and refugees; the movement lapsed under occupation."
+      },
+      "sources": [
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1946,
+      "title": {
+        "zh": "戰後復員與重組",
+        "en": "Post-war revival"
+      },
+      "body": {
+        "zh": "戰後童軍運動復員；4 月 28 日在植物公園舉行戰後首次聖佐治日會操。英國總會亦成立先進童軍支部。",
+        "en": "Scouting revived after the war; the first post-war St George's Day parade was held at the Botanic Gardens on 28 April. The Senior Scout section was also introduced."
+      },
+      "sources": [
+        "hk-scout-history-page",
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1949,
+      "title": {
+        "zh": "摩士小屋啟用",
+        "en": "Morse Hut opens"
+      },
+      "body": {
+        "zh": "11 月 12 日花園道新總部摩士小屋啟用；同年設首位香港訓練總監。",
+        "en": "The new headquarters, Morse Hut on Garden Road, opened on 12 November; the first training commissioner was appointed the same year."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1951,
+      "title": {
+        "zh": "三區分治",
+        "en": "Three districts"
+      },
+      "body": {
+        "zh": "全港分為香港區、九龍區、新界區；首屆嘉爾頓錦標比賽舉行。",
+        "en": "Hong Kong was divided into Hong Kong, Kowloon and New Territories districts; the first Carlton Trophy competition was held."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1954,
+      "title": {
+        "zh": "摩士大廈落成",
+        "en": "Morse Building opens"
+      },
+      "body": {
+        "zh": "九龍覺士道 9 號摩士大廈正式揭幕，取代摩士小屋成為總會總部。",
+        "en": "Morse Building at 9 Cox's Road, Kowloon, opened as the new headquarters, replacing Morse Hut."
+      },
+      "sources": [
+        "hk-scout-history-page",
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1957,
+      "title": {
+        "zh": "首屆全港大露營",
+        "en": "First territory-wide jamboree"
+      },
+      "body": {
+        "zh": "10 月 19–22 日在上水金錢村舉行，1,361 人參加。",
+        "en": "Held at Kam Tsin Village, Sheung Shui, from 19 to 22 October with 1,361 participants."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1958,
+      "title": {
+        "zh": "新界地方成立",
+        "en": "New Territories Area"
+      },
+      "body": {
+        "zh": "7 月 1 日設新界地方，重劃為北約、元朗、荃灣三區；8 月舉行首屆基維爾聯誼會。",
+        "en": "A New Territories Area was created on 1 July with North Yue, Yuen Long and Tsuen Wan districts; the first Gilwell reunion followed in August."
+      },
+      "sources": [
+        "hk-ntr-overview",
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1960,
+      "title": {
+        "zh": "基維爾營地撥地",
+        "en": "Gilwell land granted"
+      },
+      "body": {
+        "zh": "政府撥出飛鵝山約二十萬平方米土地作營地；同年亦獲荃灣西約土地作下花山營地。",
+        "en": "About 200,000 m² on Fei Ngo Shan was granted for a campsite, along with land at Tsuen Wan West for Ha Fa Shan camp."
+      },
+      "sources": [
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1961,
+      "title": {
+        "zh": "金禧國際大露營",
+        "en": "Golden Jubilee Jamboree"
+      },
+      "body": {
+        "zh": "12 月 27 日至 1962 年 1 月 2 日在九龍仔舉行，2,732 人參加，主題「天下一家」。",
+        "en": "Held at Kowloon Tsai from 27 December to 2 January 1962 with 2,732 participants on the theme \"One World\"."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1968,
+      "title": {
+        "zh": "三個地域成立",
+        "en": "Three regions"
+      },
+      "body": {
+        "zh": "港島、九龍、新界地域成立；下花山營地 3 月 31 日開放。",
+        "en": "The Island, Kowloon and New Territories regions were established; Ha Fa Shan camp opened on 31 March."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1971,
+      "title": {
+        "zh": "鑽禧大露營",
+        "en": "Diamond Jubilee Jamboree"
+      },
+      "body": {
+        "zh": "青山舉行，近 5,000 人參加；香港郵政發行童軍鑽禧紀念郵票。",
+        "en": "Held at Castle Peak with nearly 5,000 participants; Hongkong Post issued three jubilee stamps."
+      },
+      "sources": [
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1972,
+      "title": {
+        "zh": "大潭童軍中心啟用",
+        "en": "Tai Tam centre opens"
+      },
+      "body": {
+        "zh": "9 月啟用，以交還的柴灣營地換取土地建成。",
+        "en": "Opened in September on land exchanged for the surrendered Chai Wan Camp."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1975,
+      "title": {
+        "zh": "洞梓童軍中心啟用",
+        "en": "Tung Tsz centre opens"
+      },
+      "body": {
+        "zh": "3 月 9 日啟用；同年首次試驗讓女性加入深資童軍支部。",
+        "en": "Opened on 9 March; a pilot scheme that year admitted young women to the Venture Scout section."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1976,
+      "title": {
+        "zh": "東九龍地域成立",
+        "en": "East Kowloon Region"
+      },
+      "body": {
+        "zh": "由九龍地域分出，成為第四個地域。",
+        "en": "Separated from the Kowloon Region as the fourth region."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1977,
+      "title": {
+        "zh": "加入世界童軍組織",
+        "en": "WOSM membership"
+      },
+      "body": {
+        "zh": "4 月 16 日成為世界童軍組織第 111 個會員，脫離英國童軍總會；同年成立銀禧區。",
+        "en": "Became WOSM's 111th member organisation on 16 April, leaving The Scout Association; the Silver Jubilee District was formed the same year."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1978,
+      "title": {
+        "zh": "接納女性成員",
+        "en": "Women admitted"
+      },
+      "body": {
+        "zh": "正式接納女性為深資童軍成員，並通過女性可擔任各級領袖及總監職務。",
+        "en": "Young women were formally admitted as Venture Scouts, and women were allowed to serve as leaders and commissioners."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1982,
+      "title": {
+        "zh": "大同地域成立",
+        "en": "Tai Tung Region formed"
+      },
+      "body": {
+        "zh": "成立大同地域，銀禧區一度歸其管理；該地域其後不再存在。",
+        "en": "The Tai Tung Region was formed and the Silver Jubilee District placed under it; Tai Tung no longer exists."
+      },
+      "sources": [
+        "hk-wiki-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1984,
+      "title": {
+        "zh": "天虹計劃與小童軍",
+        "en": "Rainbow Project and Grasshopper Scouts"
+      },
+      "body": {
+        "zh": "推行「天虹計劃」，翌年正式成立小童軍支部（6–8歲），並逐步擴展女性成員參與。",
+        "en": "The Rainbow Project led to the Grasshopper Scout section (ages 6–8) in 1985 and the wider admission of girls."
+      },
+      "sources": [
+        "hk-scout-history-page",
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1986,
+      "title": {
+        "zh": "鑽禧大露營",
+        "en": "Diamond Jubilee Jamboree"
+      },
+      "body": {
+        "zh": "12 月 27 日至 1987 年 1 月 1 日在西貢大埔仔（今香港科技大學）舉行，5,143 人參加，主題「邁進」。",
+        "en": "Held at Tai Po Tsai, Sai Kung (now HKUST) from 27 December to 1 January 1987 with 5,143 participants on the theme \"Marching On\"."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 1987,
+      "title": {
+        "zh": "新界地域總部",
+        "en": "N.T. regional HQ"
+      },
+      "body": {
+        "zh": "1 月 21 日鄧肇堅男女童軍中心在和宜合道啟用，內設三個葵涌／荃灣區總部。",
+        "en": "The Tang Shiu Kin Centre opened on Wo Yi Hop Road on 21 January, housing three district headquarters."
+      },
+      "sources": [
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1990,
+      "title": {
+        "zh": "屯門分區",
+        "en": "Tuen Mun split"
+      },
+      "body": {
+        "zh": "5 月 1 日屯門分為東、西兩區；同年沙田童軍中心 6 月 9 日落成。",
+        "en": "Tuen Mun split into East and West on 1 May; the Sha Tin Scout Centre opened on 9 June."
+      },
+      "sources": [
+        "hk-yle-timetable",
+        "hk-ntr-history"
+      ]
+    },
+    {
+      "year": 1994,
+      "title": {
+        "zh": "香港童軍中心",
+        "en": "Hong Kong Scout Centre"
+      },
+      "body": {
+        "zh": "7 月總部遷入尖沙咀香港童軍中心，摩士大廈交還政府。",
+        "en": "Headquarters moved to the Hong Kong Scout Centre in Tsim Sha Tsui in July; Morse Building was returned to the government."
+      },
+      "sources": [
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 1996,
+      "title": {
+        "zh": "沙田分東西",
+        "en": "Sha Tin split"
+      },
+      "body": {
+        "zh": "沙田旅團達 100 個，分拆為沙田東區及沙田西區。",
+        "en": "With 100 troops, Sha Tin became East and West districts."
+      },
+      "sources": [
+        "hk-stn-history"
+      ]
+    },
+    {
+      "year": 1999,
+      "title": {
+        "zh": "跨世紀大露營",
+        "en": "Millennium Jamboree"
+      },
+      "body": {
+        "zh": "12 月 28 日至 2000 年 1 月 2 日在西貢灣仔半島舉行，3,350 人參加。",
+        "en": "Held on the Wan Tsai peninsula, Sai Kung, from 28 December to 2 January 2000 with 3,350 participants."
+      },
+      "sources": [
+        "hk-wiki",
+        "hk-wiki-history"
+      ]
+    },
+    {
+      "year": 2000,
+      "title": {
+        "zh": "新界東地域成立",
+        "en": "N.T. East Region"
+      },
+      "body": {
+        "zh": "4 月 1 日新界地域分拆，新界東地域成為第五個地域。",
+        "en": "The New Territories Region split on 1 April, making New Territories East the fifth region."
+      },
+      "sources": [
+        "hk-ntr-overview",
+        "hk-stn-history"
+      ]
+    },
+    {
+      "year": 2002,
+      "title": {
+        "zh": "新界東重劃八區",
+        "en": "Eight N.T. East districts"
+      },
+      "body": {
+        "zh": "大埔、北區、沙田重新劃為大埔南、大埔北、雙魚、璧峰及沙田四區；羅定邦童軍中心成為地域總部。",
+        "en": "Tai Po, North and Sha Tin were redrawn into Tai Po South and North, Sheung Yue, Pik Fung and four Sha Tin districts; the Law Ting Pong Centre became regional HQ."
+      },
+      "sources": [
+        "hk-tps-history",
+        "hk-stn-history",
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 2006,
+      "title": {
+        "zh": "大都會大露營",
+        "en": "Metropolitan Jamboree"
+      },
+      "body": {
+        "zh": "12 月 27 日至 2007 年 1 月 1 日在西九龍海旁舉行，4,225 人參加，主題「和平獻禮」。",
+        "en": "Held on the West Kowloon waterfront from 27 December to 1 January 2007 with 4,225 participants on the theme \"A Gift of Peace\"."
+      },
+      "sources": [
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 2010,
+      "title": {
+        "zh": "百周年大露營",
+        "en": "Centenary Jamboree"
+      },
+      "body": {
+        "zh": "12 月 27 日至 2011 年 1 月 1 日在大嶼山竹篙灣舉行，約 5,200 人參加。",
+        "en": "Held at Penny's Bay, Lantau, from 27 December to 1 January 2011 with about 5,200 participants."
+      },
+      "sources": [
+        "hk-hkir-history",
+        "hk-nkc-100"
+      ]
+    },
+    {
+      "year": 2016,
+      "title": {
+        "zh": "105 周年大露營",
+        "en": "105th Anniversary Jamboree"
+      },
+      "body": {
+        "zh": "12 月 23–27 日在竹篙灣舉行，超過 4,000 人參加，主題「童 · 惠青年 105」。",
+        "en": "Held at Penny's Bay from 23 to 27 December with more than 4,000 participants on the theme \"Youth 105\"."
+      },
+      "sources": [
+        "hk-ce-2016",
+        "hk-stheadline-jam"
+      ]
+    },
+    {
+      "year": 2019,
+      "title": {
+        "zh": "百周年紀念大樓",
+        "en": "Centenary Building"
+      },
+      "body": {
+        "zh": "4 月 1 日港島地域遷回香港童軍百周年紀念大樓，4 月 20 日正式開幕。",
+        "en": "The Island Region moved back into the Hong Kong Scout Centenary Building on 1 April, which officially opened on 20 April."
+      },
+      "sources": [
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 2022,
+      "title": {
+        "zh": "恢復海童軍旅",
+        "en": "Sea Scout troops restored"
+      },
+      "body": {
+        "zh": "恢復成立海童軍旅，並允許開設空童軍旅。",
+        "en": "Sea Scout troops could again be registered and Air Scout troops were permitted."
+      },
+      "sources": [
+        "hk-wiki"
+      ]
+    },
+    {
+      "year": 2024,
+      "title": {
+        "zh": "珠海大露營",
+        "en": "Zhuhai Jamboree"
+      },
+      "body": {
+        "zh": "12 月 23–27 日首次在香港以外舉行，選址珠海淇澳島，約 4,400 人參加。",
+        "en": "Held outside Hong Kong for the first time, on Qi'ao Island, Zhuhai, from 23 to 27 December with about 4,400 participants."
+      },
+      "sources": [
+        "hk-stheadline-2024",
+        "hk-tkww-2024"
+      ]
+    }
   ]
 }

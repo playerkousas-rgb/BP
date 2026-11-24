@@ -29,8 +29,8 @@ const MAX_ZOOM = 6;
 // One tint per Scout region, applied as a CSS custom property so that the
 // stylesheet's selected/muted states can still override it.
 const REGION_FILL = {
-  island: '#cbdcd6', kowloon: '#e2dcb8', ekowloon: '#d6e2c1',
-  newterritories: '#ece1c2', ntheast: '#e2e8cc', silverjubilee: '#e2e6dc',
+  island: '#7fb8a8', kowloon: '#d4c06a', ekowloon: '#96bf72',
+  newterritories: '#e0b86a', ntheast: '#b7cf7a', silverjubilee: '#c8d0c2',
 };
 // How far apart two district labels must stay, in base-map units. Labels are
 // counter-scaled so they keep a constant screen size, so the gap shrinks as the
@@ -184,10 +184,10 @@ export function createHkMap(districtsData, hk, callbacks = {}) {
     group.dataset.jamboree = event.id;
     group.dataset.lonlat = lonlat;
     const tent = document.createElementNS(NS, 'path');
-    tent.setAttribute('d', `M-4 2.8 0 -4.2 4 2.8z M-1.4 2.8 0 0 1.4 2.8`);
+    tent.setAttribute('d', `M-5.5 3.8 0 -5.8 5.5 3.8z M-1.8 3.8 0 0 1.8 3.8`);
     tent.setAttribute('class', 'hk-jamboree-tent');
     const text = document.createElementNS(NS, 'text');
-    text.setAttribute('x', '0'); text.setAttribute('y', '12');
+    text.setAttribute('x', '0'); text.setAttribute('y', '14');
     text.setAttribute('class', 'hk-jamboree-label');
     text.dataset.label = 'jamboree';
     // The inner group carries the nudge that separates crowded tents, so the

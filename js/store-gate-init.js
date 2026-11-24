@@ -5,7 +5,7 @@ if (typeof initStoreGate === 'function') {
   const lang = /^zh(?:[-_]|$)/i.test(requestedLang.trim()) ? 'zh' : 'en';
   const decision = initStoreGate({
     appKey: 'bp',
-    mode: 'entry-gate',
+    mode: 'open',
     portalIds: ['appstore'],
     silentPortalIds: ['library'],
     allowStandalone: true,

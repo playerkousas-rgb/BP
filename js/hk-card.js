@@ -299,6 +299,41 @@ function milestoneCard(entry, hk, state) {
   return wrap;
 }
 
+function personCard(kind, row, hk, state) {
+  const lang = state.lang;
+  const office = hk.offices[kind === 'leader' ? 'leader' : 'chief'];
+  const wrap = element('div', 'hk-card hk-person-card');
+  wrap.append(heading(t(kind === 'leader' ? 'hkTabLeaders' : 'hkTabChiefs', lang), t('hkDraftTag', lang)));
+  if (row.photo) {
+    const img = element('img', 'hk-person-card-photo');
+    img.src = row.photo;
+    img.alt = localize(row.name, lang);
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.referrerPolicy = 'no-referrer';
+    img.width = 140; img.height = 175;
+    img.addEventListener('error', () => img.remove(), { once: true });
+    wrap.append(img);
+  }
+  wrap.append(localizedElement('h2', '', row.name, lang));
+  const facts = element('dl', 'hk-facts');
+  facts.append(element('dt', '', `${t('hkOfficeLabel', lang)}：`));
+  facts.append(localizedElement('dd', '', office.title, lang));
+  facts.append(element('dt', '', `${t('hkTermLabel', lang)}：`));
+  facts.append(element('dd', '', row.to ? `${row.from}–${row.to}` : `${row.from}–`));
+  if (kind === 'leader') {
+    facts.append(element('dt', '', `${t('hkRoleLabel', lang)}：`));
+    facts.append(element('dd', '', t(row.office === 'governor' ? 'hkGovernor' : 'hkChiefExecutive', lang)));
+  }
+  wrap.append(facts);
+  wrap.append(element('p', 'card-note', localize(office.note, lang)));
+  const foot = element('div', 'card-footer');
+  foot.append(sourceBlock(['hk-wiki'], lang, `person:${kind}:${row.n}`));
+  wrap.append(foot);
+  wrap.append(element('div', 'draft-line', t('hkDraftCard', lang)));
+  return wrap;
+}
+
 export function renderHkCard(panel, state, hk) {
   panel.classList.toggle('hk-selected', Boolean(state.selected));
   const selected = state.selected;
@@ -315,6 +350,11 @@ export function renderHkCard(panel, state, hk) {
   } else if (selected.kind === 'change') {
     const change = hk.boundaryChanges.find(item => item.year === selected.id);
     if (change) panel.append(changeCard(change, hk, state));
+  } else if (selected.kind === 'leader' || selected.kind === 'chief') {
+    const rows = selected.kind === 'leader' ? hk.leaders : hk.chiefs;
+    const row = rows.find(item => item.n === selected.id);
+    if (row) panel.append(personCard(selected.kind, row, hk, state));
+    else panel.append(peopleCard(selected.kind === 'leader' ? 'leaders' : 'chiefs', hk, state));
   } else if (selected.kind === 'leaders' || selected.kind === 'chiefs') {
     panel.append(peopleCard(selected.kind, hk, state));
   } else if (selected.kind === 'timeline') {

@@ -163,7 +163,7 @@ check(scoutDistricts === 44, `hk: expected 44 Scout districts, got ${scoutDistri
 // The Scout district layer: 43 plotted districts (Silver Jubilee has no
 // territory) plus the historical roots they descend from.
 unique(hkDistricts.districts, 'id', 'hk districts');
-check(hkDistricts.districts.length === 43, `hk-districts: expected 43 districts, got ${hkDistricts.districts.length}`);
+check(hkDistricts.districts.length >= 43, `hk-districts: expected >= 43 districts, got ${hkDistricts.districts.length}`);
 unique(hkDistricts.roots, 'id', 'hk district roots');
 check([5,10].includes(hkDistricts.roots.length), `hk-districts: expected 5 or 10 roots, got ${hkDistricts.roots.length}`);
 const districtIds = new Set(hkDistricts.districts.map(district => district.id));

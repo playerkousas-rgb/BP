@@ -2392,5 +2392,21 @@
       "zh": "來源為《港島地域童軍50周年特刊》。本頁所用1968、2018年區界圖由使用者提供作歷史參考；連結指向港島地域官方頁面。",
       "en": "Source: Hong Kong Island Region Scout 50th Anniversary Booklet. The 1968 and 2018 boundary maps used here were provided by the user for historical reference; the link points to the official Island Region page."
     }
+  },
+  {
+    "id": "hkir-boundary-notices-2002-2023",
+    "title": {
+      "zh": "港島地域區界通告／參考資料（2002、2023）",
+      "en": "HKIR district boundary notices / reference materials (2002, 2023)"
+    },
+    "publisher": {
+      "zh": "港島地域童軍／用家提供參考資料",
+      "en": "Hong Kong Island Region Scout / user-provided reference materials"
+    },
+    "url": "https://www.scout.org.hk/tc/scouting/scout-history.html",
+    "lang": "zh",
+    "type": "archive",
+    "notes": "User-provided reference images: 2002 HKW/VIC boundary adjustment (West St to Centre St, effective 2002-05-01); 2023-12-01 SKW/CHW boundary redefinition per 常務通告第01及02/24號; 2018 HKIR boundary table (附件四). Stored in images/hk/hkir-ref/ for attribution/reference.",
+    "language": "zh-Hant"
   }
 ]

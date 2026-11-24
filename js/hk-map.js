@@ -281,9 +281,28 @@ export function createHkMap(districtsData, hk, callbacks = {}) {
   // Zooming changes how many names fit, so the greedy placement is redone.
   function relayout() {
     if (!lastState) return;
+    const year = lastState.year;
+    const groupBest = new Map();
+    for (const district of districtsData.districts) {
+      const key = `${district.region}::${district.name?.en || district.id}`;
+      const prev = groupBest.get(key);
+      const active = year == null || (district.formed <= year && (district.dissolved == null || district.dissolved > year));
+      const prevActive = prev && (year == null || (prev.formed <= year && (prev.dissolved == null || prev.dissolved > year)));
+      let take = !prev;
+      if (prev) {
+        if (active && !prevActive) take = true;
+        else if (active === prevActive) {
+          const score = d => year == null ? d.formed : (d.formed <= year ? d.formed : -d.formed);
+          take = score(district) > score(prev);
+        }
+      }
+      if (take) groupBest.set(key, district);
+    }
     const named = new Map();
     for (const district of districtsData.districts) {
-      const owner = resolve(district, lastState.year);
+      const key = `${district.region}::${district.name?.en || district.id}`;
+      if (groupBest.get(key)?.id !== district.id) continue;
+      const owner = resolve(district, year);
       if (!owner) continue;
       const record = named.get(owner.id) || { owner, district, weight: 0, anchor: [0, 0] };
       record.weight += district.area;
@@ -379,7 +398,7 @@ export function createHkMap(districtsData, hk, callbacks = {}) {
       entry.node.removeAttribute('data-lonlat');
       const district = byId.get(code);
       entry.node.classList.toggle('is-muted', Boolean(activeRegion) && district.region !== activeRegion);
-      entry.node.classList.toggle('is-area', code === activeDistrict || code === focusDistrict);
+      entry.node.classList.toggle('is-area', sameDistrict(code));
     }
     const placed = [];
     const gap = LABEL_GAP / focus.k;
@@ -413,7 +432,16 @@ export function createHkMap(districtsData, hk, callbacks = {}) {
     const selected = state.selected;
     const activeRegion = selected?.region ?? (selected?.kind === 'region' ? selected.id : null);
     const activeDistrict = selected?.kind === 'district' ? selected.id : null;
+    const activeDistrictRec = activeDistrict ? byId.get(activeDistrict) : null;
     const focusDistrict = state.focusDistrict || null;
+    const focusDistrictRec = focusDistrict ? byId.get(focusDistrict) : null;
+    const sameDistrict = (code) => {
+      if (code === activeDistrict || code === focusDistrict) return true;
+      const d = byId.get(code);
+      if (!d) return false;
+      return (activeDistrictRec && d.region === activeDistrictRec.region && d.name?.en === activeDistrictRec.name?.en)
+        || (focusDistrictRec && d.region === focusDistrictRec.region && d.name?.en === focusDistrictRec.name?.en);
+    };
     const year = state.year;
     // Which district name stands for each piece of the map at this year.
     const ownerCache = new Map();
@@ -423,11 +451,33 @@ export function createHkMap(districtsData, hk, callbacks = {}) {
     // Roots (香港區 and the other pre-1958 districts) have no area of their own.
     const named = new Map();
 
+    // Pick one canonical shape per same-named district group to avoid overlapping
+    // versioned geometries (e.g. 2018 vs 2023 SKW/CHW boundary).
+    const groupBest = new Map();
+    for (const district of districtsData.districts) {
+      const key = `${district.region}::${district.name?.en || district.id}`;
+      const prev = groupBest.get(key);
+      const active = year == null || (district.formed <= year && (district.dissolved == null || district.dissolved > year));
+      const prevActive = prev && (year == null || (prev.formed <= year && (prev.dissolved == null || prev.dissolved > year)));
+      let take = !prev;
+      if (prev) {
+        if (active && !prevActive) take = true;
+        else if (active === prevActive) {
+          // prefer the one whose period is closest to year from below, else latest formed
+          const score = d => year == null ? d.formed : (d.formed <= year ? d.formed : -d.formed);
+          take = score(district) > score(prev);
+        }
+      }
+      if (take) groupBest.set(key, district);
+    }
+
     // Names are placed for the district that exists at this year; a district
     // that has not been formed yet is drawn in its parent's colour with the
     // internal boundary faded, so the map still reads as one territory.
     for (const [code, node] of shapesByCode) {
       const district = byId.get(code);
+      const key = `${district.region}::${district.name?.en || district.id}`;
+      if (groupBest.get(key)?.id !== code) { node.style.display = 'none'; continue; }
       const owner = ownerCache.get(code);
       if (!owner) { node.style.display = 'none'; continue; }
       node.style.display = '';
@@ -435,7 +485,7 @@ export function createHkMap(districtsData, hk, callbacks = {}) {
       node.style.setProperty('--region-fill', REGION_FILL[owner.region] || '#e4e4d6');
       node.classList.toggle('is-owner', isOwner);
       node.classList.toggle('is-merged', !isOwner);
-      node.classList.toggle('is-new', year != null && district.formed === year);
+      node.classList.toggle('is-new', year != null && (district.originalFormed || district.formed) === year);
       node.classList.toggle('is-region', Boolean(activeRegion) && district.region === activeRegion);
       node.classList.toggle('is-muted', Boolean(activeRegion) && district.region !== activeRegion);
       node.classList.toggle('is-area', code === activeDistrict || code === focusDistrict);

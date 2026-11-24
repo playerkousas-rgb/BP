@@ -373,10 +373,24 @@ export async function startHkView({ params, data }) {
     note.replaceChildren(localized('p', '', office.note, lang));
     for (const row of kind === 'leaders' ? hk.leaders : hk.chiefs) {
       const item = element('li', 'hk-person');
-      item.append(element('span', 'hk-person-number', String(row.n)));
-      item.append(localized('strong', '', row.name, lang));
-      item.append(element('span', 'hk-person-years', row.to ? `${row.from}–${row.to}` : `${row.from}–`));
-      if (kind === 'leaders') item.append(element('span', 'hk-person-office', t(row.office === 'governor' ? 'hkGovernor' : 'hkChiefExecutive', lang)));
+      if (row.photo) {
+        const photo = element('img', 'hk-person-photo');
+        photo.src = row.photo;
+        photo.alt = localize(row.name, lang);
+        photo.loading = 'lazy';
+        photo.decoding = 'async';
+        photo.referrerPolicy = 'no-referrer';
+        photo.width = 96;
+        photo.height = 120;
+        photo.addEventListener('error', () => photo.remove(), { once: true });
+        item.append(photo);
+      }
+      const body = element('div', 'hk-person-body');
+      body.append(element('span', 'hk-person-number', String(row.n)));
+      body.append(localized('strong', '', row.name, lang));
+      body.append(element('span', 'hk-person-years', row.to ? `${row.from}–${row.to}` : `${row.from}–`));
+      if (kind === 'leaders') body.append(element('span', 'hk-person-office', t(row.office === 'governor' ? 'hkGovernor' : 'hkChiefExecutive', lang)));
+      item.append(body);
       list.append(item);
     }
     const head = list.closest('[data-hk-section]').querySelector('.hk-office-title');

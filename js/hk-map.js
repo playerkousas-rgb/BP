@@ -398,7 +398,11 @@ export function createHkMap(districtsData, hk, callbacks = {}) {
       entry.node.removeAttribute('data-lonlat');
       const district = byId.get(code);
       entry.node.classList.toggle('is-muted', Boolean(activeRegion) && district.region !== activeRegion);
-      entry.node.classList.toggle('is-area', sameDistrict(code));
+      const drec = district;
+      const isArea = code === activeDistrict || code === focusDistrict
+        || (activeDistrict && drec && (byId.get(activeDistrict)?.region === drec.region && byId.get(activeDistrict)?.name?.en === drec.name?.en))
+        || (focusDistrict && drec && (byId.get(focusDistrict)?.region === drec.region && byId.get(focusDistrict)?.name?.en === drec.name?.en));
+      entry.node.classList.toggle('is-area', isArea);
     }
     const placed = [];
     const gap = LABEL_GAP / focus.k;

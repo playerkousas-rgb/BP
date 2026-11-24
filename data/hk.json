@@ -592,11 +592,16 @@
         {
           "zh": "新界東地域把大埔區、北區、沙田東區、沙田西區重劃為大埔北、大埔南、雙魚、璧峰、沙田東、沙田南、沙田西、沙田北八區。",
           "en": "The New Territories East Region redrew Tai Po, North, Sha Tin East and Sha Tin West into eight districts: Tai Po North and South, Sheung Yue, Pik Fung, and Sha Tin East, South, West and North."
+        },
+        {
+          "zh": "港島西區與維城區分界由西邊街調整至正街，2002年5月1日起生效；兩區內旅團不受區界修訂影響。",
+          "en": "Hong Kong West / Victoria City boundary adjusted from West Street to Centre Street, effective 2002-05-01; existing scout groups in both districts were not affected by the boundary revision."
         }
       ],
       "sources": [
         "hk-tps-history",
-        "hk-stn-history"
+        "hk-stn-history",
+        "hkir-boundary-notices-2002-2023"
       ]
     },
     {
@@ -633,6 +638,18 @@
       ],
       "sources": [
         "hkir-50th-anniversary-booklet"
+      ]
+    },
+    {
+      "year": 2023,
+      "changes": [
+        {
+          "zh": "按常務通告第01及02/24號，由2023年12月1日起重定筲箕灣區與柴灣區分界：海旁經鯉魚門渡假村至柴灣道、沿大潭道至大潭道交界以西屬筲箕灣區，大潭道以東屬柴灣區；興民邨、興華邨、峰華邨劃入柴灣區。",
+          "en": "Per General Notices 01 & 02/24, effective 2023-12-01, the Shau Kei Wan / Chai Wan boundary was redefined: seafront via Lei Yue Mun Holiday Village to Chai Wan Road, then along Tai Tam Road to the junction; west of Tai Tam Road belongs to Shau Kei Wan, east to Chai Wan. Hing Man, Hing Wah and Fung Wah estates were placed in Chai Wan District."
+        }
+      ],
+      "sources": [
+        "hkir-boundary-notices-2002-2023"
       ]
     }
   ],

@@ -311,18 +311,20 @@ export async function startHkView({ params, data }) {
       card.append(head);
       const chips = element('div', 'hk-left-district-chips');
       for (const district of region.districts) {
-        const record = hkDistricts.districts.find(item => item.region === region.id && item.name.en === district.en);
-        if (!record) continue;
+        const candidates = hkDistricts.districts.filter(item => item.region === region.id && item.name.en === district.en);
+        if (!candidates.length) continue;
+        const record = candidates.find(item => (state.year == null || item.formed <= state.year) && (item.dissolved == null || item.dissolved > state.year))
+          || candidates.slice().sort((a, b) => b.formed - a.formed)[0];
         const btn = element('button', 'hk-left-district-chip');
         btn.type = 'button';
         btn.dataset.hkSelect = `district:${record.id}`;
         btn.textContent = localize(district, lang);
         const actual = localizationLanguage(district, lang);
         if (actual) btn.lang = actual;
-        const formedYear = record.originalFormed || record.formed;
-        if (formedYear) btn.append(element('span', 'hk-left-district-year', ` ${formedYear}`));
+        const formedYear = Math.min(...candidates.map(item => item.originalFormed || item.formed));
+        if (Number.isFinite(formedYear)) btn.append(element('span', 'hk-left-district-year', ` ${formedYear}`));
         btn.disabled = state.year != null && formedYear > state.year;
-        btn.classList.toggle('is-selected', state.selected?.kind === 'district' && state.selected.id === record.id);
+        btn.classList.toggle('is-selected', state.selected?.kind === 'district' && candidates.some(item => item.id === state.selected?.id));
         chips.append(btn);
       }
       card.append(chips);

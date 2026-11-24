@@ -253,11 +253,40 @@ export async function startHkView({ params, data }) {
     }
   }
 
+  function renderSyncedTimeline() {
+    const list = document.querySelector('#hk-synced-timeline');
+    if (!list) return;
+    list.replaceChildren();
+    for (const entry of hk.timeline) {
+      const item = element('li', 'hk-synced-item');
+      const button = element('button', 'hk-synced-btn');
+      button.type = 'button';
+      button.dataset.hkSelect = `milestone:${entry.year}`;
+      button.append(element('span', 'hk-synced-year', String(entry.year)));
+      const text = element('span', 'hk-synced-text');
+      text.append(localized('strong', 'hk-synced-title', entry.title, lang));
+      text.append(localized('span', 'hk-synced-body', entry.body, lang));
+      button.append(text);
+      item.append(button);
+      const activeYear = state.year === entry.year;
+      const selected = state.selected?.kind === 'milestone' && state.selected.id === entry.year;
+      item.classList.toggle('is-active', activeYear);
+      item.classList.toggle('is-selected', selected);
+      if (selected) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+      list.append(item);
+    }
+    const current = list.querySelector('.is-selected, .is-active');
+    if (current && !evolutionTouched && typeof current.scrollIntoView === 'function') {
+      current.scrollIntoView({ block: 'nearest' });
+    }
+  }
+
   function renderMain() {
     document.querySelectorAll('[data-hk-section]').forEach(section => {
       section.hidden = section.dataset.hkSection !== state.tab;
     });
-    if (state.tab === 'map') { map.render(state); renderRail(); renderEvolution(); }
+    if (state.tab === 'map') { map.render(state); renderRail(); renderEvolution(); renderSyncedTimeline(); }
     else if (state.tab === 'regions') renderRegions();
     else if (state.tab === 'boundaries') renderBoundaries();
     else if (state.tab === 'jamborees') renderJamborees();
